@@ -12,6 +12,13 @@ $app->get('/', function () use ($app) {
 ->bind('homepage')
 ;
 
+$app->get('/repositories', function () use ($app) {
+    $githubManager = new \LaFourchette\Manager\GithubManager();
+    return $app['twig']->render('repo.html', array('repos' => $githubManager->findRepositories()));
+})
+->bind('repositories')
+;
+
 $app->error(function (\Exception $e, $code) use ($app) {
     if ($app['debug']) {
         return;
