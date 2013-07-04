@@ -21,6 +21,14 @@ abstract class ConsoleAbstract
         $this->application = $application;
     }
 
+    /**
+     * @return Application
+     */
+    public function getApplication()
+    {
+        return $this->application;
+    }
+
     abstract public function run(InputInterface $input, OutputInterface $output);
     abstract static public function register(Application $app, \Symfony\Component\Console\Application $console);
 }
