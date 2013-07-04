@@ -25,7 +25,7 @@ class Integ extends ModelAbstract
     protected $path;
 
     /**
-     * @var string
+     * @var null|string
      */
     protected $server;
 
