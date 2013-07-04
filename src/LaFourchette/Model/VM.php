@@ -4,6 +4,12 @@ namespace LaFourchette\Model;
 
 class VM extends ModelAbstract
 {
+
+    /**
+     * @var int
+     */
+    protected $idVm;
+
     /**
     * @var int
     */
@@ -38,4 +44,19 @@ class VM extends ModelAbstract
      * @var User
      */
     protected $createdBy;
+
+    /**
+     * @var Integ
+     */
+    protected $integ;
+
+    public function setInteg(Integ $integ)
+    {
+        $this->integ = $integ;
+    }
+
+    public function getInteg()
+    {
+        return $this->integ;
+    }
 }
