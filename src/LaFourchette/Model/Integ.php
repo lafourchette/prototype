@@ -12,7 +12,7 @@ class Integ extends ModelAbstract
     /**
      * @var string
      */
-    protected $name;
+    protected $name = null;
 
     /**
      * @var string

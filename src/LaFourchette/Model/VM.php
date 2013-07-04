@@ -50,11 +50,17 @@ class VM extends ModelAbstract
      */
     protected $integ;
 
+    /**
+     * @param Integ $integ
+     */
     public function setInteg(Integ $integ)
     {
         $this->integ = $integ;
     }
 
+    /**
+     * @return Integ
+     */
     public function getInteg()
     {
         return $this->integ;
