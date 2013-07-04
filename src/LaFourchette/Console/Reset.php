@@ -20,7 +20,7 @@ class Reset extends ConsoleAbstract
             ))
             ->setDescription('Reset a VM')
             ->setCode(function (InputInterface $input, OutputInterface $output) use ($app) {
-                $command = new Status();
+                $command = new Reset();
                 $command->setApplication($app);
                 $command->run($input, $output);
             });

@@ -20,7 +20,7 @@ class Check extends ConsoleAbstract
             ))
             ->setDescription('Check a VM')
             ->setCode(function (InputInterface $input, OutputInterface $output) use ($app) {
-                $command = new Status();
+                $command = new Check();
                 $command->setApplication($app);
                 $command->run($input, $output);
             });

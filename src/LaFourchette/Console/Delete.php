@@ -20,7 +20,7 @@ class Delete extends ConsoleAbstract
             ))
             ->setDescription('Delete a VM')
             ->setCode(function (InputInterface $input, OutputInterface $output) use ($app) {
-                $command = new Status();
+                $command = new Delete();
                 $command->setApplication($app);
                 $command->run($input, $output);
             });
