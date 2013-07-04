@@ -11,7 +11,9 @@ abstract class ModelAbstract
      */
     public function __set($key, $value)
     {
-        if (isset($this->$key)) {
+        $key = lcfirst($key);
+
+        if (property_exists($this, $key)) {
             $this->$key = $value;
         } else {
             throw new \Exception(sprintf('Unknown properties %s', $key));
@@ -25,7 +27,9 @@ abstract class ModelAbstract
      */
     public function __get($key)
     {
-        if (isset($this->$key)) {
+        $key = lcfirst($key);
+
+        if (property_exists($this, $key)) {
             return $this->$key;
         } else {
             throw new \Exception(sprintf('Unknown properties %s', $key));
