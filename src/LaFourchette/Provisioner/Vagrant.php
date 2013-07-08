@@ -18,22 +18,22 @@ class Vagrant extends ProvisionerAbstract
         $server = $integ->getServer();
 
         if (trim($sshUser) != '' && trim($server) != '') {
-            $cmd .= 'ssh ' . $sshUser . '@' . $server . ':';
+            $encapsultate = 'ssh ' . $sshUser . '@' . $server . ' ';
         }
 
         $path = $integ->getPath();
 
         if (trim($path) !== '') {
-            if ($cmd != '') {
-                $cmd .= $path;
-            } else {
-                $cmd = 'cd ' . $path . ';';
-            }
+            $cmd .= 'cd ' . $path . '; ';
         } else {
             throw new \Exception('Seriously ? no path ? I can deploy the VM everywhere ?');
         }
 
         $cmd .= $realCommand;
+
+        if (isset($encapsultate)) {
+            $cmd = $encapsultate . ' "' . str_replace('"', '\"', $cmd) . '"';
+        }
 
         return $cmd;
     }
@@ -44,11 +44,11 @@ class Vagrant extends ProvisionerAbstract
         $cmd = 'ls -a ' . $path;
         $output = $this->run($vm, $cmd);
 
-        $result = explode('\n', $output);
+        $result = explode("\n", $output);
 
         if (count($result) == 0) {
             throw new \Exception('Destination directory does not exists');
-        } else if (count($result) == 2) {
+        } else if (count($result) == 3 && $result = array('.', '..', '')) {
             return VM::MISSING;
         } else {
             $output = $this->run($vm, 'vagrant status');
