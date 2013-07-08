@@ -37,27 +37,31 @@ class Integ
     protected $path;
 
     /**
+     * @ORM\Column(type="string")
      * @var null|string
      */
     protected $server;
 
     /**
+     * @ORM\Column(type="string", name="ssh_key")
      * @var string
      */
     protected $sshKey;
 
     /**
+     * @ORM\Column(type="string", name="ssh_user")
      * @var string
      */
     protected $sshUser;
 
     /**
+     * @ORM\Column(type="string")
      * @var string
      */
     protected $ip;
 
     /**
-     *
+     * @ORM\Column(type="string")
      * @var string
      */
     protected $mac;
