@@ -2,8 +2,6 @@
 
 namespace LaFourchette\Checker;
 
-use LaFourchette\Checker\CheckerInterface;
-
 /**
  * Description of VmChecker
  *
