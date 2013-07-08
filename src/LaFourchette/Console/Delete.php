@@ -28,6 +28,15 @@ class Delete extends ConsoleAbstract
 
     public function run(InputInterface $input, OutputInterface $output)
     {
-        throw new \Exception('not yet implemented');
+        $vmNumber = $input->getArgument('vm-number');
+        $vmManager = $this->getVmManager();
+
+        /**
+         * @var VM $vm
+         */
+        $vm = $vmManager->load($vmNumber);
+
+        $provisioner = $this->getProvisioner();
+        $provisioner->delete($vm);
     }
 }

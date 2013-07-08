@@ -32,15 +32,15 @@ class Status extends ConsoleAbstract
     public function run(InputInterface $input, OutputInterface $output)
     {
         $vmNumber = $input->getArgument('vm-number');
-        $vmManager = $this->getProvisioner();
+        $vmManager = $this->getVmManager();
 
         /**
          * @var VM $vm
          */
         $vm = $vmManager->load($vmNumber);
 
-        $vagrant = new Vagrant();
-        switch ($vagrant->getStatus($vm)) {
+        $provisioner = $this->getProvisioner();
+        switch ($provisioner->getStatus($vm)) {
             case VM::MISSING:
                 $output->writeln('The VM is missing');
                 break;

@@ -28,6 +28,15 @@ class Reset extends ConsoleAbstract
 
     public function run(InputInterface $input, OutputInterface $output)
     {
-        $output->writeln('reset');
+        $vmNumber = $input->getArgument('vm-number');
+        $vmManager = $this->getVmManager();
+
+        /**
+         * @var VM $vm
+         */
+        $vm = $vmManager->load($vmNumber);
+
+        $provisioner = $this->getProvisioner();
+        $provisioner->reset($vm);
     }
 }

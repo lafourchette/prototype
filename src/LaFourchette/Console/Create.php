@@ -32,14 +32,14 @@ class Create extends ConsoleAbstract
     public function run(InputInterface $input, OutputInterface $output)
     {
         $vmNumber = $input->getArgument('vm-number');
-        $vmManager = $this->getProvisioner();
+        $vmManager = $this->getVmManager();
 
         /**
          * @var VM $vm
          */
         $vm = $vmManager->load($vmNumber);
 
-        $vagrant = new Vagrant();
-        $vagrant->initialise($vm);
+        $provisioner = $this->getProvisioner();
+        $provisioner->initialise($vm);
     }
 }
