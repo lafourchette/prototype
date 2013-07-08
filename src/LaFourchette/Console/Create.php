@@ -47,6 +47,6 @@ class Create extends ConsoleAbstract
         $vm = $vmManager->load($vmNumber);
 
         $vagrant = new Vagrant();
-        $vagrant->start($vm);
+        $vagrant->initialise($vm);
     }
 }
