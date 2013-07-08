@@ -10,10 +10,10 @@ use Doctrine\ORM\Mapping as ORM;
 class VM
 {
 
-    const RUNNING = 0;
-    const STOPPED = 1;
-    const SUSPEND = 2;
-    const MISSING = 3;
+    const RUNNING = 0; //If vagrant is running
+    const STOPPED = 1; //If vagrant is stopped
+    const SUSPEND = 2; //If vagrant is suspend
+    const MISSING = 3; //If directory is present and empty
 
     /**
      * @ORM\Id
