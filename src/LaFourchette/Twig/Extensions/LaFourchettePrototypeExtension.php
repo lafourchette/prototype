@@ -9,13 +9,22 @@ namespace LaFourchette\Twig\Extensions;
  */
 class LaFourchettePrototypeExtension extends \Twig_Extension
 {
+    protected $integAvailabibiltyChecker;
+    
+    public function __construct(\LaFourchette\Checker\IntegAvailabibiltyChecker $integAvailabibiltyChecker)
+    {
+        $this->integAvailabibiltyChecker = $integAvailabibiltyChecker;
+    }
     /**
      * 
      * {@inheritDoc}
      */
     public function getFunctions()
     {
-        return array('la_fourchette_prototype_vm_status' =>  new \Twig_Function_Method($this, 'vmStatus',array('is_safe' => array(true))));
+        return array(
+            'la_fourchette_prototype_vm_status' =>  new \Twig_Function_Method($this, 'vmStatus',array('is_safe' => array(true))),
+            'la_fourchette_prototype_integ_availability' => new \Twig_Function_Method($this, 'integAvailability')
+            );
     }
     
     /**
@@ -41,6 +50,11 @@ class LaFourchettePrototypeExtension extends \Twig_Extension
                 break;
         }
         
+    }
+    
+    public function integAvailability()
+    {
+        return $this->integAvailabibiltyChecker->check();
     }
     
     public function getName()

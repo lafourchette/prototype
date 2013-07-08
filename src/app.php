@@ -15,9 +15,11 @@ $app->register(new TwigServiceProvider(), array(
     'twig.options' => array('cache' => __DIR__.'/../cache/twig'),
 ));
 
+require __DIR__.'/../src/services.php';
+
 $app['twig'] = $app->share($app->extend('twig', function($twig, $app) {
     // add custom globals, filters, tags, ...
-    $twig->addExtension(new \LaFourchette\Twig\Extensions\LaFourchettePrototypeExtension());
+    $twig->addExtension(new \LaFourchette\Twig\Extensions\LaFourchettePrototypeExtension($app['integ_availabibilty.checker']));
 
     return $twig;
 }));
@@ -42,7 +44,5 @@ $app->register(new \Dflydev\Silex\Provider\DoctrineOrm\DoctrineOrmServiceProvide
         ),
     ),
 ));
-
-require __DIR__.'/../src/services.php';
 
 return $app;
