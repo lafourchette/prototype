@@ -36,17 +36,15 @@ class Status extends ConsoleAbstract
         $vmNumber = $input->getArgument('vm-number');
 
         /**
-         * @var VmManager $vmMananger
+         * @var VmManager $vmManager
          */
 
-        $vmMananger = $app['vm.manager'];
+        $vmManager = $app['vm.manager'];
 
         /**
          * @var VM $vm
          */
-        $vm = $vmMananger->load($vmNumber);
-
-
+        $vm = $vmManager->load($vmNumber);
 
         $vagrant = new Vagrant();
         switch ($vagrant->getStatus($vm)) {
