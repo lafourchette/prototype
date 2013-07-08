@@ -31,15 +31,8 @@ class Create extends ConsoleAbstract
 
     public function run(InputInterface $input, OutputInterface $output)
     {
-        $app = $this->getApplication();
-
         $vmNumber = $input->getArgument('vm-number');
-
-        /**
-         * @var VmManager $vmManager
-         */
-
-        $vmManager = $app['vm.manager'];
+        $vmManager = $this->getProvisioner();
 
         /**
          * @var VM $vm
