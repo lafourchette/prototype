@@ -40,32 +40,71 @@ class Vagrant extends ProvisionerAbstract
 
     public function getStatus(VM $vm)
     {
-        // TODO: Implement getStatus() method.
+        $path = $vm->getInteg()->getPath();
+        $cmd = 'ls -a ' . $path;
+        $output = $this->run($vm, $cmd);
+
+        $result = explode('\n', $output);
+
+        if (count($result) == 0) {
+            throw new \Exception('Destination directory does not exists');
+        } else if (count($result) == 2) {
+            return VM::MISSING;
+        } else {
+            $output = $this->run($vm, 'vagrant status');
+        }
+    }
+
+    protected function run(VM $vm, $cmd)
+    {
+        $cmd = $this->getPrefixCommand($vm->getInteg(), $cmd);
+        $process = new Process($cmd);
+        $process->run();
+
+        return $process->getOutput();
     }
 
     public function start(VM $vm)
     {
-        $integ = $vm->getInteg();
+        switch ($this->getStatus($vm)) {
+            case VM::SUSPEND:
+                new \Exception('VM is already running');
+            case VM::RUNNING:
+                new \Exception('VM is already running');
+            case VM::STOPPED:
+                //Do nothing;
+                break;
+            case VM::MISSING:
+                $this->initialise($vm);
+        }
 
-        $cmd = 'git clone git@github.com:lafourchette/lafourchette-vm.git';
-        $cmd = $this->getPrefixCommand($integ, $cmd);
+        //Do Fact
+        $cmd = 'cp Facts.dist Facts';
 
 
+
+//        $cmd = 'vagrant up';
+//        $cmd = $this->getPrefixCommand($integ, $cmd);
+//        $process = new Process($cmd);
+//        $process->run();
 
     }
 
     public function stop(VM $vm)
     {
-        // TODO: Implement stop() method.
+        $cmd = 'vagrant halt --force';
+        $this->run($vm, $cmd);
     }
 
     public function initialise(VM $vm)
     {
-        // TODO: Implement initialise() method.
+        $cmd = 'git clone git@github.com:lafourchette/lafourchette-vm.git .';
+        $this->run($vm, $cmd);
     }
 
     public function reset(VM $vm)
     {
-        // TODO: Implement reset() method.
+        $this->stop($vm);
+        $this->start($vm);
     }
 }
