@@ -53,7 +53,9 @@ class Vagrant extends ProvisionerAbstract
         } else {
             $output = $this->run($vm, 'vagrant status');
 
-            if (strpos($output, ' running (') !== false) {
+            if (strpos($output, 'Please update Facts file !') !== false) {
+                return VM::STOPPED;
+            } else if (strpos($output, ' running (') !== false) {
                 return VM::RUNNING;
             } else if (strpos($output, ' not created (') !== false) {
                 return VM::STOPPED;
@@ -71,6 +73,7 @@ class Vagrant extends ProvisionerAbstract
     {
         $cmd = $this->getPrefixCommand($vm->getInteg(), $cmd);
         $process = new Process($cmd);
+        $process->setTimeout(0);
         $process->run();
 
         return $process->getOutput();
@@ -88,6 +91,7 @@ class Vagrant extends ProvisionerAbstract
                 break;
             case VM::MISSING:
                 $this->initialise($vm);
+                break;
         }
 
         //Do Fact
