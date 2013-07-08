@@ -1,7 +1,7 @@
 <?php
 namespace LaFourchette\Provisioner;
 
-use LaFourchette\Model\VM;
+use LaFourchette\Entity\VM;
 use Symfony\Component\Process\Process;
 
 class Vagrant extends ProvisionerAbstract
@@ -9,10 +9,9 @@ class Vagrant extends ProvisionerAbstract
     protected $depot = 'git@github.com:lafourchette/lafourchette-vm.git';
 
 
-    protected function getPrefixCommand($integ)
+    protected function getPrefixCommand($integ, $realCommand)
     {
         $cmd = '';
-
 
         $sshUser = $integ->getSshUser();
         $sshKey = $integ->getSshKey();
@@ -24,11 +23,17 @@ class Vagrant extends ProvisionerAbstract
 
         $path = $integ->getPath();
 
-        if (trim($path) == '') {
-            $cmd .= $path;
+        if (trim($path) !== '') {
+            if ($cmd != '') {
+                $cmd .= $path;
+            } else {
+                $cmd = 'cd ' . $path . ';';
+            }
         } else {
             throw new \Exception('Seriously ? no path ? I can deploy the VM everywhere ?');
         }
+
+        $cmd .= $realCommand;
 
         return $cmd;
     }
@@ -43,7 +48,7 @@ class Vagrant extends ProvisionerAbstract
         $integ = $vm->getInteg();
 
         $cmd = 'git clone git@github.com:lafourchette/lafourchette-vm.git';
-        $cmd = $this->getPrefixCommand($cmd);
+        $cmd = $this->getPrefixCommand($integ, $cmd);
 
 
 
