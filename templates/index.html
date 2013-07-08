@@ -1,5 +1,6 @@
 {% extends "layout.html" %}
 
 {% block content %}
-    Welcome to your new Silex Application!
+
+{{ render(app.request.baseUrl ~ '/_status') }}
 {% endblock %}

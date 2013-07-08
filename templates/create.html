@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+
+{% block content %}
+To create a prototype you need to choose for each project a branch
+
+<form id="create-prototype" class="form-block" action="{{app.request.baseUrl}}/launch-prototype" method="POST">
+
+{% for project,branches in repositories %}
+    
+    <label><h2>{{project}}</h2></label>
+    <label><h4>Branches</h4></label>
+    {% if branches|length > 0 %}
+    <select name="{{project}}[]">
+        {% for branch in branches %}
+             <option value="{{branch}}">{{branch}}</option>
+        {% endfor %}
+        </select>
+    {% endif %}
+{% endfor %}
+</form>
+<button type="submit" id="launch-prototype" class="btn btn-info"><i class="icon-plus-sign icon-white"></i> Create VM</button>
+{% endblock %}

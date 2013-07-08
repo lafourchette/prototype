@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    {% for project,branches in repositories %}
+        {{project}}
+        <br />
+        {% if branches|length > 0 %}
+            {% for branch in branches %}
+                {{branch}}
+                <br />
+            {% endfor %}
+            <br />
+            <br />
+        {% endif %}
+    {% endfor %}
+{% endblock %}

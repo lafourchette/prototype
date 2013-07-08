@@ -1,0 +1,22 @@
+<table  class="table table-hover">
+    <tr>
+        <th>Name</th>
+        <th>Domain</th>
+        <th>Status</th>
+        <th>Created By</th>
+        <th>Expired at</th>
+        <th></th>
+    </tr>
+    {% for vm in vms %}
+    <tr>
+        <td>{{vm.name}}</td>
+        <td>{{vm.integ.name}} - {{vm.integ.suffix}}</td>
+        <td>{{la_fourchette_prototype_vm_status(vm.status)}}</td>
+        <td>{{vm.createdBy}}</td>
+        <td>{{vm.expiredDt|date('Y-m-d')}}</td>
+        <td><a href="#">Go to status page</a></td>
+        {% endfor %}   
+    </tr>
+</table>
+
+<a href="{{app.request.baseUrl}}/create-prototype" class="btn btn-info"><i class="icon-plus-sign icon-white"></i>Create a Prototype</a>

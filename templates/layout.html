@@ -13,6 +13,7 @@
                 <div class="page-header">
                     <h1>Prototype Application</h1>
                 </div>
+                {% include 'nav.html' %}
                 {% block content %}{% endblock %}
             </div>
 
@@ -26,5 +27,6 @@
     </div>
         <script type="text/javascript" src="{{ app.request.basepath }}/js/jquery.js"></script>
         <script type="text/javascript" src="{{ app.request.basepath }}/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="{{ app.request.basepath }}/js/main.js"></script>
     </body>
 </html>
