@@ -19,9 +19,7 @@ class Create extends ConsoleAbstract
     static public function register(\Silex\Application $app, Application $console)
     {
         $console->register('prototype:create')
-            ->setDefinition(array(
-                new InputOption('vm', null, InputOption::VALUE_NONE, 'Some help'),
-            ))
+            ->addArgument('vm-number', null, InputArgument::REQUIRED, 'The vm number')
             ->setDescription('Create a VM')
             ->setCode(function (InputInterface $input, OutputInterface $output) use ($app) {
                 $command = new Create();
@@ -32,22 +30,22 @@ class Create extends ConsoleAbstract
 
     public function run(InputInterface $input, OutputInterface $output)
     {
-        $vm = new VM();
-        $integ = new Integ();
+        $app = $this->getApplication();
 
-        $integ->setName('test');
-        $integ->setSuffix('test');
-        $integ->setPath('/home/laurent_chenay/www/lafourchette-prototype-test');
-        $integ->setServer(null);
-        $integ->setSshKey(null);
-        $integ->setSshUser(null);
-        $integ->setIp(null);
-        $integ->setMac(null);
+        $vmNumber = $input->getArgument('vm-number');
 
-        $vm->setInteg($integ);
+        /**
+         * @var VmManager $vmManager
+         */
+
+        $vmManager = $app['vm.manager'];
+
+        /**
+         * @var VM $vm
+         */
+        $vm = $vmManager->load($vmNumber);
 
         $vagrant = new Vagrant();
-
         $vagrant->start($vm);
     }
 }
