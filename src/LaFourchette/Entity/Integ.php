@@ -65,8 +65,13 @@ class Integ
      * @var string
      */
     protected $mac;
-    
-    
+
+    /**
+     * @ORM\Column(type="string", name="github_key")
+     * @var string
+     */
+    protected $githubKey;
+
     /**
      * @ORM\ManyToOne(targetEntity="LaFourchette\Entity\Vm")
      * @ORM\JoinColumn(name="id_integ", referencedColumnName="id_vm")
@@ -163,6 +168,16 @@ class Integ
     public function setMac($mac)
     {
         $this->mac = $mac;
+    }
+
+    public function getGithuKey()
+    {
+        return $this->githubKey;
+    }
+
+    public function setGithubKey($githubKey)
+    {
+        $this->githubKey = $githubKey;
     }
 
 }

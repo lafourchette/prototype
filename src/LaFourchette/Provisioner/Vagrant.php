@@ -94,11 +94,6 @@ class Vagrant extends ProvisionerAbstract
                 break;
         }
 
-        //Do Fact
-        $cmd = 'cp Facts.dist Facts';
-
-
-
 //        $cmd = 'vagrant up';
 //        $cmd = $this->getPrefixCommand($integ, $cmd);
 //        $process = new Process($cmd);
@@ -115,6 +110,36 @@ class Vagrant extends ProvisionerAbstract
     public function initialise(VM $vm)
     {
         $cmd = 'git clone git@github.com:lafourchette/lafourchette-vm.git .';
+        $this->run($vm, $cmd);
+
+        $githubKey = $vm->getInteg()->getGithubKey();
+
+        $fact = <<<EOS
+Facts = {
+  'facter' => {
+    'application_env' => 'dev',
+    'user_email' => 'chuck@norris.com',
+    # Used for commits
+    'user_name' => 'Chuck Norris',
+    'github_user' => 'chucknorris',
+    'force_github_revision' => true,
+    'rabbitmq_user' => 'lafourchette',
+    'rabbitmq_password' => 'lafourchette',
+    'rabbitmq_vhost' => 'lafourchette',
+    'rabbitmq_host' => 'localhost',
+    'rabbitmq_port' => '5673',
+    'composer_update' => true,
+  },
+  # Key used for cloning lf repos. Copied at VM startup
+  'github_private_key' => '{$githubKey}',
+  'node' => 'dev.lafourchette.local',
+  'debug' => false,
+  'nfs' => false,
+  'share' => false
+}
+EOS;
+
+        $cmd = 'echo "'.str_replace('"', '\"', $fact).'" > Facts';
         $this->run($vm, $cmd);
     }
 
