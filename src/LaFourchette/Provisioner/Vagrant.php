@@ -2,12 +2,33 @@
 namespace LaFourchette\Provisioner;
 
 use LaFourchette\Entity\VM;
+use LaFourchette\Manager\VmManager;
 use Symfony\Component\Process\Process;
 
 class Vagrant extends ProvisionerAbstract
 {
     protected $depot = 'git@github.com:lafourchette/lafourchette-vm.git';
 
+    /**
+     * @var VmManager
+     */
+    protected $vmManager = null;
+
+    /**
+     * @param VmManager $vmManager
+     */
+    public function setVmManager($vmManager)
+    {
+        $this->vmManager = $vmManager;
+    }
+
+    /**
+     * @return VmManager|null
+     */
+    public function getVmManager()
+    {
+        return $this->vmManager;
+    }
 
     protected function getPrefixCommand($integ, $realCommand)
     {
@@ -94,11 +115,19 @@ class Vagrant extends ProvisionerAbstract
                 break;
         }
 
-//        $cmd = 'vagrant up';
-//        $cmd = $this->getPrefixCommand($integ, $cmd);
-//        $process = new Process($cmd);
-//        $process->run();
+        $cmd = 'vagrant up';
+        $this->run($vm, $cmd);
 
+        switch ($this->getStatus($vm)) {
+            case VM::SUSPEND:
+            case VM::STOPPED:
+            case VM::MISSING:
+                throw new \Exception('The Vm have not started');
+            case VM::RUNNING:
+                $vm->setStatus(VM::RUNNING);
+                $this->getVmManager()->flush($vm);
+                break;
+        }
     }
 
     public function stop(VM $vm)
