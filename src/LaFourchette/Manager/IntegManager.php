@@ -9,14 +9,14 @@ use LaFourchette\Manager\Doctrine\ORM\AbstractManager;
  *
  * @author gcavana
  */
-class VmManager extends AbstractManager
+class IntegManager extends AbstractManager
 {
 
     public function __construct(\Doctrine\ORM\EntityManager $em, $class)
     {
         parent::__construct($em, $class);
     }
-    
+
     public function count()
     {
         $qb = $this->repository->createQueryBuilder('v')
