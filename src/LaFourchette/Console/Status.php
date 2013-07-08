@@ -46,6 +46,19 @@ class Status extends ConsoleAbstract
         $vm->setInteg($integ);
 
         $vagrant = new Vagrant();
-        $output->writeln($vagrant->getStatus($vm));
+        switch ($vagrant->getStatus($vm)) {
+            case VM::MISSING:
+                $output->writeln('The VM is missing');
+                break;
+            case VM::RUNNING:
+                $output->writeln('The VM is running');
+                break;
+            case VM::STOPPED:
+                $output->writeln('The VM is stopped');
+                break;
+            case VM::SUSPEND:
+                $output->writeln('The VM is suspend');
+                break;
+        }
     }
 }

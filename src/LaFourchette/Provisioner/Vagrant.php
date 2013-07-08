@@ -52,6 +52,18 @@ class Vagrant extends ProvisionerAbstract
             return VM::MISSING;
         } else {
             $output = $this->run($vm, 'vagrant status');
+
+            if (strpos($output, ' running (') !== false) {
+                return VM::RUNNING;
+            } else if (strpos($output, ' not created (') !== false) {
+                return VM::STOPPED;
+            } else if (strpos($output, ' poweroff (') !== false) {
+                return VM::STOPPED;
+            } else if (strpos($output, ' saved (') !== false) {
+                return VM::SUSPEND;
+            } else {
+                throw new \Exception('Can not determine the status of the VM');
+            }
         }
     }
 
