@@ -50,5 +50,5 @@ interface ManagerInterface
      *
      * return void
      */
-    public function flush();
+    public function flush($entity = null);
 }
