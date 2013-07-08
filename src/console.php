@@ -14,5 +14,6 @@ $console->getDefinition()->addOption(new InputOption('--env', '-e', InputOption:
 \LaFourchette\Console\Create::register($app, $console);
 \LaFourchette\Console\Delete::register($app, $console);
 \LaFourchette\Console\Reset::register($app, $console);
+\LaFourchette\Console\Stop::register($app, $console);
 
 return $console;
