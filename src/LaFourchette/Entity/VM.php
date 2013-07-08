@@ -13,6 +13,7 @@ class VM
     const RUNNING = 0;
     const STOPPED = 1;
     const SUSPEND = 2;
+    const MISSING = 3;
 
     /**
      * @ORM\Id
