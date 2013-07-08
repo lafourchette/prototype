@@ -2,6 +2,9 @@
 
 namespace LaFourchette\Console;
 
+use LaFourchette\Entity\Integ;
+use LaFourchette\Entity\VM;
+use LaFourchette\Provisioner\Vagrant;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -28,6 +31,21 @@ class Status extends ConsoleAbstract
 
     public function run(InputInterface $input, OutputInterface $output)
     {
-        $output->writeln('Status');
+        $vm = new VM();
+        $integ = new Integ();
+
+        $integ->setName('test');
+        $integ->setSuffix('test');
+        $integ->setPath('/home/laurent_chenay/www/lafourchette-prototype-test');
+        $integ->setServer(null);
+        $integ->setSshKey(null);
+        $integ->setSshUser(null);
+        $integ->setIp(null);
+        $integ->setMac(null);
+
+        $vm->setInteg($integ);
+
+        $vagrant = new Vagrant();
+        $output->writeln($vagrant->getStatus($vm));
     }
 }
