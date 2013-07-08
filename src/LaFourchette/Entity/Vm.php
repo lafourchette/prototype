@@ -3,13 +3,15 @@
 namespace LaFourchette\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use LaFourchette\Entity\VmProject;
 
 /**
  * @ORM\Entity
  */
-class VM
+class Vm
 {
-
+    const EXPIRED_AT_DEFAULT_VALUE = 4; //define in hours
     const RUNNING = 0; //If vagrant is running
     const STOPPED = 1; //If vagrant is stopped
     const SUSPEND = 2; //If vagrant is suspend
@@ -70,7 +72,24 @@ class VM
      * @var \DateTime
      */
     protected $expiredDt;
+
+    /**
+     * @ORM\OneToMany(targetEntity="LaFourchette\Entity\VmProject", mappedBy="vm")
+     * @ORM\JoinColumn(name="id_vm", referencedColumnName="id_vm")
+     * @var VmProject
+     */
+    protected $vmProject;
     
+    public function getVmProject()
+    {
+        return $this->vmProject;
+    }
+
+    public function setVmProject(VmProject $vmProject)
+    {
+        $this->vmProject = $vmProject;
+    }
+
     public function getExpiredDt()
     {
         return $this->expiredDt;
@@ -81,7 +100,6 @@ class VM
         $this->expiredDt = $expiredDt;
     }
 
-    
     public function getIdVm()
     {
         return $this->idVm;
@@ -166,6 +184,11 @@ class VM
     public function getInteg()
     {
         return $this->integ;
+    }
+    
+    public function getProjects()
+    {
+        return $this->projects;
     }
 
 }

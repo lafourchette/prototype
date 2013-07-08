@@ -3,20 +3,22 @@
 namespace LaFourchette\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use LaFourchette\Entity\VmProject;
+
 
 /**
  * @ORM\Entity
  */
-class Integ
+class Project
 {
 
     /**
      * @ORM\Id
-     * @ORM\Column(type="integer", name="id_integ")
+     * @ORM\Column(type="integer", name="id_project")
      * @ORM\GeneratedValue(strategy="AUTO")
      * @var int
      */
-    protected $idInteg;
+    protected $idProject;
 
     /**
      * @ORM\Column(type="string")
@@ -28,66 +30,24 @@ class Integ
      * @ORM\Column(type="string")
      * @var string
      */
-    protected $suffix;
+    protected $url;
 
     /**
-     * @ORM\Column(type="string")
-     * @var string
+     * @ORM\OneToMany(targetEntity="LaFourchette\Entity\VmProject", mappedBy="project)
+     * @ORM\JoinColumn(name="id_project", referencedColumnName="id_project"")
+     * @var VmProject
      */
-    protected $path;
-
-    /**
-     * @ORM\Column(type="string")
-     * @var null|string
-     */
-    protected $server;
-
-    /**
-     * @ORM\Column(type="string", name="ssh_key")
-     * @var string
-     */
-    protected $sshKey;
-
-    /**
-     * @ORM\Column(type="string", name="ssh_user")
-     * @var string
-     */
-    protected $sshUser;
-
-    /**
-     * @ORM\Column(type="string")
-     * @var string
-     */
-    protected $ip;
-
-    /**
-     * @ORM\Column(type="string")
-     * @var string
-     */
-    protected $mac;
-
-    /**
-     * @ORM\Column(type="string", name="github_key")
-     * @var string
-     */
-    protected $githubKey;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="LaFourchette\Entity\Vm")
-     * @ORM\JoinColumn(name="id_integ", referencedColumnName="id_vm")
-     * @var object
-     */
-    protected $vms;
+    protected $vmProject;
     
-
-    public function getIdInteg()
+    
+    public function getIdProject()
     {
-        return $this->idInteg;
+        return $this->idProject;
     }
 
-    public function setIdInteg($id)
+    public function setIdProject($idProject)
     {
-        $this->id = $id;
+        $this->idProject = $idProject;
     }
 
     public function getName()
@@ -100,84 +60,24 @@ class Integ
         $this->name = $name;
     }
 
-    public function getSuffix()
+    public function getUrl()
     {
-        return $this->suffix;
+        return $this->url;
     }
 
-    public function setSuffix($suffix)
+    public function setUrl($url)
     {
-        $this->suffix = $suffix;
+        $this->url = $url;
     }
 
-    public function getPath()
+    public function getVmProject()
     {
-        return $this->path;
+        return $this->vmProject;
     }
 
-    public function setPath($path)
+    public function setVmProject(VmProject $vmProject)
     {
-        $this->path = $path;
-    }
-
-    public function getServer()
-    {
-        return $this->server;
-    }
-
-    public function setServer($server)
-    {
-        $this->server = $server;
-    }
-
-    public function getSshKey()
-    {
-        return $this->sshKey;
-    }
-
-    public function setSshKey($sshKey)
-    {
-        $this->sshKey = $sshKey;
-    }
-
-    public function getSshUser()
-    {
-        return $this->sshUser;
-    }
-
-    public function setSshUser($sshUser)
-    {
-        $this->sshUser = $sshUser;
-    }
-
-    public function getIp()
-    {
-        return $this->ip;
-    }
-
-    public function setIp($ip)
-    {
-        $this->ip = $ip;
-    }
-
-    public function getMac()
-    {
-        return $this->mac;
-    }
-
-    public function setMac($mac)
-    {
-        $this->mac = $mac;
-    }
-
-    public function getGithuKey()
-    {
-        return $this->githubKey;
-    }
-
-    public function setGithubKey($githubKey)
-    {
-        $this->githubKey = $githubKey;
+        $this->vmProject = $vmProject;
     }
 
 }
