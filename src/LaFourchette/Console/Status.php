@@ -20,9 +20,7 @@ class Status extends ConsoleAbstract
     static public function register(\Silex\Application $app, Application $console)
     {
         $console->register('prototype:status')
-        ->setDefinition(array(
-            new InputArgument('vm-number', null, InputArgument::REQUIRED, 'The vm number'),
-        ))
+        ->addArgument('vm-number', null, InputArgument::REQUIRED, 'The vm number')
         ->setDescription('Check the status of a VM')
         ->setCode(function (InputInterface $input, OutputInterface $output) use ($app) {
             $command = new Status();
@@ -33,21 +31,9 @@ class Status extends ConsoleAbstract
 
     public function run(InputInterface $input, OutputInterface $output)
     {
-//        $vm = new VM();
-//        $integ = new Integ();
-//
-//        $integ->setName('test');
-//        $integ->setSuffix('test');
-//        $integ->setPath('/home/laurent_chenay/www/lafourchette-prototype-test');
-//        $integ->setServer(null);
-//        $integ->setSshKey(null);
-//        $integ->setSshUser(null);
-//        $integ->setIp(null);
-//        $integ->setMac(null);
-//
-//        $vm->setInteg($integ);
-
         $app = $this->getApplication();
+
+        $vmNumber = $input->getArgument('vm-number');
 
         /**
          * @var VmManager $vmMananger
@@ -58,7 +44,9 @@ class Status extends ConsoleAbstract
         /**
          * @var VM $vm
          */
-        $vm = $vmMananger->load(1);
+        $vm = $vmMananger->load($vmNumber);
+
+
 
         $vagrant = new Vagrant();
         switch ($vagrant->getStatus($vm)) {
