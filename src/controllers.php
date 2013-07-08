@@ -12,6 +12,7 @@ $app->get('/', function () use ($app) {
 ->bind('homepage');
 
 $app->get('/repositories', function () use ($app) {
+    
     return $app['twig']->render('repositories.html', array('repositories' => $app['github.manager']->getAllRepositoriesWithBranch()));
 })
 ->bind('repositories');
