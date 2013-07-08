@@ -2,7 +2,9 @@
 
 namespace LaFourchette\Console;
 
+use LaFourchette\Provisioner\Vagrant;
 use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -15,9 +17,7 @@ class Delete extends ConsoleAbstract
     static public function register(\Silex\Application $app, Application $console)
     {
         $console->register('prototype:delete')
-            ->setDefinition(array(
-                // new InputOption('some-option', null, InputOption::VALUE_NONE, 'Some help'),
-            ))
+            ->addArgument('vm-number', null, InputArgument::REQUIRED, 'The vm number')
             ->setDescription('Delete a VM')
             ->setCode(function (InputInterface $input, OutputInterface $output) use ($app) {
                 $command = new Delete();
@@ -28,6 +28,6 @@ class Delete extends ConsoleAbstract
 
     public function run(InputInterface $input, OutputInterface $output)
     {
-        $output->writeln('delete');
+        throw new \Exception('not yet implemented');
     }
 }
