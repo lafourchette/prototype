@@ -73,7 +73,7 @@ class Integ
 
     public function getIdInteg()
     {
-        return $this->id;
+        return $this->idInteg;
     }
 
     public function setIdInteg($id)
