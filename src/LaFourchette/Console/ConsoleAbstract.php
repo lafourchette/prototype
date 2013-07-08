@@ -33,10 +33,17 @@ abstract class ConsoleAbstract
     abstract public function run(InputInterface $input, OutputInterface $output);
     abstract static public function register(Application $app, \Symfony\Component\Console\Application $console);
 
-    public function getProvisioner()
+    public function getVmManager()
     {
         $app = $this->getApplication();
         $vmManager = $app['vm.manager'];
+
+        return $vmManager;
+    }
+
+    public function getProvisioner()
+    {
+        $vmManager = $this->getVmManager();
 
         $provisioner = new Vagrant();
         $provisioner->setVmManager($vmManager);
