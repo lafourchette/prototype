@@ -33,8 +33,8 @@ class Project
     protected $url;
 
     /**
-     * @ORM\OneToMany(targetEntity="LaFourchette\Entity\VmProject", mappedBy="project)
-     * @ORM\JoinColumn(name="id_project", referencedColumnName="id_project"")
+     * @ORM\OneToMany(targetEntity="LaFourchette\Entity\VmProject", mappedBy="project")
+     * @ORM\JoinColumn(name="id_project", referencedColumnName="id_project")
      * @var VmProject
      */
     protected $vmProject;
