@@ -2,49 +2,49 @@
 
 namespace LaFourchette\Creator;
 
-use LaFourchette\Decider\IntegDecider;
+use LaFourchette\Entity\VmProject;
+use LaFourchette\Entity\Project;
 use LaFourchette\Entity\Vm;
 
 /**
- * PrototypeCreator Creator
+ * VmCreator Creator
  *
  * @author gcavana
  */
-class VmCreator implements CreatorInterface
+class VmProjectCreator implements CreatorInterface
 {
+    protected $branch;
+    protected $project;
+    protected $vm;
 
-    protected $integDecider;
-
-    public function __construct(IntegDecider $integDecider)
+    public function addBranch($branch)
     {
-        $this->integDecider = $integDecider;
+        $this->branch = $branch;
     }
-
+    
+    public function addProject(Project $project)
+    {
+        $this->project = $project;
+    }
+    
+    public function addVm(Vm $vm)
+    {
+        $this->vm = $vm;
+    }
+    
     public function create()
     {
-        $integ = $this->integDecider; // Integ Entity
-        $branch = 'master';
-        $project = 
-        
-        $vm = new Vm();
-        $vm->setCreatedBy('guillaume_cavana'); //TODO add user through ldap
-        $vm->setCreateDt(new \DateTime());
-        $vm->setUpdateDt(new \DateTime());
-        $vm->setExpiredDt(new \DateTime(strtotime(sprinf('+%d hours', Vm::EXPIRED_AT_DEFAULT_VALUE))));
-        $vm->setInteg($integ);
+        $vmProject = new VmProject();
+        $vmProject->setVm($this->vm);
+        $vmProject->setProject($this->project);
+        $vmProject->setBranch($this->branch);
 
-        $vmProject = new \LaFourchette\Entity\VmProject();
-        $vmProject->setVm($vm);
-        $vmProject->setBranch($branch);
-        $vmProject->setProject($project);
-        
-        
         return $vmProject;
     }
 
     public function getName()
     {
-        return 'vm_creator';
+        return 'vm_project_creator';
     }
 
 }
