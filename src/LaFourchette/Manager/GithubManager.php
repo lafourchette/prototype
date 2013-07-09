@@ -11,18 +11,11 @@ class GithubManager
 {
 
     protected $client;
-    protected $projects;
+    protected $projectManager;
 
-    public function __construct()
+    public function __construct(ProjectManager $projectManager)
     {
-        $projects = array(
-            'lafourchette-rr',
-            'lafourchette-core',
-            'lafourchette-portal',
-            'lafourchette-bo',
-            'lafourchette-b2b');
-        
-        $this->projects = $projects;
+        $this->projectManager = $projectManager;
 
         $this->client = new \Github\Client(
                 new \Github\HttpClient\CachedHttpClient()
@@ -32,21 +25,19 @@ class GithubManager
 
     public function getAllRepositoriesWithBranch()
     {
+        $projects = $this->projectManager->loadAll();
+
         $repositories = array();
-        foreach($this->projects as $project)
-        {
-            $branches =  $this->client->api('repo')->branches('lafourchette', $project);
-            if(!empty($branches))
-            {
-                foreach($branches as $branch)
-                {
-                    $repositories[$project][] = $branch['name'];
+        foreach ($projects as $key => $project) {
+            $branches = $this->client->api('repo')->branches('lafourchette', $project->getName());
+            $repositories[$key]['name'] = $project->getName();
+            $repositories[$key]['id'] = $project->getIdProject();
+            if (!empty($branches)) {
+                foreach ($branches as $branch) {
+                    $repositories[$key]['branches'][] = $branch['name'];
                 }
-                
             }
-            
         }
-   
         return $repositories;
     }
 

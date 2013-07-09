@@ -12,7 +12,9 @@ use LaFourchette\Manager\Doctrine\ORM\AbstractManager;
 class VmManager extends AbstractManager
 {
 
-    public function __construct(\Doctrine\ORM\EntityManager $em, $class)
+    protected $vmProjectManager;
+    
+    public function __construct(\Doctrine\ORM\EntityManager $em, $class, $vmProjectManager)
     {
         parent::__construct($em, $class);
     }
@@ -24,5 +26,4 @@ class VmManager extends AbstractManager
 
         return $qb->getQuery()->getSingleResult();
     }
-
 }

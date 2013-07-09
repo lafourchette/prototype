@@ -8,13 +8,14 @@ use LaFourchette\Entity\Project;
 
 /**
  * @ORM\Entity
+ * @ORM\Table(name="vm_project")
  */
 class VmProject
 {
 
     /**
      * @ORM\Id
-     * @ORM\ManyToOne(targetEntity="LaFourchette\Entity\Vm")
+     * @ORM\ManyToOne(targetEntity="LaFourchette\Entity\Vm", inversedBy="vmProjects")
      * @ORM\JoinColumn(name="id_vm", referencedColumnName="id_vm")
      * @var Vm
      */
@@ -22,7 +23,7 @@ class VmProject
 
     /**
      * @ORM\Id
-     * @ORM\ManyToOne(targetEntity="LaFourchette\Entity\Project")
+     * @ORM\ManyToOne(targetEntity="LaFourchette\Entity\Project", inversedBy="vmProjects")
      * @ORM\JoinColumn(name="id_project", referencedColumnName="id_project")
      * @var Project
      */
@@ -33,18 +34,6 @@ class VmProject
      * @var int
      */
     protected $branch;
-    
-    
-    public function getIdVmProject()
-    {
-        return $this->idVmProject;
-    }
-
-    public function setIdVmProject($idVmProject)
-    {
-        $this->idVmProject = $idVmProject;
-    }
-
     
     public function getVm()
     {

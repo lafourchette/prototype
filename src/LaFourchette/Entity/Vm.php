@@ -74,22 +74,12 @@ class Vm
     protected $expiredDt;
 
     /**
-     * @ORM\OneToMany(targetEntity="LaFourchette\Entity\VmProject", mappedBy="vm")
+     * @ORM\OneToMany(targetEntity="LaFourchette\Entity\VmProject", mappedBy="vm", cascade={"persist", "remove"})
      * @ORM\JoinColumn(name="id_vm", referencedColumnName="id_vm")
      * @var VmProject
      */
-    protected $vmProject;
+    protected $vmProjects;
     
-    public function getVmProject()
-    {
-        return $this->vmProject;
-    }
-
-    public function setVmProject(VmProject $vmProject)
-    {
-        $this->vmProject = $vmProject;
-    }
-
     public function getExpiredDt()
     {
         return $this->expiredDt;

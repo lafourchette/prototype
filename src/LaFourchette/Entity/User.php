@@ -7,177 +7,62 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity
  */
-class Integ
+class User
 {
 
     /**
      * @ORM\Id
-     * @ORM\Column(type="integer", name="id_integ")
+     * @ORM\Column(type="integer", name="id_user")
      * @ORM\GeneratedValue(strategy="AUTO")
      * @var int
      */
-    protected $idInteg;
+    protected $idUser;
 
     /**
      * @ORM\Column(type="string")
      * @var string
      */
-    protected $name = null;
+    protected $username;
 
     /**
      * @ORM\Column(type="string")
      * @var string
      */
-    protected $suffix;
-
-    /**
-     * @ORM\Column(type="string")
-     * @var string
-     */
-    protected $path;
-
-    /**
-     * @ORM\Column(type="string")
-     * @var null|string
-     */
-    protected $server;
-
-    /**
-     * @ORM\Column(type="string", name="ssh_key")
-     * @var string
-     */
-    protected $sshKey;
-
-    /**
-     * @ORM\Column(type="string", name="ssh_user")
-     * @var string
-     */
-    protected $sshUser;
-
-    /**
-     * @ORM\Column(type="string")
-     * @var string
-     */
-    protected $ip;
-
-    /**
-     * @ORM\Column(type="string")
-     * @var string
-     */
-    protected $mac;
-
-    /**
-     * @ORM\Column(type="string", name="github_key")
-     * @var string
-     */
-    protected $githubKey;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="LaFourchette\Entity\Vm")
-     * @ORM\JoinColumn(name="id_integ", referencedColumnName="id_vm")
-     * @var object
-     */
-    protected $vms;
+    protected $email;
     
-
-    public function getIdInteg()
+    public function __toString()
     {
-        return $this->idInteg;
+        return $this->username;
     }
 
-    public function setIdInteg($id)
+    public function getIdUser()
     {
-        $this->id = $id;
+        return $this->idUser;
     }
 
-    public function getName()
+    public function setIdUser($idUser)
     {
-        return $this->name;
+        $this->idUser = $idUser;
     }
 
-    public function setName($name)
+    public function getUsername()
     {
-        $this->name = $name;
+        return $this->username;
     }
 
-    public function getSuffix()
+    public function setUsername($username)
     {
-        return $this->suffix;
+        $this->username = $username;
     }
 
-    public function setSuffix($suffix)
+    public function getEmail()
     {
-        $this->suffix = $suffix;
+        return $this->email;
     }
 
-    public function getPath()
+    public function setEmail($email)
     {
-        return $this->path;
-    }
-
-    public function setPath($path)
-    {
-        $this->path = $path;
-    }
-
-    public function getServer()
-    {
-        return $this->server;
-    }
-
-    public function setServer($server)
-    {
-        $this->server = $server;
-    }
-
-    public function getSshKey()
-    {
-        return $this->sshKey;
-    }
-
-    public function setSshKey($sshKey)
-    {
-        $this->sshKey = $sshKey;
-    }
-
-    public function getSshUser()
-    {
-        return $this->sshUser;
-    }
-
-    public function setSshUser($sshUser)
-    {
-        $this->sshUser = $sshUser;
-    }
-
-    public function getIp()
-    {
-        return $this->ip;
-    }
-
-    public function setIp($ip)
-    {
-        $this->ip = $ip;
-    }
-
-    public function getMac()
-    {
-        return $this->mac;
-    }
-
-    public function setMac($mac)
-    {
-        $this->mac = $mac;
-    }
-
-    public function getGithuKey()
-    {
-        return $this->githubKey;
-    }
-
-    public function setGithubKey($githubKey)
-    {
-        $this->githubKey = $githubKey;
+        $this->email = $email;
     }
 
 }

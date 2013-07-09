@@ -5,7 +5,6 @@ namespace LaFourchette\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use LaFourchette\Entity\VmProject;
 
-
 /**
  * @ORM\Entity
  */
@@ -33,13 +32,12 @@ class Project
     protected $url;
 
     /**
-     * @ORM\OneToMany(targetEntity="LaFourchette\Entity\VmProject", mappedBy="project")
+     * @ORM\OneToMany(targetEntity="LaFourchette\Entity\VmProject", mappedBy="project", cascade={"persist"})
      * @ORM\JoinColumn(name="id_project", referencedColumnName="id_project")
      * @var VmProject
      */
-    protected $vmProject;
-    
-    
+    protected $vmProjects;
+
     public function getIdProject()
     {
         return $this->idProject;
@@ -68,16 +66,6 @@ class Project
     public function setUrl($url)
     {
         $this->url = $url;
-    }
-
-    public function getVmProject()
-    {
-        return $this->vmProject;
-    }
-
-    public function setVmProject(VmProject $vmProject)
-    {
-        $this->vmProject = $vmProject;
     }
 
 }
