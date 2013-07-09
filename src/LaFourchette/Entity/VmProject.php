@@ -13,6 +13,7 @@ class VmProject
 {
 
     /**
+     * @ORM\Id
      * @ORM\ManyToOne(targetEntity="LaFourchette\Entity\Vm")
      * @ORM\JoinColumn(name="id_vm", referencedColumnName="id_vm")
      * @var Vm
@@ -20,6 +21,7 @@ class VmProject
     protected $vm;
 
     /**
+     * @ORM\Id
      * @ORM\ManyToOne(targetEntity="LaFourchette\Entity\Project")
      * @ORM\JoinColumn(name="id_project", referencedColumnName="id_project")
      * @var Project
