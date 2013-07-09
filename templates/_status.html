@@ -1,4 +1,4 @@
-{% if la_fourchette_prototype_integ_availability() == true %}
+{% if la_fourchette_prototype_integ_availability() == false %}
 <div class="alert alert-error">
     <strong>Warning!</strong> There no slot available for a new Prototype<br />You need to wait for an empty one
 </div>
@@ -25,6 +25,6 @@
     </tr>
 </table>
 
-{% if la_fourchette_prototype_integ_availability() == false %}
+{% if la_fourchette_prototype_integ_availability() == true %}
 <a href="{{app.request.baseUrl}}/create-prototype" class="btn btn-info"><i class="icon-plus-sign icon-white"></i>Create a Prototype</a>
 {% endif %}

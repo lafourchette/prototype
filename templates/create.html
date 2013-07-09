@@ -5,13 +5,13 @@ To create a prototype you need to choose for each project a branch
 
 <form id="create-prototype" class="form-block" action="{{app.request.baseUrl}}/launch-prototype" method="POST">
 
-{% for project,branches in repositories %}
+{% for project in repositories %}
     
-    <label><h2>{{project}}</h2></label>
+    <label><h2>{{project['name']}}</h2></label>
     <label><h4>Branches</h4></label>
-    {% if branches|length > 0 %}
-    <select name="{{project}}[]">
-        {% for branch in branches %}
+    {% if project['branches']|length > 0 %}
+    <select name="projects[{{project['id']}}]">
+        {% for branch in project['branches'] %}
              <option value="{{branch}}">{{branch}}</option>
         {% endfor %}
         </select>

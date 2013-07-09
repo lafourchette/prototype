@@ -11,22 +11,42 @@ $app->get('/', function () use ($app) {
 })
 ->bind('homepage');
 
-$app->get('/repositories', function () use ($app) {
-    
-    return $app['twig']->render('repositories.html', array('repositories' => $app['github.manager']->getAllRepositoriesWithBranch()));
-})
-->bind('repositories');
-
 $app->get('/create-prototype', function () use ($app) {
     return $app['twig']->render('create.html', array('repositories' => $app['github.manager']->getAllRepositoriesWithBranch()));
 })
 ->bind('create-prototype');
 
-
 $app->post('/launch-prototype', function () use ($app) {
-    var_dump($app['request']->request->all());
+    if(null === $projects = $app['request']->request->get('projects'))
+    {
+        throw new \Exception('The "projects" variable is missing');
+    }
+    
+    
+    var_dump($app['integ_availabibilty.checker']->check());
     die();
-    return $app['twig']->render('launch.html', array());
+    if($app['integ_availabibilty.checker']->check())
+    {
+        
+    }
+    
+    //Doctrine2 does not handle correctly
+    $creator = $app['vm.creator'];
+    $vm = $creator->create();
+    //Save the vm first
+    $app['vm.manager']->save($vm);
+    
+    //Create a related object between project and vm
+    foreach ($projects as $projectId => $branch) {
+            $vmProjectCreator = $app['vm_project.creator'];
+            $vmProjectCreator->addBranch($branch);
+            $vmProjectCreator->addProject($app['project.manager']->load($projectId));
+            $vmProjectCreator->addVm($vm);
+            $vmProject = $vmProjectCreator->create();
+            $app['vm_project.manager']->save($vmProject);
+    }
+    
+    return $app->redirect('/');
 })
 ->bind('launch-prototype');
 
