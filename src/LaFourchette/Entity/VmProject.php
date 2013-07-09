@@ -13,14 +13,6 @@ class VmProject
 {
 
     /**
-     * @ORM\Id
-     * @ORM\Column(type="integer", name="id_vm_project")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     * @var int
-     */
-    protected $idVmProject;
-
-    /**
      * @ORM\ManyToOne(targetEntity="LaFourchette\Entity\Vm")
      * @ORM\JoinColumn(name="id_vm", referencedColumnName="id_vm")
      * @var Vm
