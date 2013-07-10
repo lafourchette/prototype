@@ -12,10 +12,13 @@ use LaFourchette\Entity\VmProject;
 class Vm
 {
     const EXPIRED_AT_DEFAULT_VALUE = 4; //define in hours
+    
+    //Status
     const RUNNING = 0; //If vagrant is running
     const STOPPED = 1; //If vagrant is stopped
     const SUSPEND = 2; //If vagrant is suspend
     const MISSING = 3; //If directory is present and empty
+    const EXPIRED = 4; //If a vm is expired
 
     /**
      * @ORM\Id
@@ -176,9 +179,9 @@ class Vm
         return $this->integ;
     }
     
-    public function getProjects()
+    public function getVmProjects()
     {
-        return $this->projects;
+        return $this->vmProjects;
     }
 
 }
