@@ -45,10 +45,11 @@ class Check extends ConsoleAbstract
             $savedStatus = $vm->getStatus();
             $currentStatus = $provisioner->getStatus($vm);
 
-            if ($currentStatus == Vm::TO_START) {
-                $provisioner->start($vm);
-
+            if ($savedStatus == Vm::TO_START && $currentStatus != Vm::RUNNING) {
                 try {
+                    $vm->setStatus(Vm::RUNNING);
+                    $vmManager->save($vm);
+                    $provisioner->start($vm);
                     if ($vm->getStatus() == Vm::RUNNING) {
                         $notify->send('ready', $vm);
                     } else {
