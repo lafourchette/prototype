@@ -170,7 +170,7 @@ class Integ
         $this->mac = $mac;
     }
 
-    public function getGithuKey()
+    public function getGithubKey()
     {
         return $this->githubKey;
     }
