@@ -14,6 +14,7 @@ class Vm
     const EXPIRED_AT_DEFAULT_VALUE = 4; //define in hours
     
     //Status
+    const TO_START = -1; //If the vm need to be started
     const RUNNING = 0; //If vagrant is running
     const STOPPED = 1; //If vagrant is stopped
     const SUSPEND = 2; //If vagrant is suspend
