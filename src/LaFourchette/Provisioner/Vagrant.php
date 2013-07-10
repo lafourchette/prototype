@@ -39,7 +39,7 @@ class Vagrant extends ProvisionerAbstract
         $server = $integ->getServer();
 
         if (trim($sshUser) != '' && trim($server) != '') {
-            $encapsultate = 'ssh ' . $sshUser . '@' . $server . ' ';
+            $encapsultate = 'ssh -o "StrictHostKeyChecking no" ' . $sshUser . '@' . $server . ' ';
         }
 
         $path = $integ->getPath();
