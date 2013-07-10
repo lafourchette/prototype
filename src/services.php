@@ -51,4 +51,4 @@ $app['notify.service'] = $app->share(function() use ($app) {
     $notify->addNotifyMessage('ready', new \LaFourchette\Notify\Ready());
     $notify->addNotifyMessage('killed', new \LaFourchette\Notify\Killed());
     return $notify;
-})
+});
