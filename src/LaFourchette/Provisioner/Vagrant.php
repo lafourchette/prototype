@@ -116,8 +116,8 @@ class Vagrant extends ProvisionerAbstract
                 break;
         }
 
-//        $cmd = 'vagrant up';
-//        $this->run($vm, $cmd);
+        $cmd = 'vagrant up';
+        $this->run($vm, $cmd);
 
         switch ($this->getStatus($vm)) {
             case VM::SUSPEND:
