@@ -79,7 +79,7 @@ class Vm
     /**
      * @ORM\OneToMany(targetEntity="LaFourchette\Entity\VmProject", mappedBy="vm", cascade={"persist", "remove"})
      * @ORM\JoinColumn(name="id_vm", referencedColumnName="id_vm")
-     * @var VmProject
+     * @var VmProject[]
      */
     protected $vmProjects;
     
@@ -178,7 +178,10 @@ class Vm
     {
         return $this->integ;
     }
-    
+
+    /**
+     * @return VmProject[]
+     */
     public function getVmProjects()
     {
         return $this->vmProjects;
