@@ -43,3 +43,11 @@ $app['integ.decider'] = $app->share(function() use ($app){
 $app['vm_project.creator'] = $app->share(function() use ($app){
     return new \LaFourchette\Creator\VmProjectCreator();
 });
+
+
+$app['notify.service'] = $app->share(function() use ($app) {
+    $notify = new \LaFourchette\Notify();
+//    $notify->addNotifyMessage('expired', new Expired());
+    $notify->addNotifyMessage('ready', new \LaFourchette\Notify\Ready());
+    return $notify;
+})

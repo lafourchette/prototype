@@ -2,6 +2,7 @@
 
 namespace LaFourchette\Console;
 
+use LaFourchette\Manager\VmManager;
 use LaFourchette\Provisioner\Vagrant;
 use Silex\Application;
 use Symfony\Component\Console\Input\InputInterface;
@@ -33,6 +34,9 @@ abstract class ConsoleAbstract
     abstract public function run(InputInterface $input, OutputInterface $output);
     abstract static public function register(Application $app, \Symfony\Component\Console\Application $console);
 
+    /**
+     * @return VmManager
+     */
     public function getVmManager()
     {
         $app = $this->getApplication();
@@ -49,5 +53,11 @@ abstract class ConsoleAbstract
         $provisioner->setVmManager($vmManager);
 
         return $provisioner;
+    }
+
+    public function getNotify()
+    {
+        $app = $this->getApplication();
+        $vmManager = $app['notify.service'];
     }
 }
