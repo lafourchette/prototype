@@ -11,6 +11,7 @@ class Ready extends NotifyAbstract
 
         $integ = $vm->getInteg();
         $suffix = $integ->getSuffix();
+        $name = $integ->getName();
 
         $projectList = '';
 
@@ -23,17 +24,16 @@ class Ready extends NotifyAbstract
         $str = <<<EOS
 Bonjour,
 
-Votre Vm est prête.
+Votre Vm {$name} est prête.
 
-Pour connaitre toutes les urls, rendez-vous sur cette page :
-- http://status
+Pour connaitre toutes les urls et commençait à s'en servir, rendez-vous sur cette page :
+- http://status{$suffix}
 
 Voici un récapitulatif de ce qui a été installé :
 {$projectList}
 
 Votre VM expirera automatique le {$expiredDt}
 Bonne recette
-
 EOS;
 
         return $str;
