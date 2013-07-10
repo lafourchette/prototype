@@ -26,6 +26,10 @@
 
 {% endif %}
 
+<div class="alert alert-info">
+    Slot available, come and get some!!
+</div>
+
 {% if la_fourchette_prototype_integ_availability() == true %}
-<a href="{{app.request.baseUrl}}/create-prototype" class="btn btn-info"><i class="icon-plus-sign icon-white"></i>Create a Prototype</a>
+<a href="{{app.request.baseUrl}}/create-prototype" class="btn btn-info"><i class="icon-plus-sign icon-white"></i> Create a Prototype</a>
 {% endif %}
