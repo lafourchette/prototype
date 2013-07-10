@@ -49,5 +49,6 @@ $app['notify.service'] = $app->share(function() use ($app) {
     $notify = new \LaFourchette\Notify();
 //    $notify->addNotifyMessage('expired', new Expired());
     $notify->addNotifyMessage('ready', new \LaFourchette\Notify\Ready());
+    $notify->addNotifyMessage('killed', new \LaFourchette\Notify\Killed());
     return $notify;
 })
