@@ -58,6 +58,8 @@ abstract class ConsoleAbstract
     public function getNotify()
     {
         $app = $this->getApplication();
-        $vmManager = $app['notify.service'];
+        $notifyService = $app['notify.service'];
+
+        return $notifyService;
     }
 }
