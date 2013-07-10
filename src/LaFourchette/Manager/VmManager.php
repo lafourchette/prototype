@@ -17,18 +17,16 @@ class VmManager extends AbstractManager
     {
         parent::__construct($em, $class);
     }
-
-    public function count()
+    
+    public function loadVm()
     {
         $qb = $this->repository->createQueryBuilder('v');
-        $qb->select('COUNT(v)')
-           ->where($qb->expr()->in('v.status', ':status'))
-           ->setParameter('status', array(Vm::RUNNING, Vm::SUSPEND));
         
-        var_dump($qb->getQuery()->getSingleResult());
-        die();
-           
-        return $qb->getQuery()->getSingleResult();
+        $qb->select('v')
+           ->where($qb->expr()->notIn('v.status', ':status'))
+           ->setParameter('status',array(Vm::EXPIRED));
+        
+        return $qb->getQuery()->getResult();
     }
 
 }

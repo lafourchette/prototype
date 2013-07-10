@@ -35,7 +35,7 @@ class VmCreator implements CreatorInterface
         $vm = new Vm();
         $vm->setName('VM-'.$this->generateRandomString());
         $vm->setCreatedBy($user); //TODO add user through ldap
-        $vm->setStatus(Vm::RUNNING);
+        $vm->setStatus(Vm::TO_START);
         $vm->setCreateDt(new \DateTime());
         $vm->setUpdateDt(new \DateTime());
         $vm->setExpiredDt($expiredAt);

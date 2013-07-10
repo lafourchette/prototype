@@ -50,7 +50,7 @@ $app->post('/launch-prototype', function () use ($app) {
 # Include or render for twig
 
 $app->get('/_status', function () use ($app) {
-    return $app['twig']->render('_status.html', array('vms' => $app['vm.manager']->loadAll()));
+    return $app['twig']->render('_status.html', array('vms' => $app['vm.manager']->loadVm()));
 })
 ->bind('_status');
 
