@@ -2,6 +2,10 @@
 <div class="alert alert-error">
     <strong>Warning!</strong> There is no slot available for now<br />You need to wait for an empty one
 </div>
+{% else %}
+<div class="alert alert-info">
+    Slot available, come and get some!!
+</div>
 {% endif %}
 
 {% if vms|length > 0 %}
@@ -25,10 +29,6 @@
 </table>
 
 {% endif %}
-
-<div class="alert alert-info">
-    Slot available, come and get some!!
-</div>
 
 {% if la_fourchette_prototype_integ_availability() == true %}
 <a href="{{app.request.baseUrl}}/create-prototype" class="btn btn-info"><i class="icon-plus-sign icon-white"></i> Create a Prototype</a>
