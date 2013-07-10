@@ -2,6 +2,8 @@
 
 namespace LaFourchette\Twig\Extensions;
 
+use LaFourchette\Entity\Vm;
+
 /**
  * Description of PrototypeExtension
  *
@@ -35,14 +37,17 @@ class LaFourchettePrototypeExtension extends \Twig_Extension
     {
         switch($status)
         {
-            case \LaFourchette\Entity\VM::RUNNING;
+            case Vm::RUNNING;
                 return '<i class="label label-info">Running</i>';
                 break;
-            case \LaFourchette\Entity\VM::STOPPED:
+            case Vm::STOPPED:
                 return '<i class="label label-important">Stopped</i>';
                 break;
-            case \LaFourchette\Entity\VM::SUSPEND:
+            case Vm::SUSPEND:
                 return '<i class="label label-warning">Suspend</i>';
+                break;
+            case Vm::EXPIRED:
+                return '<i class="label">Expired</i>';
                 break;
             
             default:

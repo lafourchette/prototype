@@ -4,6 +4,7 @@
 </div>
 {% endif %}
 
+{% if vms|length > 0 %}
 <table  class="table table-hover">
     <tr>
         <th>Name</th>
@@ -24,6 +25,8 @@
         {% endfor %}
     </tr>
 </table>
+
+{% endif %}
 
 {% if la_fourchette_prototype_integ_availability() == true %}
 <a href="{{app.request.baseUrl}}/create-prototype" class="btn btn-info"><i class="icon-plus-sign icon-white"></i>Create a Prototype</a>

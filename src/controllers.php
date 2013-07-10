@@ -22,28 +22,24 @@ $app->post('/launch-prototype', function () use ($app) {
         throw new \Exception('The "projects" variable is missing');
     }
     
-    
-    var_dump($app['integ_availabibilty.checker']->check());
-    die();
+    //Refactor this please...
     if($app['integ_availabibilty.checker']->check())
     {
-        
-    }
-    
-    //Doctrine2 does not handle correctly
-    $creator = $app['vm.creator'];
-    $vm = $creator->create();
-    //Save the vm first
-    $app['vm.manager']->save($vm);
-    
-    //Create a related object between project and vm
-    foreach ($projects as $projectId => $branch) {
-            $vmProjectCreator = $app['vm_project.creator'];
-            $vmProjectCreator->addBranch($branch);
-            $vmProjectCreator->addProject($app['project.manager']->load($projectId));
-            $vmProjectCreator->addVm($vm);
-            $vmProject = $vmProjectCreator->create();
-            $app['vm_project.manager']->save($vmProject);
+        //Doctrine2 does not handle correctly
+        $creator = $app['vm.creator'];
+        $vm = $creator->create();
+        //Save the vm first
+        $app['vm.manager']->save($vm);
+
+        //Create a related object between project and vm
+        foreach ($projects as $projectId => $branch) {
+                $vmProjectCreator = $app['vm_project.creator'];
+                $vmProjectCreator->addBranch($branch);
+                $vmProjectCreator->addProject($app['project.manager']->load($projectId));
+                $vmProjectCreator->addVm($vm);
+                $vmProject = $vmProjectCreator->create();
+                $app['vm_project.manager']->save($vmProject);
+        }
     }
     
     return $app->redirect('/');

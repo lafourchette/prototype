@@ -10,18 +10,21 @@ namespace LaFourchette\Checker;
 class IntegAvailabibiltyChecker implements CheckerInterface
 {
 
-    protected $countInteg;
-    protected $countVm;
+    protected $integManager;
 
-    public function __construct($countInteg, $countVm)
+    public function __construct($integManager)
     {
-        $this->countInteg = $countInteg;
-        $this->countVm = $countVm;
+        $this->integManager = $integManager;
     }
 
     public function check()
     {
-        return !($this->countVm >= $this->countInteg);
+        if(null === $this->integManager->getBestInteg())
+        {
+           return false; 
+        }
+        
+        return true;
     }
 
     public function getName()
