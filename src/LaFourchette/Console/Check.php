@@ -3,6 +3,7 @@
 namespace LaFourchette\Console;
 
 use LaFourchette\Entity\Vm;
+use LaFourchette\Provisioner\Exception\UnableToStartException;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -47,9 +48,13 @@ class Check extends ConsoleAbstract
             if ($currentStatus == Vm::TO_START) {
                 $provisioner->start($vm);
 
-                if ($vm->getStatus() == Vm::RUNNING) {
-                    $notify->send('ready', $vm);
-                } else {
+                try {
+                    if ($vm->getStatus() == Vm::RUNNING) {
+                        $notify->send('ready', $vm);
+                    } else {
+                        $notify->send('unable_to_start', $vm);
+                    }
+                } catch (UnableToStartException $e) {
                     $notify->send('unable_to_start', $vm);
                 }
             } else {
