@@ -141,6 +141,53 @@ class Vagrant extends ProvisionerAbstract
         $cmd = 'git clone git@github.com:lafourchette/lafourchette-vm.git .';
         $this->run($vm, $cmd);
 
+        $integ  = $vm->getInteg();
+        $mac = $integ->getMac();
+        $ip = $integ->getIp();
+
+        $branches['branches_lafourchette_portal'] = 'master';
+        $branches['branches_lafourchette_mailer'] = 'master';
+        $branches['branches_lafourchette_module'] = 'master';
+        $branches['branches_lafourchette_rr'] = 'dev-puppetized';
+        $branches['branches_lafourchette_bo'] = 'master';
+        $branches['branches_lafourchette_core'] = 'master';
+        $branches['branches_lafourchette_webmobile'] = 'master-fr-ch';
+        $branches['branches_lafourchette_b2b'] = 'dev-puppetized';
+
+        $vmProjects = $vm->getVmProjects();
+
+        foreach ($vmProjects as $vmProject) {
+            $project = $vmProject->getProject();
+            switch ($project->getName()) {
+                case 'lafourchette-portal':
+                    $branches['branches_lafourchette_portal'] = $vmProject->getBranch();
+                    break;
+                case 'lafourchette-mailer':
+                    $branches['branches_lafourchette_mailer'] = $vmProject->getBranch();
+                    break;
+                case 'lafourchette-module':
+                    $branches['branches_lafourchette_module'] = $vmProject->getBranch();
+                    break;
+                case 'lafourchette-rr':
+                    $branches['branches_lafourchette_rr'] = $vmProject->getBranch();
+                    break;
+                case 'lafourchette-bo':
+                    $branches['branches_lafourchette_bo'] = $vmProject->getBranch();
+                    break;
+                case 'lafourchette-core':
+                    $branches['branches_lafourchette_core'] = $vmProject->getBranch();
+                    break;
+                case 'lafourchette-webmobile':
+                    $branches['branches_lafourchette_webmobile'] = $vmProject->getBranch();
+                    break;
+                case 'lafourchette-b2b':
+                    $branches['branches_lafourchette_b2b'] = $vmProject->getBranch();
+                    break;
+            }
+        }
+
+        $suffix = $integ->getSuffix();
+        $ip = $integ->getIp();
         $githubKey = $vm->getInteg()->getGithubKey();
 
         $fact = <<<EOS
@@ -158,13 +205,28 @@ Facts = {
     'rabbitmq_host' => 'localhost',
     'rabbitmq_port' => '5673',
     'composer_update' => true,
+    'suffix' => '{$suffix}',
+
+    # Branches
+    'branches_lafourchette_portal' => '{$branches['branches_lafourchette_portal']}',
+    'branches_lafourchette_recovery' => '{$branches['branches_lafourchette_mailer']}',
+    'branches_lafourchette_mailer' => '{$branches['branches_lafourchette_mailer']}',
+    'branches_lafourchette_module' => '{$branches['branches_lafourchette_module']}',
+    'branches_lafourchette_rr' => '{$branches['branches_lafourchette_rr']}',
+    'branches_lafourchette_bo' => '{$branches['branches_lafourchette_bo']}',
+    'branches_lafourchette_core' => '{$branches['branches_lafourchette_core']}',
+    'branches_lafourchette_webmobile' => '{$branches['branches_lafourchette_webmobile']}',
+    'branches_lafourchette_b2b' => '{$branches['branches_lafourchette_b2b']}'
   },
   # Key used for cloning lf repos. Copied at VM startup
   'github_private_key' => '{$githubKey}',
-  'node' => 'dev.lafourchette.local',
+  'node' => 'vm.lafourchette.local',
   'debug' => false,
   'nfs' => false,
-  'share' => false
+  'share' => false,
+  'network_type' => 'private',
+  'ip' => '{$ip}',
+  'mac' => '{$mac}' # used only in public network
 }
 EOS;
 
