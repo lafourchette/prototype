@@ -13,10 +13,7 @@ class UnableToStart extends NotifyAbstract
     public function getContent(Vm $vm)
     {
         $integ = $vm->getInteg();
-        $suffix = $integ->getSuffix();
         $name = $integ->getName();
-
-        $expiredDt = $vm->getExpiredDt();
 
         $str = <<<EOS
 Bonjour,
