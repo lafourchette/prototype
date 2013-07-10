@@ -8,7 +8,6 @@ class Ready extends NotifyAbstract
 {
     public function getContent(Vm $vm)
     {
-
         $integ = $vm->getInteg();
         $suffix = $integ->getSuffix();
         $name = $integ->getName();
@@ -24,9 +23,9 @@ class Ready extends NotifyAbstract
         $str = <<<EOS
 Bonjour,
 
-Votre Vm {$name} est prête.
+Votre environnement de test {$name} est prêt.
 
-Pour connaitre toutes les urls et commençait à s'en servir, rendez-vous sur cette page :
+Pour connaitre toutes les urls et commencer à s'en servir, rendez-vous sur cette page :
 - http://status{$suffix}
 
 Voici un récapitulatif de ce qui a été installé :
@@ -37,5 +36,17 @@ Bonne recette
 EOS;
 
         return $str;
+    }
+
+    /**
+     * @param Vm $vm
+     * @return string
+     */
+    public function getSubject(Vm $vm)
+    {
+        $integ = $vm->getInteg();
+        $name = $integ->getName();
+
+        return sprintf('Votre environnement de test %s est prêt', $name);
     }
 }
