@@ -77,7 +77,7 @@ class Integ
      * @ORM\JoinColumn(name="id_integ", referencedColumnName="id_vm")
      * @var object
      */
-    protected $vms;
+    protected $vm;
     
 
     public function getIdInteg()
