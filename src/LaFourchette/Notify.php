@@ -3,6 +3,7 @@
 namespace LaFourchette;
 
 use LaFourchette\Entity\Vm;
+use LaFourchette\Notify\NotifyAbstract;
 
 class Notify
 {
@@ -18,8 +19,18 @@ class Notify
     public function send($name, Vm $vm)
     {
         $message = $this->factory($name);
+
+        $content = $message->getContent($vm);
+        $subject = $message->getSubject($vm);
+
+        mail('lchenay@lafourchette.com', $subject, $content);
     }
 
+    /**
+     * @param $name name of template
+     * @return NotifyAbstract
+     * @throws \Exception
+     */
     public function factory($name)
     {
         if (!isset($this->notify[$name])) {
