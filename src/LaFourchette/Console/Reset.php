@@ -35,8 +35,7 @@ class Reset extends ConsoleAbstract
          * @var VM $vm
          */
         $vm = $vmManager->load($vmNumber);
-
-        $provisioner = $this->getProvisioner();
-        $provisioner->reset($vm);
+        $this->application['vm.service']->stop($vm);
+        $this->application['vm.service']->start($vm);
     }
 }
