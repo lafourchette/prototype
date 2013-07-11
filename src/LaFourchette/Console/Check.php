@@ -68,7 +68,7 @@ class Check extends ConsoleAbstract
                             //Nothing to do
                             break;
                         case Vm::STOPPED:
-                            if ($savedStatus != Vm::STOPPED) {
+                            if ($savedStatus != Vm::STOPPED && $savedStatus != Vm::EXPIRED) {
                                 //Someone else have killed the VM (serveur ? admin ? other ?) Something wrong append
                                 $notify->send('killed', $vm);
                             }
