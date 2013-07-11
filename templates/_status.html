@@ -8,7 +8,6 @@
 <table  class="table table-hover">
     <tr>
         <th>Name</th>
-        <th>Domain</th>
         <th>Status</th>
         <th>Created By</th>
         <th>Expired at</th>
@@ -17,7 +16,6 @@
     {% for vm in vms %}
     <tr>
         <td>{{vm.name}}</td>
-        <td>{{vm.integ.name}} - {{vm.integ.suffix}}</td>
         <td>{{la_fourchette_prototype_vm_status(vm.status)}}</td>
         <td>{{vm.createdBy}}</td>
         <td>{{vm.expiredDt|date('Y-m-d h:i:s')}}</td>
