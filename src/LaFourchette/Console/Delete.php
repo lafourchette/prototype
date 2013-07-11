@@ -37,10 +37,6 @@ class Delete extends ConsoleAbstract
          */
         $vm = $vmManager->load($vmNumber);
 
-        $provisioner = $this->getProvisioner();
-        $provisioner->delete($vm);
-
-        $vm->setStatus(Vm::STOPPED);
-        $vmManager->flush($vm);
+        $this->application['vm.service']->delete($vm);
     }
 }

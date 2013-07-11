@@ -60,7 +60,15 @@ class VmService
         $vmManager->flush($vm);
     }
 
+    public function delete(Vm $vm)
+    {
+        $vmManager = $this->getVmManager();
+        $provisioner = $this->getProvisioner();
+        $provisioner->delete($vm);
 
+        $vm->setStatus(Vm::STOPPED);
+        $vmManager->flush($vm);
+    }
 
     public function start(Vm $vm)
     {
