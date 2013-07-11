@@ -78,6 +78,10 @@ class Vagrant extends ProvisionerAbstract
             if (strpos($output, 'Please update Facts file !') !== false) {
                 return VM::STOPPED;
             } else if (strpos($output, ' running (') !== false) {
+                $now = new \DateTime();
+                if ($now > $vm->getExpiredDt()) {
+                    return VM::EXPIRED;
+                }
                 return VM::RUNNING;
             } else if (strpos($output, ' not created (') !== false) {
                 return VM::STOPPED;
@@ -116,6 +120,9 @@ class Vagrant extends ProvisionerAbstract
                 break;
         }
 
+        $cmd = 'git pull';
+        $this->run($vm, $cmd);
+
         $cmd = 'vagrant up';
         $this->run($vm, $cmd);
 
@@ -144,7 +151,6 @@ class Vagrant extends ProvisionerAbstract
 
         $integ  = $vm->getInteg();
         $mac = $integ->getMac();
-        $ip = $integ->getIp();
 
         $branches['branches_lafourchette_portal'] = 'master';
         $branches['branches_lafourchette_mailer'] = 'master';
@@ -239,5 +245,10 @@ EOS;
     {
         $this->stop($vm);
         $this->start($vm);
+    }
+
+    public function delete(VM $vm)
+    {
+        $this->stop($vm);
     }
 }
