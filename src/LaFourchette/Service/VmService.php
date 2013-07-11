@@ -51,6 +51,11 @@ class VmService
         $this->notifyService = $notifyService;
     }
 
+    public function getNotifyService()
+    {
+        return $this->notifyService;
+    }
+
     public function initialise(Vm $vm)
     {
         $vmManager = $this->getVmManager();
@@ -73,6 +78,8 @@ class VmService
     public function start(Vm $vm)
     {
         $vmManager = $this->getVmManager();
+        $notify = $this->getNotifyService();
+
         /**
          * @var VM $vm
          */
@@ -82,12 +89,16 @@ class VmService
         $vmManager->flush($vm);
         try {
             $provisionner->start($vm);
+
             $vm->setStatus(VM::RUNNING);
             $vmManager->flush($vm);
+            $notify->send('ready', $vm);
+
         } catch (UnableToStartException $e)
         {
             $vm->setStatus(VM::STOPPED);
             $vmManager->flush($vm);
+            $notify->send('unable_to_start', $vm);
             throw $e;
         }
     }

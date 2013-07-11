@@ -41,23 +41,11 @@ class Check extends ConsoleAbstract
         $notify = $this->getNotify();
 
         foreach ($vms as $vm) {
-
             $savedStatus = $vm->getStatus();
             $currentStatus = $provisioner->getStatus($vm);
 
             if ($savedStatus == Vm::TO_START && $currentStatus != Vm::RUNNING) {
-                try {
-                    $vm->setStatus(Vm::RUNNING);
-                    $vmManager->save($vm);
-                    $provisioner->start($vm);
-                    if ($vm->getStatus() == Vm::RUNNING) {
-                        $notify->send('ready', $vm);
-                    } else {
-                        $notify->send('unable_to_start', $vm);
-                    }
-                } catch (UnableToStartException $e) {
-                    $notify->send('unable_to_start', $vm);
-                }
+                $this->application['vm.service']->start($vm);
             } else {
                 if ($savedStatus != $currentStatus) {
                     $vm->setStatus($currentStatus);
@@ -85,7 +73,6 @@ class Check extends ConsoleAbstract
                                 $provisioner->stop($vm);
                             }
                             break;
-
                     }
                 }
             }
