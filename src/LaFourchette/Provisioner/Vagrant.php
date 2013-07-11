@@ -10,27 +10,6 @@ class Vagrant extends ProvisionerAbstract
 {
     protected $depot = 'git@github.com:lafourchette/lafourchette-vm.git';
 
-    /**
-     * @var VmManager
-     */
-    protected $vmManager = null;
-
-    /**
-     * @param VmManager $vmManager
-     */
-    public function setVmManager($vmManager)
-    {
-        $this->vmManager = $vmManager;
-    }
-
-    /**
-     * @return VmManager|null
-     */
-    public function getVmManager()
-    {
-        return $this->vmManager;
-    }
-
     protected function getPrefixCommand($integ, $realCommand)
     {
         $cmd = '';
@@ -132,8 +111,7 @@ class Vagrant extends ProvisionerAbstract
             case VM::MISSING:
                 throw new UnableToStartException('The Vm have not started');
             case VM::RUNNING:
-                $vm->setStatus(VM::RUNNING);
-                $this->getVmManager()->flush($vm);
+                //TODO: nothing
                 break;
         }
     }
