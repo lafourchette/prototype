@@ -36,14 +36,21 @@ class Check extends ConsoleAbstract
          */
         $vms = $vmManager->loadAll();
 
-
         $notify = $this->getNotify();
 
+        $output->writeln('Start the checks of all VM');
+
         foreach ($vms as $vm) {
+            $output->writeln('> VM ' . $vm->getName());
             $savedStatus = $vm->getStatus();
             $currentStatus = $this->application['vm.service']->getStatus($vm);
 
+            $output->writeln('  - Old status: ' . $savedStatus);
+            $output->writeln('  - Current status: ' . $currentStatus);
+
             if ($savedStatus == Vm::TO_START && $currentStatus != Vm::RUNNING) {
+                $output->writeln('  - Need to be started');
+                $output->writeln('  - Do it Now');
                 $this->application['vm.service']->start($vm);
             } else {
                 if ($savedStatus != $currentStatus) {
@@ -52,10 +59,11 @@ class Check extends ConsoleAbstract
 
                     switch ($currentStatus){
                         case Vm::RUNNING:
-                            //Nothing to do
+                            $output->writeln('  - Running');
                             break;
                         case Vm::STOPPED:
                             if ($savedStatus != Vm::STOPPED && $savedStatus != Vm::EXPIRED) {
+                                $output->writeln('  - Has been just killed');
                                 //Someone else have killed the VM (serveur ? admin ? other ?) Something wrong append
                                 $notify->send('killed', $vm);
                             }
@@ -64,10 +72,11 @@ class Check extends ConsoleAbstract
                             //todo: this case is currently not used
                             break;
                         case Vm::MISSING:
-
+                                $output->writeln('  - Is missing');
                             break;
                         case Vm::EXPIRED:
                             if ($savedStatus != Vm::EXPIRED) {
+                                $output->writeln('  - Has juste expired');
                                 $notify->send('expired', $vm);
                                 $this->application['vm.service']->stop($vm);
                             }
