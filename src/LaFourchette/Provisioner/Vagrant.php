@@ -102,6 +102,8 @@ class Vagrant extends ProvisionerAbstract
         $cmd = 'git pull';
         $this->run($vm, $cmd);
 
+        $this->generateFact($vm);
+
         $cmd = 'vagrant up';
         $this->run($vm, $cmd);
 
@@ -127,8 +129,13 @@ class Vagrant extends ProvisionerAbstract
         $cmd = 'git clone git@github.com:lafourchette/lafourchette-vm.git .';
         $this->run($vm, $cmd);
 
+        $this->generateFact($vm);
+    }
+
+    protected function generateFact(Vm $vm)
+    {
         $integ  = $vm->getInteg();
-        $mac = $integ->getMac();
+        $mac = str_replace(':', '', $integ->getMac());
 
         $branches['branches_lafourchette_portal'] = 'master';
         $branches['branches_lafourchette_mailer'] = 'master';
@@ -209,8 +216,9 @@ Facts = {
   'debug' => false,
   'nfs' => false,
   'share' => false,
-  'network_type' => 'private',
+  'network_type' => 'public',
   'ip' => '{$ip}',
+  'bridge' => 'eth0',
   'mac' => '{$mac}' # used only in public network
 }
 EOS;
