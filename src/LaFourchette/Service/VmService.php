@@ -105,7 +105,7 @@ class VmService
 
     public function getStatus(Vm $vm)
     {
-        $this->getProvisionner()->getStatus($vm);
+        return $this->getProvisionner()->getStatus($vm);
     }
 
     public function stop(Vm $vm)
