@@ -52,7 +52,12 @@ class LaFourchettePrototypeExtension extends \Twig_Extension
             case Vm::TO_START:
                 return '<i class="label label-info">To start</i>';
                 break;
-            
+            case Vm::STARTED:
+                return '<i class="label label-info">Currently started</i>';
+                break;
+            case Vm::ARCHIVED:
+                return '<i class="label label-info">Archived</i>';
+                break;
             default:
                 return 'no status available';
                 break;
