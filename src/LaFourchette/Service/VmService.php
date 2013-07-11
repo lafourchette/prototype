@@ -46,12 +46,12 @@ class VmService
         /**
          * @var VM $vm
          */
-        $provisioner = $this->getProvisioner();
+        $provisionner = $this->getProvisionner();
 
         $vm->setStatus(VM::STARTED);
         $vmManager->flush($vm);
         try {
-            $provisioner->start($vm);
+            $provisionner->start($vm);
             $vm->setStatus(VM::RUNNING);
             $vmManager->flush($vm);
         } catch (UnableToStartException $e)
