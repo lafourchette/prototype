@@ -2,6 +2,7 @@
 
 namespace LaFourchette\Console;
 
+use LaFourchette\Entity\Vm;
 use LaFourchette\Provisioner\Vagrant;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\InputArgument;
@@ -32,11 +33,14 @@ class Delete extends ConsoleAbstract
         $vmManager = $this->getVmManager();
 
         /**
-         * @var VM $vm
+         * @var Vm $vm
          */
         $vm = $vmManager->load($vmNumber);
 
         $provisioner = $this->getProvisioner();
         $provisioner->delete($vm);
+
+        $vm->setStatus(Vm::STOPPED);
+        $vmManager->flush($vm);
     }
 }
