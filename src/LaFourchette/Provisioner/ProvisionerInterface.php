@@ -13,4 +13,5 @@ interface ProvisionerInterface
     public function initialise(VM $vm);
 
     public function reset(VM $vm);
+    public function delete(VM $vm);
 }
