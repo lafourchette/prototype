@@ -23,6 +23,10 @@ class Vm
     const STARTED = 5; //If a vm is expired
     const ARCHIVED = 6; //If a vm is expired
 
+    
+    public static $availableStatus = array(self::RUNNING, self::SUSPEND, self::TO_START, self::STARTED);
+    public static $archiveStatus = array(self::EXPIRED, self::ARCHIVED);
+        
     /**
      * @ORM\Id
      * @ORM\Column(type="integer", name="id_vm")
