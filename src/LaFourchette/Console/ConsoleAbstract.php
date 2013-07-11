@@ -45,16 +45,6 @@ abstract class ConsoleAbstract
         return $vmManager;
     }
 
-    public function getProvisioner()
-    {
-        $vmManager = $this->getVmManager();
-
-        $provisioner = new Vagrant();
-        $provisioner->setVmManager($vmManager);
-
-        return $provisioner;
-    }
-
     public function getNotify()
     {
         $app = $this->getApplication();
