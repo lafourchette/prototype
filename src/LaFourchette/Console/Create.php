@@ -38,8 +38,6 @@ class Create extends ConsoleAbstract
          * @var VM $vm
          */
         $vm = $vmManager->load($vmNumber);
-
-        $provisioner = $this->getProvisioner();
-        $provisioner->initialise($vm);
+        $this->application['vm.service']->initialise($vm);
     }
 }

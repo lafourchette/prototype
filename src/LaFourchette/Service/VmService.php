@@ -40,6 +40,15 @@ class VmService
         return $this->provisionner;
     }
 
+    public function initialise(Vm $vm)
+    {
+        $vmManager = $this->getVmManager();
+        $provisioner = $this->getProvisioner();
+        $provisioner->initialise($vm);
+        $vm->setStatus(VM::STOPPED);
+        $vmManager->flush($vm);
+    }
+
     public function start(Vm $vm)
     {
         $vmManager = $this->getVmManager();
