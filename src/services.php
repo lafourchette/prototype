@@ -59,8 +59,8 @@ $app['vm.provisionner'] = $app->share(function() use ($app) {
 $app['vm.service'] = $app->share(function() use ($app) {
     $vmService = new \LaFourchette\Service\VmService();
     $vmService->setVmManager($app['vm.manager']);
-
     $vmService->setProvisionner($app['vm.provisionner']);
+    $vmService->setNotify($app['notify.service']);
 
     return $vmService;
 });

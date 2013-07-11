@@ -4,6 +4,7 @@ namespace LaFourchette\Service;
 
 use LaFourchette\Entity\Vm;
 use LaFourchette\Manager\VmManager;
+use LaFourchette\Notify;
 use LaFourchette\Provisioner\Exception\UnableToStartException;
 use LaFourchette\Provisioner\ProvisionerInterface;
 
@@ -16,9 +17,14 @@ class VmService
     protected $vmManager = null;
 
     /**
-     * @var ProvisionerInterface null
+     * @var ProvisionerInterface|null
      */
     protected $provisionner = null;
+
+    /**
+     * @var Notify|null
+     */
+    protected $notifyService = null;
 
     public function setVmManager(VmManager $vmManager)
     {
@@ -40,6 +46,11 @@ class VmService
         return $this->provisionner;
     }
 
+    public function setNotifyService(Notify $notifyService)
+    {
+        $this->notifyService = $notifyService;
+    }
+
     public function initialise(Vm $vm)
     {
         $vmManager = $this->getVmManager();
@@ -48,6 +59,8 @@ class VmService
         $vm->setStatus(VM::STOPPED);
         $vmManager->flush($vm);
     }
+
+
 
     public function start(Vm $vm)
     {
