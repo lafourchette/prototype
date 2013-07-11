@@ -36,13 +36,12 @@ class Check extends ConsoleAbstract
          */
         $vms = $vmManager->loadAll();
 
-        $provisioner = $this->getProvisioner();
 
         $notify = $this->getNotify();
 
         foreach ($vms as $vm) {
             $savedStatus = $vm->getStatus();
-            $currentStatus = $provisioner->getStatus($vm);
+            $currentStatus = $this->application['vm.service']->getStatus($vm);
 
             if ($savedStatus == Vm::TO_START && $currentStatus != Vm::RUNNING) {
                 $this->application['vm.service']->start($vm);
@@ -70,7 +69,7 @@ class Check extends ConsoleAbstract
                         case Vm::EXPIRED:
                             if ($savedStatus != Vm::EXPIRED) {
                                 $notify->send('expired', $vm);
-                                $provisioner->stop($vm);
+                                $this->application['vm.service']->stop($vm);
                             }
                             break;
                     }
