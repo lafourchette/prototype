@@ -1,22 +1,32 @@
 {% extends "layout.html" %}
 
 {% block content %}
-To create a prototype you need to choose for each project a branch
+<p>
+    To create a prototype you need to choose a branch for each project
+</p>
 
-<form id="create-prototype" class="form-block" action="{{app.request.baseUrl}}/launch-prototype" method="POST">
+<hr class="bs-docs-separator">
 
-{% for project in repositories %}
-    
-    <label><h2>{{project['name']}}</h2></label>
-    <label><h4>Branches</h4></label>
-    {% if project['branches']|length > 0 %}
-    <select name="projects[{{project['id']}}]">
-        {% for branch in project['branches'] %}
-             <option value="{{branch}}">{{branch}}</option>
-        {% endfor %}
-        </select>
-    {% endif %}
-{% endfor %}
-</form>
-<button type="submit" id="launch-prototype" class="btn btn-info"><i class="icon-plus-sign icon-white"></i> Create VM</button>
+<div class="row">
+    <div class="span9">   
+        <form id="create-prototype" class="form-block" action="{{app.request.baseUrl}}/launch-prototype" method="POST">
+
+            {% for project in repositories %}
+            <div class="span4">
+                <label><strong>{{project['name']}}</strong></label>
+                <label>Branches</label>
+                {% if project['branches']|length > 0 %}
+                <select name="projects[{{project['id']}}]">
+                    {% for branch in project['branches'] %}
+                    <option value="{{branch}}">{{branch}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            {% endif %}
+            {% endfor %}
+        </form>
+    </div>
+</div>
+<hr class="bs-docs-separator">
+<button type="submit" id="launch-prototype" class="btn btn-info"><i class="icon-plus-sign icon-white"></i> Create a Prototype</button>
 {% endblock %}

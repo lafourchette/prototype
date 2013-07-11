@@ -49,6 +49,9 @@ class LaFourchettePrototypeExtension extends \Twig_Extension
             case Vm::EXPIRED:
                 return '<i class="label">Expired</i>';
                 break;
+            case Vm::TO_START:
+                return '<i class="label label-info">To start</i>';
+                break;
             
             default:
                 return 'no status available';
