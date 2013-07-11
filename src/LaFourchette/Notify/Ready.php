@@ -18,7 +18,7 @@ class Ready extends NotifyAbstract
             $projectList .= ' - ' . $vmProject->getProject()->getName() . ' : ' . $vmProject->getBranch() . "\n";
         }
 
-        $expiredDt = $vm->getExpiredDt();
+        $expiredDt = $vm->getExpiredDt()->format('Y-m-d H:i:s');
 
         $str = <<<EOS
 Bonjour,
@@ -31,7 +31,8 @@ Pour connaitre toutes les urls et commencer à s'en servir, rendez-vous sur cett
 Voici un récapitulatif de ce qui a été installé :
 {$projectList}
 
-Votre VM expirera automatique le {$expiredDt}
+Votre VM expirera automatiquement le {$expiredDt}.
+
 Bonne recette
 EOS;
 
