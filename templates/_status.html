@@ -21,7 +21,7 @@
         <td>{{la_fourchette_prototype_vm_status(vm.status)}}</td>
         <td>{{vm.createdBy}}</td>
         <td>{{vm.expiredDt|date('Y-m-d h:i:s')}}</td>
-        <td><a href="#">Go to status page</a></td>
+        <td><a href="http://status{{vm.integ.suffix}}">Go to status page</a></td>
         {% endfor %}
     </tr>
 </table>
