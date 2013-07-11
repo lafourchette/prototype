@@ -49,3 +49,18 @@ $app['notify.service'] = $app->share(function() use ($app) {
     $notify->addNotifyMessage('unable_to_start', new \LaFourchette\Notify\UnableToStart());
     return $notify;
 });
+
+$app['vm.provisionner'] = $app->share(function() use ($app) {
+    //TODO: use a factory
+    $provisionner = new \LaFourchette\Provisioner\Vagrant();
+    return $provisionner;
+});
+
+$app['vm.service'] = $app->share(function() use ($app) {
+    $vmService = new \LaFourchette\Service\VmService();
+    $vmService->setVmManager($app['vm.manager']);
+
+    $vmService->setProvisionner($app['vm.provisionner']);
+
+    return $vmService;
+});

@@ -34,12 +34,8 @@ class Start extends ConsoleAbstract
         $vmNumber = $input->getArgument('vm-number');
         $vmManager = $this->getVmManager();
 
-        /**
-         * @var VM $vm
-         */
         $vm = $vmManager->load($vmNumber);
 
-        $provisioner = $this->getProvisioner();
-        $provisioner->start($vm);
+        $this->application['vm.service']->start($vm);
     }
 }
