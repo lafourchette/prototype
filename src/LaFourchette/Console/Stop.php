@@ -36,7 +36,6 @@ class Stop extends ConsoleAbstract
          */
         $vm = $vmManager->load($vmNumber);
 
-        $provisioner = $this->getProvisioner();
-        $provisioner->stop($vm);
+        $this->application['vm.service']->stop($vm);
     }
 }

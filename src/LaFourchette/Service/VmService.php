@@ -70,4 +70,17 @@ class VmService
             throw $e;
         }
     }
+
+    public function stop(Vm $vm)
+    {
+        $vmManager = $this->getVmManager();
+
+        /**
+         * @var VM $vm
+         */
+        $provisionner = $this->getProvisionner();
+        $vm->setStatus(Vm::STOPPED);
+        $vmManager->flush($vm);
+        $provisionner->stop($vm);
+    }
 }
