@@ -17,8 +17,8 @@
                 <label>Branches</label>
                 {% if project['branches']|length > 0 %}
                 <select name="projects[{{project['id']}}]">
-                    {% for branch in project['branches'] %}
-                    <option value="{{branch}}">{{branch}}</option>
+                    {% for branch,selected in project['branches'] %}
+                    <option value="{{branch}}" {% if selected %} selected="selected" {% endif %}>{{branch}}</option>
                     {% endfor %}
                 </select>
             </div>

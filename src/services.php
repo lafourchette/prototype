@@ -25,7 +25,7 @@ $app['integ_availabibilty.checker'] = $app->share(function() use ($app){
 });
 
 $app['github.manager'] = $app->share(function() use ($app){
-   return new \LaFourchette\Manager\GithubManager($app['project.manager']); 
+   return new \LaFourchette\Manager\GithubManager($app['project.manager'], $app['github.token']); 
 });
 
 $app['vm.creator'] = $app->share(function() use ($app){
