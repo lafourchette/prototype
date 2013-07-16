@@ -64,3 +64,15 @@ $app['vm.service'] = $app->share(function() use ($app) {
 
     return $vmService;
 });
+
+$app['login.basic_login_response'] = $app->share(function() use ($app) {
+    $response = new \Symfony\Component\HttpFoundation\Response();
+    $response->headers->set('WWW-Authenticate', sprintf('Basic realm="%s"', 'Ldap Authentication'));
+    $response->setStatusCode(401, 'Please sign in.');
+    
+    return $response;
+});
+
+$app['ldap.manager'] = $app->share(function() use ($app){
+    return new \LaFourchette\Ldap\LdapManager($app['ldap.host'], $app['ldap.port'], $app['ldap.username'], $app['ldap.password'], $app['ldap.basedn']);
+});

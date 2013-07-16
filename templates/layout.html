@@ -13,6 +13,12 @@
                 <div class="page-header">
                     <h1>Prototype Application</h1>
                 </div>
+                <div style="float: right;">
+                    {% if app.session.get('isAuthenticated') %}
+                    Hello {{ app.session.get('user').username }}
+                    <a href="{{ path('logout') }}">Logout</a>
+                    {% endif %}
+                </div>
                 {% include 'nav.html' %}
                 {% block content %}{% endblock %}
             </div>
