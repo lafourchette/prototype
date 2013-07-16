@@ -11,6 +11,7 @@
 {% if vms|length > 0 %}
 <table  class="table table-hover">
     <tr>
+        <th>Id</th>
         <th>Name</th>
         <th>Status</th>
         <th>Created By</th>
@@ -19,6 +20,7 @@
     </tr>
     {% for vm in vms %}
     <tr>
+        <td>{{vm.idVm}}</td>
         <td>{{vm.name}}</td>
         <td>{{la_fourchette_prototype_vm_status(vm.status)}}</td>
         <td>{{vm.createdBy}}</td>

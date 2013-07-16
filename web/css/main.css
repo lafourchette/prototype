@@ -44,7 +44,7 @@ body {
 
 .container {
     width: auto;
-    max-width: 680px;
+    max-width: 960px;
 }
 .container .credit {
     margin: 20px 0;
