@@ -104,7 +104,7 @@ class Vagrant extends ProvisionerAbstract
 
         $this->generateFact($vm);
 
-        $cmd = 'vagrant up';
+        $cmd = 'vagrant up --no-provision';
         $this->run($vm, $cmd);
 
         switch ($this->getStatus($vm)) {
@@ -116,6 +116,9 @@ class Vagrant extends ProvisionerAbstract
                 //TODO: nothing
                 break;
         }
+
+        $cmd = 'vagrant provision';
+        $this->run($vm, $cmd);
     }
 
     public function stop(VM $vm)
@@ -217,7 +220,7 @@ Facts = {
   'nfs' => false,
   'share' => false,
   'network_type' => 'public',
-  'ip' => '{$ip}',
+  #'ip' => '{$ip}',
   'bridge' => 'eth0',
   'mac' => '{$mac}' # used only in public network
 }
