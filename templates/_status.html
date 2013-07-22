@@ -1,39 +1,42 @@
 {% if la_fourchette_prototype_integ_availability() == false %}
-<div class="alert alert-error">
-    <strong>Warning!</strong> There is no slot available for now<br />You need to wait for an empty one
-</div>
+    <div class="alert alert-error">
+        <strong>Warning!</strong> There is no slot available for now<br />You need to wait for an empty one
+    </div>
 {% else %}
-<div class="alert alert-info">
-    Slot available, come and get some!!
-</div>
+    <div class="alert alert-info">
+        Slot available, come and get some!!
+    </div>
 {% endif %}
 
 {% if vms|length > 0 %}
-<table  class="table table-hover">
-    <tr>
-        <th>Id</th>
-        <th>Integ</th>
-        <th>Name</th>
-        <th>Status</th>
-        <th>Created By</th>
-        <th>Expired at</th>
-        <th></th>
-    </tr>
-    {% for vm in vms %}
-    <tr>
-        <td>{{vm.idVm}}</td>
-        <td>{{vm.integ.name}}</td>
-        <td>{{vm.name}}</td>
-        <td>{{la_fourchette_prototype_vm_status(vm.status)}}</td>
-        <td>{{vm.createdBy}}</td>
-        <td>{{vm.expiredDt|date('Y-m-d h:i:s')}}</td>
-        <td><a href="http://status{{vm.integ.suffix}}">Go to status page</a></td>
+    <table  class="table table-hover">
+        <tr>
+            <th>Id</th>
+            <th>Integ</th>
+            <th>Name</th>
+            <th>Status</th>
+            <th>Created By</th>
+            <th>Expired at</th>
+            <th></th>
+        </tr>
+        {% for vm in vms %}
+            <tr>
+                <td>{{vm.idVm}}</td>
+                <td>{{vm.integ.name}}</td>
+                <td>{{vm.name}}</td>
+                <td>{{la_fourchette_prototype_vm_status(vm.status)}}</td>
+                <td>{{vm.createdBy}}</td>
+                <td>{{vm.expiredDt|date('Y-m-d h:i:s')}}</td>
+                {% if vm.status == 0 %}
+                    <td><a href="http://status{{vm.integ.suffix}}">Go to status page</a></td>
+                {% else %}
+                    <td>&nbsp;</td>
+                {% endif %} 
+            </tr>
         {% endfor %}
-    </tr>
-</table>
-
+    </table>
 {% endif %}
 
 {% if la_fourchette_prototype_integ_availability() == true %}
-<a href="{{app.request.baseUrl}}/create-prototype" class="btn btn-info"><i class="icon-plus-sign icon-white"></i> Create a Prototype</a>
+    <a href="{{app.request.baseUrl}}/create-prototype" class="btn btn-info"><i class="icon-plus-sign icon-white"></i> Create a Prototype</a>
 {% endif %}
