@@ -12,15 +12,17 @@ class GithubManager
 
     protected $client;
     protected $projectManager;
+    protected $githubToken;
 
-    public function __construct(ProjectManager $projectManager)
+    public function __construct(ProjectManager $projectManager, $githubToken)
     {
         $this->projectManager = $projectManager;
 
         $this->client = new \Github\Client(
                 new \Github\HttpClient\CachedHttpClient()
         );
-        $this->client->authenticate('***REMOVED***', null, \Github\Client::AUTH_HTTP_TOKEN);
+        $this->githubToken = $githubToken;
+        $this->client->authenticate($this->githubToken, null, \Github\Client::AUTH_HTTP_TOKEN);
     }
 
     public function getAllRepositoriesWithBranch()
@@ -34,7 +36,7 @@ class GithubManager
             $repositories[$key]['id'] = $project->getIdProject();
             if (!empty($branches)) {
                 foreach ($branches as $branch) {
-                    $repositories[$key]['branches'][] = $branch['name'];
+                    $repositories[$key]['branches'][$branch['name']] = $branch['name'] !== 'master' ? null : 'selected';
                 }
             }
         }

@@ -25,7 +25,7 @@ $app['integ_availabibilty.checker'] = $app->share(function() use ($app){
 });
 
 $app['github.manager'] = $app->share(function() use ($app){
-   return new \LaFourchette\Manager\GithubManager($app['project.manager']); 
+   return new \LaFourchette\Manager\GithubManager($app['project.manager'], $app['github.token']); 
 });
 
 $app['vm.creator'] = $app->share(function() use ($app){
@@ -63,4 +63,16 @@ $app['vm.service'] = $app->share(function() use ($app) {
     $vmService->setNotifyService($app['notify.service']);
 
     return $vmService;
+});
+
+$app['login.basic_login_response'] = $app->share(function() use ($app) {
+    $response = new \Symfony\Component\HttpFoundation\Response();
+    $response->headers->set('WWW-Authenticate', sprintf('Basic realm="%s"', 'Ldap Authentication'));
+    $response->setStatusCode(401, 'Please sign in.');
+    
+    return $response;
+});
+
+$app['ldap.manager'] = $app->share(function() use ($app){
+    return new \LaFourchette\Ldap\LdapManager($app['ldap.host'], $app['ldap.port'], $app['ldap.username'], $app['ldap.password'], $app['ldap.basedn']);
 });

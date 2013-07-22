@@ -30,9 +30,21 @@ class User
      */
     protected $email;
     
+    protected $dn;
+    
     public function __toString()
     {
         return $this->username;
+    }
+    
+    public function setDn($dn)
+    {
+        $this->dn = $dn;
+    }
+    
+    public function getDn()
+    {
+        return $this->dn;
     }
 
     public function getIdUser()
