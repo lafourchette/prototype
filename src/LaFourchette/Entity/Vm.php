@@ -20,7 +20,7 @@ class Vm
     const SUSPEND = 2; //If vagrant is suspend
     const MISSING = 3; //If directory is present and empty
     const EXPIRED = 4; //If a vm is expired
-    const STARTED = 5; //If a vm is expired
+    const STARTED = 5; //If a vm is started
     const ARCHIVED = 6; //If a vm is expired
 
     
