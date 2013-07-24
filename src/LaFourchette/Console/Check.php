@@ -52,6 +52,8 @@ class Check extends ConsoleAbstract
                 $output->writeln('  - Need to be started');
                 $output->writeln('  - Do it Now');
                 $this->application['vm.service']->start($vm);
+            } elseif ($savedStatus == Vm::ARCHIVED) {
+                $output->writeln('  - Vm is archived. nothing to do');
             } else {
                 if ($savedStatus != $currentStatus) {
                     $vm->setStatus($currentStatus);
@@ -80,6 +82,8 @@ class Check extends ConsoleAbstract
                                 $notify->send('expired', $vm);
                                 $this->application['vm.service']->stop($vm);
                             }
+                            $vm->setStatus(Vm::ARCHIVED);
+                            $vmManager->save($vm);
                             break;
                     }
                 }
