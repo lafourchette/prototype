@@ -13,7 +13,7 @@ $app['vm_project.manager'] = $app->share(function() use ($app){
 });
 
 $app['user.manager'] = $app->share(function() use ($app){
-    return new LaFourchette\Manager\UserManager($app['orm.em'],'\LaFourchette\Entity\user');
+    return new LaFourchette\Manager\UserManager($app['orm.em'],'\LaFourchette\Entity\User');
 });
 
 $app['project.manager'] = $app->share(function() use ($app){
