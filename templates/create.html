@@ -8,11 +8,11 @@
 <hr class="bs-docs-separator">
 
 <div class="row">
-    <div class="span9">   
+    <div class="span12">   
         <form id="create-prototype" class="form-block" action="{{app.request.baseUrl}}/launch-prototype" method="POST">
 
             {% for project in repositories %}
-            <div class="span4">
+            <div class="span5">
                 <label><strong>{{project['name']}}</strong></label>
                 <label>Branches</label>
                 {% if project['branches']|length > 0 %}
