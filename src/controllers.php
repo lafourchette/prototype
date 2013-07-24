@@ -53,7 +53,6 @@ $app->get('/login', function () use ($app) {
 ->bind('login');
 
 $app->get('/create-prototype', function () use ($app) {
-    var_dump($app['session']->get('user'));
     return $app['twig']->render('create.html', array('repositories' => $app['github.manager']->getAllRepositoriesWithBranch()));
 })
 ->bind('create-prototype');
