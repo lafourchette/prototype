@@ -25,21 +25,25 @@ $app->get('/login', function () use ($app) {
         //Retrieve user information
         $ldapUser = $app['ldap.manager']->getUserInfo($username);
 
-        $user = $userManager->loadOneBy(array('username' => $ldapUser->getUsername()));
-
-        if(null === $user){
-            $userManager->save($ldapUser);
-            $user = $userManager->loadOneBy(array('username' => $ldapUser->getUsername()));
-        }
-        
-        if(null !== $user)
-        {
-            $isAuthenticated = $app['ldap.manager']->bind($user->getDn(), $password);
-            if($isAuthenticated)
+            if(null !== $ldapUser)
             {
-                $app['session']->set('isAuthenticated', $isAuthenticated);
-                $app['session']->set('user', $user);
-                return $app->redirect($app['url_generator']->generate('homepage'));
+
+            $user = $userManager->loadOneBy(array('username' => $ldapUser->getUsername()));
+
+            if(null === $user){
+                $userManager->save($ldapUser);
+                $user = $userManager->loadOneBy(array('username' => $ldapUser->getUsername()));
+            }
+
+            if(null !== $user)
+            {
+                $isAuthenticated = $app['ldap.manager']->bind($user->getDn(), $password);
+                if($isAuthenticated)
+                {
+                    $app['session']->set('isAuthenticated', $isAuthenticated);
+                    $app['session']->set('user', $user);
+                    return $app->redirect($app['url_generator']->generate('homepage'));
+                }
             }
         }
     }
