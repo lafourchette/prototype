@@ -98,7 +98,7 @@ $app->get('/_status', function () use ($app) {
 
 $app->get('/logout', function () use ($app) {
         $app['session']->set('isAuthenticated', false);
-        $app['session']->set('currentUser', null);
+        $app['session']->set('user', null);
         return $app['login.basic_login_response'];
     })->bind('logout');
 
