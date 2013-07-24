@@ -16,24 +16,40 @@ $app->get('/', function () use ($app) {
 $app->get('/login', function () use ($app) {
     
     $username = $app['request']->server->get('PHP_AUTH_USER', false);
-    $password = $app['request']->server->get('PHP_AUTH_PW');
+    $password = $app['request']->server->get('PHP_AUTH_PW', false);
     
-    //Retrieve user information
-    $user = $app['ldap.manager']->getUserInfo($username);
-    
-    if(null !== $user)
+    if($username && $password)
     {
-        $isAuthenticated = $app['ldap.manager']->bind($user->getDn(), $password);
-        $app['session']->set('isAuthenticated', $isAuthenticated);
-        $app['session']->set('user', $user);
-        return $app->redirect($app['url_generator']->generate('homepage'));
-    }
+        $userManager = $app['user.manager'];
 
+        //Retrieve user information
+        $ldapUser = $app['ldap.manager']->getUserInfo($username);
+
+        $user = $userManager->loadOneBy(array('username' => $ldapUser->getUsername()));
+
+        if(null === $user){
+            $userManager->save($ldapUser);
+            $user = $userManager->loadOneBy(array('username' => $ldapUser->getUsername()));
+        }
+        
+        if(null !== $user)
+        {
+            $isAuthenticated = $app['ldap.manager']->bind($user->getDn(), $password);
+            if($isAuthenticated)
+            {
+                $app['session']->set('isAuthenticated', $isAuthenticated);
+                $app['session']->set('user', $user);
+                return $app->redirect($app['url_generator']->generate('homepage'));
+            }
+        }
+    }
+    
     return $app['login.basic_login_response'];
 })
 ->bind('login');
 
 $app->get('/create-prototype', function () use ($app) {
+    var_dump($app['session']->get('user'));
     return $app['twig']->render('create.html', array('repositories' => $app['github.manager']->getAllRepositoriesWithBranch()));
 })
 ->bind('create-prototype');
@@ -96,21 +112,23 @@ $app->error(function (\Exception $e, $code) use ($app) {
 // check login
 $app->on(KernelEvents::REQUEST, function (GetResponseEvent $event) use ($app) {
     $request = $event->getRequest();
+    
 
-    if ($request->get('_route') === '_profiler') {
-        return;
+    if ($request->get('_route') === '_profiler') { 
+       return;
     }
 
     if ($request->get('_route') === 'login')
     {
         return;
     }
-
+    
     if (!$app['session']->get('isAuthenticated')) {
         $ret = $app->redirect($app['url_generator']->generate('login'));
     } else {
         $ret = null;
     }
+    
     if ($ret instanceof Response) {
         $event->setResponse($ret);
     }

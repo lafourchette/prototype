@@ -30,6 +30,10 @@ class User
      */
     protected $email;
     
+    /**
+     * @ORM\Column(type="string")
+     * @var string
+     */    
     protected $dn;
     
     public function __toString()
