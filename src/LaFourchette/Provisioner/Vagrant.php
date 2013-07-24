@@ -69,6 +69,8 @@ class Vagrant extends ProvisionerAbstract
             } else if (strpos($output, ' saved (') !== false) {
                 return VM::SUSPEND;
             } else {
+                var_dump($result);
+                die();
                 throw new \Exception('Can not determine the status of the VM');
             }
         }
@@ -143,11 +145,11 @@ class Vagrant extends ProvisionerAbstract
         $branches['branches_lafourchette_portal'] = 'master';
         $branches['branches_lafourchette_mailer'] = 'master';
         $branches['branches_lafourchette_module'] = 'master';
-        $branches['branches_lafourchette_rr'] = 'dev-puppetized';
+        $branches['branches_lafourchette_rr'] = 'feature-puppetized';
         $branches['branches_lafourchette_bo'] = 'master';
         $branches['branches_lafourchette_core'] = 'master';
         $branches['branches_lafourchette_webmobile'] = 'master-fr-ch';
-        $branches['branches_lafourchette_b2b'] = 'dev-puppetized';
+        $branches['branches_lafourchette_b2b'] = 'feature-puppetized';
 
         $vmProjects = $vm->getVmProjects();
 
@@ -215,7 +217,7 @@ Facts = {
   },
   # Key used for cloning lf repos. Copied at VM startup
   'github_private_key' => '{$githubKey}',
-  'node' => 'vm.lafourchette.local',
+  'node' => 'project.lafourchette.local',
   'debug' => false,
   'nfs' => false,
   'share' => false,
