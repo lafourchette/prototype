@@ -88,6 +88,11 @@ class Vagrant extends ProvisionerAbstract
         }
     }
 
+    /**
+     * @param VM $vm
+     * @param string $cmd
+     * @return string
+     */
     protected function run(VM $vm, $cmd)
     {
         $cmd = $this->getPrefixCommand($vm->getInteg(), $cmd);
@@ -98,7 +103,11 @@ class Vagrant extends ProvisionerAbstract
         return $process->getOutput();
     }
 
-    public function start(VM $vm)
+    /**
+     * @param VM $vm
+     * @throws Exception\UnableToStartException
+     */
+    public function start(VM $vm, $provisionEnable = true)
     {
         switch ($this->getStatus($vm)) {
             case VM::SUSPEND:
@@ -131,8 +140,10 @@ class Vagrant extends ProvisionerAbstract
                 break;
         }
 
-        $cmd = 'vagrant provision';
-        $this->run($vm, $cmd);
+        if ($provisionEnable) {
+            $cmd = 'vagrant provision';
+            $this->run($vm, $cmd);
+        }
     }
 
     public function stop(VM $vm)
@@ -229,7 +240,7 @@ Facts = {
   },
   # Key used for cloning lf repos. Copied at VM startup
   'github_private_key' => '{$githubKey}',
-  'node' => 'project.lafourchette.local',
+  'node' => 'integ.lafourchette.local',
   'debug' => false,
   'nfs' => false,
   'share' => false,
@@ -252,6 +263,10 @@ EOS;
 
     public function delete(VM $vm)
     {
-        $this->stop($vm);
+        $cmd = 'vagrant halt --force';
+        $this->run($vm, $cmd);
+
+        $cmd = 'vagrant destroy';
+        $this->run($vm, $cmd);
     }
 }
