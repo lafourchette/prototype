@@ -75,7 +75,18 @@ class VmService
         $vmManager->flush($vm);
     }
 
-    public function start(Vm $vm)
+    public function prepare(Vm $vm)
+    {
+        /**
+         * @var VM $vm
+         */
+        $provisionner = $this->getProvisionner();
+
+        $provisionner->start($vm, false);
+        $provisionner->stop($vm);
+    }
+
+    public function start(Vm $vm, $provisionEnable = true)
     {
         $vmManager = $this->getVmManager();
         $notify = $this->getNotifyService();
@@ -88,7 +99,7 @@ class VmService
         $vm->setStatus(VM::STARTED);
         $vmManager->flush($vm);
         try {
-            $provisionner->start($vm);
+            $provisionner->start($vm, $provisionEnable);
 
             $vm->setStatus(VM::RUNNING);
             $vmManager->flush($vm);
