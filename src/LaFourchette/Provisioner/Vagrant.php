@@ -8,8 +8,18 @@ use Symfony\Component\Process\Process;
 
 class Vagrant extends ProvisionerAbstract
 {
+    /**
+     * @var string
+     * @TODO: get it in configuration
+     */
     protected $depot = 'git@github.com:lafourchette/lafourchette-vm.git';
 
+    /**
+     * @param $integ
+     * @param string $realCommand
+     * @return string
+     * @throws \Exception
+     */
     protected function getPrefixCommand($integ, $realCommand)
     {
         $cmd = '';
@@ -39,6 +49,11 @@ class Vagrant extends ProvisionerAbstract
         return $cmd;
     }
 
+    /**
+     * @param VM $vm
+     * @return mixed
+     * @throws \Exception
+     */
     public function getStatus(VM $vm)
     {
         $path = $vm->getInteg()->getPath();
@@ -69,9 +84,6 @@ class Vagrant extends ProvisionerAbstract
             } else if (strpos($output, ' saved (') !== false) {
                 return VM::SUSPEND;
             } else {
-                var_dump($result);
-                die();
-                throw new \Exception('Can not determine the status of the VM');
             }
         }
     }
