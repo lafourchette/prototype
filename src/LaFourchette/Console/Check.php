@@ -5,6 +5,7 @@ namespace LaFourchette\Console;
 use LaFourchette\Entity\Vm;
 use LaFourchette\Provisioner\Exception\UnableToStartException;
 use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -20,6 +21,7 @@ class Check extends ConsoleAbstract
             ->setDefinition(array(
                 // new InputOption('some-option', null, InputOption::VALUE_NONE, 'Some help'),
             ))
+            ->addArgument('vm-number', null, InputArgument::REQUIRED, 'The vm number')
             ->setDescription('Check all state of VM')
             ->setCode(function (InputInterface $input, OutputInterface $output) use ($app) {
                 $command = new Check();
@@ -31,10 +33,18 @@ class Check extends ConsoleAbstract
     public function run(InputInterface $input, OutputInterface $output)
     {
         $vmManager = $this->getVmManager();
-        /**
-         * @var Vm[] $vms
-         */
-        $vms = $vmManager->loadAll();
+
+
+        $vmNumber = $input->getArgument('vm-number');
+        $vmManager = $this->getVmManager();
+
+        $vm = $vmManager->load($vmNumber);
+
+        if ($vm !== null) {
+            $vms = array($vm);
+        } else {
+            throw new \InvalidArgumentException('The given Vm could not be found');
+        }
 
         $notify = $this->getNotify();
 
@@ -64,7 +74,7 @@ class Check extends ConsoleAbstract
                             $output->writeln('  - Running');
                             break;
                         case Vm::STOPPED:
-                            if ($savedStatus != Vm::STOPPED && $savedStatus != Vm::EXPIRED) {
+                            if ($savedStatus != Vm::STOPPED && $savedStatus != Vm::EXPIRED && $savedStatus != Vm::ARCHIVED) {
                                 $output->writeln('  - Has been just killed');
                                 //Someone else have killed the VM (serveur ? admin ? other ?) Something wrong append
                                 $notify->send('killed', $vm);
