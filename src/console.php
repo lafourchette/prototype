@@ -16,5 +16,6 @@ $console->getDefinition()->addOption(new InputOption('--env', '-e', InputOption:
 \LaFourchette\Console\Reset::register($app, $console);
 \LaFourchette\Console\Stop::register($app, $console);
 \LaFourchette\Console\Start::register($app, $console);
+\LaFourchette\Console\GetVmId::register($app, $console);
 
 return $console;
