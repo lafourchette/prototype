@@ -32,10 +32,8 @@ class Check extends ConsoleAbstract
 
     public function run(InputInterface $input, OutputInterface $output)
     {
-        $vmManager = $this->getVmManager();
-
-
         $vmNumber = $input->getArgument('vm-number');
+
         $vmManager = $this->getVmManager();
 
         $vm = $vmManager->load($vmNumber);
@@ -63,7 +61,7 @@ class Check extends ConsoleAbstract
                 $output->writeln('  - Do it Now');
                 $this->application['vm.service']->start($vm);
             } elseif ($savedStatus == Vm::ARCHIVED) {
-                $output->writeln('  - Vm is archived. nothing to do');
+                $output->writeln('  - Vm is archived.');
             } else {
                 if ($savedStatus != $currentStatus) {
                     $vm->setStatus($currentStatus);
@@ -93,7 +91,8 @@ class Check extends ConsoleAbstract
                                 $this->application['vm.service']->stop($vm);
                             }
                             $vm->setStatus(Vm::ARCHIVED);
-                            $vmManager->save($vm);
+                            $this->application['vm.service']->delete($vm);
+                            $this->application['vm.service']->prepare($vm);
                             break;
                     }
                 }
