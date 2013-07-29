@@ -131,4 +131,13 @@ class VmService
         $vmManager->flush($vm);
         $provisionner->stop($vm);
     }
+
+    public function archived(Vm $vm)
+    {
+        $vmManager = $this->getVmManager();
+        $this->delete($vm);
+        $vm->setStatus(VM::ARCHIVED);
+        $vmManager->flush($vm);
+        $this->prepare($vm);
+    }
 }
