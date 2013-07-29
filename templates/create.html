@@ -2,31 +2,49 @@
 
 {% block content %}
 <p>
-    To create a prototype you need to choose a branch for each project
+    To create a prototype you need to choose a branch for the project you want to test.<br />
+    By default all branch is as in production.
 </p>
 
 <hr class="bs-docs-separator">
 
 <div class="row">
     <div class="span12">   
-        <form id="create-prototype" class="form-block" action="{{app.request.baseUrl}}/launch-prototype" method="POST">
-
-            {% for project in repositories %}
-            <div class="span5">
-                <label><strong>{{project['name']}}</strong></label>
-                <label>Branches</label>
-                {% if project['branches']|length > 0 %}
-                <select name="projects[{{project['id']}}]">
-                    {% for branch,selected in project['branches'] %}
-                    <option value="{{branch}}" {% if selected %} selected="selected" {% endif %}>{{branch}}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            {% endif %}
-            {% endfor %}
+        <form id="create-prototype" class="form-block" action="{{app.request.baseUrl}}/launch-prototype" method="POST" class="accordion" id="accordion">
+                {% for project in repositories %}
+                    <div class="accordion-group">
+                        <div class="accordion-heading">
+                            <a href="#collapse{{project['name']}}" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion"><label><strong>{{project['name']}}</strong></label></a>
+                        </div>
+                        <div id="collapse{{project['name']}}"  class="accordion-body collapse">
+                            <div class="accordion-inner">
+                                <label>Branches</label>
+                                {% if project['branches']|length > 0 %}
+                                    <select name="projects[{{project['id']}}]">
+                                        {% for branch,selected in project['branches'] %}
+                                        <option value="{{branch}}" {% if selected %} selected="selected" {% endif %}>{{branch}}</option>
+                                        {% endfor %}
+                                    </select>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            <hr class="bs-docs-separator">
+            <button type="submit" id="launch-prototype" class="btn btn-info"><i class="icon-plus-sign icon-white"></i> Create a Prototype</button>
         </form>
     </div>
 </div>
-<hr class="bs-docs-separator">
-<button type="submit" id="launch-prototype" class="btn btn-info"><i class="icon-plus-sign icon-white"></i> Create a Prototype</button>
+
+
+<script>
+window.onload =
+    function(){
+        $(".collapse").collapse({
+          toggle: false
+        })
+    };
+
+</script>
 {% endblock %}
+

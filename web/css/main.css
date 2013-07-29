@@ -49,3 +49,11 @@ body {
 .container .credit {
     margin: 20px 0;
 }
+
+.accordion-toggle {
+    padding: 20px;
+}
+
+.accordion-group {
+    margin-bottom: 20px;
+}
