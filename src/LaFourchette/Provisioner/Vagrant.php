@@ -270,7 +270,7 @@ EOS;
         $cmd = 'vagrant halt --force';
         $this->run($vm, $cmd);
 
-        $cmd = 'vagrant destroy';
+        $cmd = 'vagrant destroy -f';
         $this->run($vm, $cmd);
     }
 }
