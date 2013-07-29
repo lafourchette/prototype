@@ -80,6 +80,10 @@ class Vagrant extends ProvisionerAbstract
             } else if (strpos($output, ' not created (') !== false) {
                 return VM::STOPPED;
             } else if (strpos($output, ' poweroff (') !== false) {
+                $now = new \DateTime();
+                if ($now > $vm->getExpiredDt()) {
+                    return VM::EXPIRED;
+                }
                 return VM::STOPPED;
             } else if (strpos($output, ' saved (') !== false) {
                 return VM::SUSPEND;

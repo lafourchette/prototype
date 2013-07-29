@@ -59,7 +59,7 @@ class VmService
     public function initialise(Vm $vm)
     {
         $vmManager = $this->getVmManager();
-        $provisioner = $this->getProvisioner();
+        $provisioner = $this->getProvisionner();
         $provisioner->initialise($vm);
         $vm->setStatus(VM::STOPPED);
         $vmManager->flush($vm);
@@ -68,7 +68,7 @@ class VmService
     public function delete(Vm $vm)
     {
         $vmManager = $this->getVmManager();
-        $provisioner = $this->getProvisioner();
+        $provisioner = $this->getProvisionner();
         $provisioner->delete($vm);
 
         $vm->setStatus(Vm::STOPPED);
