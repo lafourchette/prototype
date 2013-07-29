@@ -39,8 +39,7 @@ class Status extends ConsoleAbstract
          */
         $vm = $vmManager->load($vmNumber);
 
-        $provisioner = $this->getProvisioner();
-        switch ($provisioner->getStatus($vm)) {
+        switch ($this->application['vm.service']->getStatus($vm)) {
             case VM::MISSING:
                 $output->writeln('The VM is missing');
                 break;
