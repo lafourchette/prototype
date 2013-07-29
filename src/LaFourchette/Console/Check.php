@@ -93,6 +93,7 @@ class Check extends ConsoleAbstract
                             $vm->setStatus(Vm::ARCHIVED);
                             $this->application['vm.service']->delete($vm);
                             $this->application['vm.service']->prepare($vm);
+                            $vmManager->save($vm);
                             break;
                     }
                 }
