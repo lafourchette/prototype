@@ -34,8 +34,8 @@ class IntegManager extends AbstractManager
         $rsm->addFieldResult('i', 'mac', 'mac');
         $rsm->addFieldResult('i', 'github_key', 'githubKey');
 
-        $query = $this->em->createNativeQuery('select integ.id_integ, integ.name, integ.suffix, integ.path, integ.server, integ.ssh_key, integ.ssh_user, integ.ip, integ.mac, integ.github_key from integ left join vm on integ.id_integ = vm.id_integ and vm.status in (:status) where vm.id_vm is null and integ.is_actived = 1 order by random() LIMIT 1', $rsm);
-        $query->setParameter(':status', Vm::$availableStatus);
+        $query = $this->em->createNativeQuery('select integ.id_integ, integ.name, integ.suffix, integ.path, integ.server, integ.ssh_key, integ.ssh_user, integ.ip, integ.mac, integ.github_key from integ left join vm on integ.id_integ = vm.id_integ and vm.status not in (:status) where vm.id_vm is null and integ.is_actived = 1 order by random() LIMIT 1', $rsm);
+        $query->setParameter(':status', Vm::$freeStatus);
 
         try {
             return $query->getSingleResult();

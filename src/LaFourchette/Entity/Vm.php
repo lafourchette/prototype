@@ -26,7 +26,9 @@ class Vm
     
     public static $availableStatus = array(self::RUNNING, self::SUSPEND, self::TO_START, self::STARTED);
     public static $archiveStatus = array(self::EXPIRED, self::ARCHIVED);
-        
+
+    public static $freeStatus = array(self::ARCHIVED);
+
     /**
      * @ORM\Id
      * @ORM\Column(type="integer", name="id_vm")
