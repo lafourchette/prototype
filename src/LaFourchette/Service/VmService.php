@@ -136,7 +136,7 @@ class VmService
     {
         $vmManager = $this->getVmManager();
         $this->delete($vm);
-        $vm->setStatus(VM::ARCHIVED);
+        $vm->setStatus(VM::EXPIRED);
         $vmManager->flush($vm);
         $this->prepare($vm);
     }
