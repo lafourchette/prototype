@@ -99,12 +99,18 @@ class Vagrant extends ProvisionerAbstract
      */
     protected function run(VM $vm, $cmd)
     {
+
+        echo "\nRunning command : " . $cmd . "\n";
+
         $cmd = $this->getPrefixCommand($vm->getInteg(), $cmd);
         $process = new Process($cmd);
         $process->setTimeout(0);
-        $process->run();
 
-        return $process->getOutput();
+        $process->run(function ($type, $output) {echo ' > ' . str_replace("\n", "\n > ", $output) . "\n";});
+
+        $output = $process->getOutput();
+
+        return $output;
     }
 
     /**
