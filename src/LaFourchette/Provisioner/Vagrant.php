@@ -111,7 +111,7 @@ class Vagrant extends ProvisionerAbstract
      * @param VM $vm
      * @throws Exception\UnableToStartException
      */
-    public function start(VM $vm, $provisionEnable = true)
+    public function start(VM $vm, $provisionEnable = true, $node = 'project.lafourchette.local')
     {
         switch ($this->getStatus($vm)) {
             case VM::SUSPEND:
@@ -129,7 +129,7 @@ class Vagrant extends ProvisionerAbstract
         $cmd = 'git pull';
         $this->run($vm, $cmd);
 
-        $this->generateFact($vm);
+        $this->generateFact($vm, $node);
 
         $cmd = 'vagrant up --no-provision';
         $this->run($vm, $cmd);
@@ -164,7 +164,7 @@ class Vagrant extends ProvisionerAbstract
         $this->generateFact($vm);
     }
 
-    protected function generateFact(Vm $vm)
+    protected function generateFact(Vm $vm, $node = 'project.lafourchette.local')
     {
         $integ  = $vm->getInteg();
         $mac = str_replace(':', '', $integ->getMac());
@@ -244,7 +244,7 @@ Facts = {
   },
   # Key used for cloning lf repos. Copied at VM startup
   'github_private_key' => '{$githubKey}',
-  'node' => 'integ.lafourchette.local',
+  'node' => '{$node}',
   'debug' => false,
   'nfs' => false,
   'share' => false,
