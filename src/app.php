@@ -24,6 +24,16 @@ $app['twig'] = $app->share($app->extend('twig', function($twig, $app) {
                     return $twig;
                 }));
 
+$app->before( function() use ( $app ) {
+    $flash = $app[ 'session' ]->get( 'flash' );
+    $app[ 'session' ]->set( 'flash', null );
+
+    if ( !empty( $flash ) )
+    {
+        $app[ 'twig' ]->addGlobal( 'flash', $flash );
+    }
+});
+
 $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
     'db.options' => array(
         'driver' => 'pdo_sqlite',

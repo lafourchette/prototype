@@ -17,7 +17,8 @@
             <th>Status</th>
             <th>Created By</th>
             <th>Expired at</th>
-            <th></th>
+            <th>Link</th>
+            <th>Actions</th>
         </tr>
         {% for vm in vms %}
             <tr>
@@ -25,13 +26,20 @@
                 <td>{{vm.integ.name}}</td>
                 <td>{{vm.name}}</td>
                 <td>{{la_fourchette_prototype_vm_status(vm.status)}}</td>
-                <td>{{vm.createdBy}}</td>
-                <td>{{vm.expiredDt|date('Y-m-d h:i:s')}}</td>
+                <td>{{vm.createdBy.username}}</td>
+                <td>{{vm.expiredDt|date('Y-m-d H:i:s')}}</td>
                 {% if vm.status == 0 %}
                     <td><a href="http://status{{vm.integ.suffix}}">Go to status page</a></td>
                 {% else %}
                     <td>&nbsp;</td>
-                {% endif %} 
+                {% endif %}
+                <td>
+                    {% if app.session.get('user').username == vm.createdBy.username %}
+                        <a href="/force-expire-prototype/{{ vm.idVm }}" class="btn btn-danger">Force the expiration</a>
+                    {% else %}
+                        &nbsp;
+                    {% endif %}
+                </td>
             </tr>
         {% endfor %}
     </table>

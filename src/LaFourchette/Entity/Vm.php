@@ -74,8 +74,9 @@ class Vm
     protected $name;
 
     /**
-     * @ORM\Column(type="string", name="created_by")
-     * @var string
+     * @ORM\OneToOne(targetEntity="LaFourchette\Entity\User")
+     * @ORM\JoinColumn(name="created_by", referencedColumnName="id_user")
+     * @var object
      */
     protected $createdBy;
 

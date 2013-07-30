@@ -85,12 +85,9 @@ class Check extends ConsoleAbstract
                                 $output->writeln('  - Is missing');
                             break;
                         case Vm::EXPIRED:
-                            if ($savedStatus != Vm::EXPIRED) {
-
-                                $output->writeln('  - Has just expired');
-                                $notify->send('expired', $vm);
-                                $this->application['vm.service']->archived($vm);
-                            }
+                            $output->writeln('  - Has just expired');
+                            $notify->send('expired', $vm);
+                            $this->application['vm.service']->archived($vm);
                             $vm->setStatus(Vm::ARCHIVED);
                             $vmManager->save($vm);
                             break;

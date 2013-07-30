@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
+use LaFourchette\Entity\Vm;
 
 $app->get('/', function () use ($app) {
     return $app['twig']->render('index.html', array());
@@ -55,7 +56,36 @@ $app->get('/login', function () use ($app) {
 $app->get('/create-prototype', function () use ($app) {
     return $app['twig']->render('create.html', array('repositories' => $app['github.manager']->getAllRepositoriesWithBranch()));
 })
-->bind('create-prototype');
+    ->bind('create-prototype');
+
+$app->get('/force-expire-prototype/{idVm}', function ($idVm) use ($app) {
+    $vmManager = $app['vm.manager'];
+    /**
+     * @var Vm $vm
+     */
+    $vm = $vmManager->load($idVm);
+
+    if ($vm->getCreatedBy()->getIdUser() == $app['session']->get('user')->getIdUser()) {
+        $vm->setExpiredDt(new \DateTime());
+        $vm->setStatus(Vm::EXPIRED);
+        $vmManager->flush($vm);
+
+        $app[ 'session' ]->set( 'flash', array(
+            'type'    =>'success',
+            'short'   =>'The VM has expired',
+            'ext'     =>'The given VM has been set to expired. Its slot will be free and could be reuse in some minutes by another person.',
+        ) );
+    } else {
+        $app[ 'session' ]->set( 'flash', array(
+            'type'    =>'error',
+            'short'   =>'You have no rigth to do this.',
+            'ext'     =>'You can only force the expiration of a VM that you have created.',
+        ) );
+    }
+
+    return $app->redirect('/');
+})
+    ->bind('force-expire-prototype');
 
 $app->post('/launch-prototype', function () use ($app) {
     if(null === $projects = $app['request']->request->get('projects'))
@@ -68,7 +98,12 @@ $app->post('/launch-prototype', function () use ($app) {
     {
         //Doctrine2 does not handle correctly
         $creator = $app['vm.creator'];
+        /**
+         * @var Vm $vm
+         */
         $vm = $creator->create();
+
+        $vm->setCreatedBy($app['session']->get('user'));
         //Save the vm first
         $app['vm.manager']->save($vm);
 
