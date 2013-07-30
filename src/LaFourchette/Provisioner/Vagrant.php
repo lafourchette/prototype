@@ -106,9 +106,11 @@ class Vagrant extends ProvisionerAbstract
         $process = new Process($cmd);
         $process->setTimeout(0);
 
-        $process->run(function ($type, $output) {echo ' > ' . str_replace("\n", "\n > ", $output) . "\n";});
+        $process->run(function ($type, $output) {echo ' > ' . str_replace("\n", "\n > ", $output);});
 
         $output = $process->getOutput();
+
+        echo "\n";
 
         return $output;
     }
