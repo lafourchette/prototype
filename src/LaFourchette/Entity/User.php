@@ -37,6 +37,13 @@ class User
     protected $dn;
 
     /**
+     * @ORM\OneToMany(targetEntity="LaFourchette\Entity\UserNotify", mappedBy="user", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(name="id_user", referencedColumnName="id_user")
+     * @var UserNotify[]
+     */
+    protected $usersNotify;
+
+    /**
      * @return string
      */
     public function __toString()

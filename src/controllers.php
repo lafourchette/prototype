@@ -83,10 +83,11 @@ $app->get('/force-expire-prototype/{idVm}', function ($idVm) use ($app) {
     ->bind('force-expire-prototype');
 
 $app->post('/launch-prototype', function () use ($app) {
-    if(null === $projects = $app['request']->request->get('projects'))
-    {
+    if(null === $projects = $app['request']->request->get('projects')) {
         throw new \Exception('The "projects" variable is missing');
     }
+
+    $users = $app['request']->request->get('users');
     
     //Refactor this please...
     if($app['integ_availabibilty.checker']->check())
@@ -98,18 +99,32 @@ $app->post('/launch-prototype', function () use ($app) {
          */
         $vm = $creator->create();
 
-        $vm->setCreatedBy($app['session']->get('user'));
+        $user = $app['user.manager']->getOrCreate($app['session']->get('user'));
+        $vm->setCreatedBy($user);
         //Save the vm first
         $app['vm.manager']->save($vm);
 
         //Create a related object between project and vm
         foreach ($projects as $projectId => $branch) {
-                $vmProjectCreator = $app['vm_project.creator'];
-                $vmProjectCreator->addBranch($branch);
-                $vmProjectCreator->addProject($app['project.manager']->load($projectId));
-                $vmProjectCreator->addVm($vm);
-                $vmProject = $vmProjectCreator->create();
-                $app['vm_project.manager']->save($vmProject);
+            $vmProjectCreator = $app['vm_project.creator'];
+            $vmProjectCreator->addBranch($branch);
+            $vmProjectCreator->addProject($app['project.manager']->load($projectId));
+            $vmProjectCreator->addVm($vm);
+            $vmProject = $vmProjectCreator->create();
+            $app['vm_project.manager']->save($vmProject);
+        }
+
+        $userManager = $app['user.manager'];
+        $userNotifyManager = $app['user_notify.manager'];
+
+        foreach ($users as $userName) {
+            $ldapUser = $app['ldap.manager']->getUserInfo($userName);
+                $user = $userManager->getOrCreate($ldapUser);
+
+                $userNotify = new \LaFourchette\Entity\UserNotify();
+                $userNotify->setUser($user);
+                $userNotify->setVm($vm);
+                $userNotifyManager->save($userNotify);
         }
     }
     

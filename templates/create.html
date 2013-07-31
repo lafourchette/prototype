@@ -31,10 +31,10 @@
                     </div>
                 {% endfor %}
 
-            Person to notify once the VM is ready:<br />
-            <select multiple class="chosen-select span6" data-placeholder="Choose all person you want..."">
+            Persons to notify once the VM is ready:<br />
+            <select multiple class="chosen-select span6" data-placeholder="Choose all persons you want..." name="users[]">
                 {% for user in users %}
-                    <option value="{{ user.username }}">{{ user.username }} - {{ user.email }}</option>
+                    <option value="{{ user.username }}" {% if user.username == app.session.get('user').username %} selected {% endif %}>{{ user.username }} - {{ user.email }}</option>
                 {% endfor %}
             </select>
 

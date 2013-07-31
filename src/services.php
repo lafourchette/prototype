@@ -16,6 +16,10 @@ $app['user.manager'] = $app->share(function() use ($app){
     return new LaFourchette\Manager\UserManager($app['orm.em'],'\LaFourchette\Entity\User');
 });
 
+$app['user_notify.manager'] = $app->share(function() use ($app){
+    return new LaFourchette\Manager\UserNotifyManager($app['orm.em'],'\LaFourchette\Entity\UserNotify');
+});
+
 $app['project.manager'] = $app->share(function() use ($app){
     return new \LaFourchette\Manager\ProjectManager($app['orm.em'],'\LaFourchette\Entity\Project');
 });

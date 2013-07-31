@@ -95,6 +95,13 @@ class Vm
     protected $vmProjects;
 
     /**
+     * @ORM\OneToMany(targetEntity="LaFourchette\Entity\UserNotify", mappedBy="vm", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(name="id_vm", referencedColumnName="id_vm")
+     * @var UserNotify[]
+     */
+    protected $usersNotify;
+
+    /**
      * @return \DateTime
      */
     public function getExpiredDt()
