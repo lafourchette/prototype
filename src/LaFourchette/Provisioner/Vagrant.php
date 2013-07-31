@@ -225,7 +225,7 @@ class Vagrant extends ProvisionerAbstract
         $fact = <<<EOS
 Facts = {
   'facter' => {
-    'application_env' => 'dev',
+    'application_env' => 'demo',
     'user_email' => 'chuck@norris.com',
     # Used for commits
     'user_name' => 'Chuck Norris',
