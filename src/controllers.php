@@ -19,25 +19,16 @@ $app->get('/login', function () use ($app) {
     $username = $app['request']->server->get('PHP_AUTH_USER', false);
     $password = $app['request']->server->get('PHP_AUTH_PW', false);
     
-    if($username && $password)
-    {
+    if($username && $password) {
         $userManager = $app['user.manager'];
 
         //Retrieve user information
         $ldapUser = $app['ldap.manager']->getUserInfo($username);
 
-            if(null !== $ldapUser)
-            {
+        if(null !== $ldapUser) {
+            $user = $userManager->getOrCreate($ldapUser);
 
-            $user = $userManager->loadOneBy(array('username' => $ldapUser->getUsername()));
-
-            if(null === $user){
-                $userManager->save($ldapUser);
-                $user = $userManager->loadOneBy(array('username' => $ldapUser->getUsername()));
-            }
-
-            if(null !== $user)
-            {
+            if(null !== $user) {
                 $isAuthenticated = $app['ldap.manager']->bind($user->getDn(), $password);
                 if($isAuthenticated)
                 {
@@ -54,7 +45,11 @@ $app->get('/login', function () use ($app) {
 ->bind('login');
 
 $app->get('/create-prototype', function () use ($app) {
-    return $app['twig']->render('create.html', array('repositories' => $app['github.manager']->getAllRepositoriesWithBranch()));
+    $params = array();
+    $params['repositories'] = $app['github.manager']->getAllRepositoriesWithBranch();
+    $params['users'] = $app['ldap.manager']->listUsers();
+
+    return $app['twig']->render('create.html', $params);
 })
     ->bind('create-prototype');
 
@@ -150,7 +145,6 @@ $app->error(function (\Exception $e, $code) use ($app) {
 // check login
 $app->on(KernelEvents::REQUEST, function (GetResponseEvent $event) use ($app) {
     $request = $event->getRequest();
-    
 
     if ($request->get('_route') === '_profiler') { 
        return;

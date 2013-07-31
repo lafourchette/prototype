@@ -30,6 +30,14 @@
                         </div>
                     </div>
                 {% endfor %}
+
+            Person to notify once the VM is ready:<br />
+            <select multiple class="chosen-select span6" data-placeholder="Choose all person you want..."">
+                {% for user in users %}
+                    <option value="{{ user.username }}">{{ user.username }} - {{ user.email }}</option>
+                {% endfor %}
+            </select>
+
             <hr class="bs-docs-separator">
             <button type="submit" id="launch-prototype" class="btn btn-info"><i class="icon-plus-sign icon-white"></i> Create a Prototype</button>
         </form>
@@ -42,7 +50,9 @@ window.onload =
     function(){
         $(".collapse").collapse({
           toggle: false
-        })
+        });
+
+        $(".chosen-select").chosen({search_contains: true});
     };
 
 </script>

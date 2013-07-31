@@ -78,4 +78,25 @@ class LdapManager
         return $user;
     }
 
+    public function listUsers()
+    {
+        if (null === $this->ldapRes) {
+            $this->connect();
+        }
+
+        $result = ldap_search($this->ldapRes, $this->baseDn, "(mail=*)", array("mail", "uid", "dn"));
+        $entries = ldap_get_entries($this->ldapRes, $result);
+
+        $users = array();
+
+        for ($i = 0 ; $i < $entries['count'] ; $i++) {
+            $users[] = array(
+                'email' => $entries[$i]['mail'][0],
+                'username' => $entries[$i]['uid'][0]
+            );
+        }
+
+        return $users;
+    }
+
 }
