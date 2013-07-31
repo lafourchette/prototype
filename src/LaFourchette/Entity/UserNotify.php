@@ -46,7 +46,7 @@ class UserNotify
     }
 
     /**
-     * @return Project
+     * @return User
      */
     public function getUser()
     {

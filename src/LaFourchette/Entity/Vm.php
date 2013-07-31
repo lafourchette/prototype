@@ -253,9 +253,27 @@ class Vm
         return $this->vmProjects;
     }
 
+    /**
+     * @return string
+     */
     public function __toString()
     {
         return $this->name . '-' . $this->getInteg()->getName();
     }
 
+    /**
+     * @return UserNotify[]
+     */
+    public function getUsersNotify()
+    {
+        return $this->usersNotify;
+    }
+
+    /**
+     * @param UserNotify[] $usersNotify
+     */
+    public function setUsersNotify(array $usersNotify)
+    {
+        $this->usersNotify = $usersNotify;
+    }
 }

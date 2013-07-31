@@ -23,7 +23,9 @@ class NotifyService
         $content = $message->getContent($vm);
         $subject = $message->getSubject($vm);
 
-        mail('lchenay@lafourchette.com', $subject, $content);
+        foreach ($vm->getUsersNotify() as $userNotify) {
+            mail($userNotify->getUser()->getEmail(), $subject, $content);
+        }
     }
 
     /**
