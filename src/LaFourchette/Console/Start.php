@@ -16,6 +16,7 @@ class Start extends ConsoleAbstract
     /**
      * @param \Silex\Application $app
      * @param Application $console
+     * @return mixed|void
      */
     static public function register(\Silex\Application $app, Application $console)
     {
@@ -29,6 +30,11 @@ class Start extends ConsoleAbstract
             });
     }
 
+    /**
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @return mixed|void
+     */
     public function run(InputInterface $input, OutputInterface $output)
     {
         $vmNumber = $input->getArgument('vm-number');

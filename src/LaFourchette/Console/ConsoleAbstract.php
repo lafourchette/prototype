@@ -31,7 +31,18 @@ abstract class ConsoleAbstract
         return $this->application;
     }
 
+    /**
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @return mixed
+     */
     abstract public function run(InputInterface $input, OutputInterface $output);
+
+    /**
+     * @param Application $app
+     * @param \Symfony\Component\Console\Application $console
+     * @return mixed
+     */
     abstract static public function register(Application $app, \Symfony\Component\Console\Application $console);
 
     /**
