@@ -42,7 +42,7 @@ $app['vm_project.creator'] = $app->share(function() use ($app){
 
 
 $app['notify.service'] = $app->share(function() use ($app) {
-    $notify = new \LaFourchette\Notify();
+    $notify = new \LaFourchette\Service\NotifyService();
     $notify->addNotifyMessage('expired', new \LaFourchette\Notify\Expired());
     $notify->addNotifyMessage('ready', new \LaFourchette\Notify\Ready());
     $notify->addNotifyMessage('killed', new \LaFourchette\Notify\Killed());

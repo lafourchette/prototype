@@ -7,6 +7,7 @@ use LaFourchette\Manager\VmManager;
 use LaFourchette\Notify;
 use LaFourchette\Provisioner\Exception\UnableToStartException;
 use LaFourchette\Provisioner\ProvisionerInterface;
+use LaFourchette\Service\NotifyService;
 
 class VmService
 {
@@ -22,7 +23,7 @@ class VmService
     protected $provisionner = null;
 
     /**
-     * @var Notify|null
+     * @var NotifyService|null
      */
     protected $notifyService = null;
 
@@ -46,11 +47,17 @@ class VmService
         return $this->provisionner;
     }
 
-    public function setNotifyService(Notify $notifyService)
+    /**
+     * @param NotifyService $notifyService
+     */
+    public function setNotifyService(NotifyService $notifyService)
     {
         $this->notifyService = $notifyService;
     }
 
+    /**
+     * @return NotifyService|null
+     */
     public function getNotifyService()
     {
         return $this->notifyService;

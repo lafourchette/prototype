@@ -1,11 +1,11 @@
 <?php
 
-namespace LaFourchette;
+namespace LaFourchette\Service;
 
 use LaFourchette\Entity\Vm;
 use LaFourchette\Notify\NotifyAbstract;
 
-class Notify
+class NotifyService
 {
 
     protected $notify = array();

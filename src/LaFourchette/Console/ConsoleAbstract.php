@@ -3,10 +3,10 @@
 namespace LaFourchette\Console;
 
 use LaFourchette\Manager\VmManager;
-use LaFourchette\Provisioner\Vagrant;
 use Silex\Application;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use LaFourchette\Service\NotifyService;
 
 abstract class ConsoleAbstract
 {
@@ -45,6 +45,9 @@ abstract class ConsoleAbstract
         return $vmManager;
     }
 
+    /**
+     * @return NotifyService
+     */
     public function getNotify()
     {
         $app = $this->getApplication();
