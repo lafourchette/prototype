@@ -8,29 +8,38 @@
 
 <hr class="bs-docs-separator">
 
-<div class="row">
-    <div class="span12">   
+<div class="row-fluid">
+    <div class="span12">
         <form id="create-prototype" class="form-block" action="{{app.request.baseUrl}}/launch-prototype" method="POST" class="accordion" id="accordion">
+            <div class="row-fluid">
                 {% for project in repositories %}
-                    <div class="accordion-group">
+                    <div class="accordion-group span6">
                         <div class="accordion-heading">
-                            <a href="#collapse{{project['name']}}" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion"><label><strong>{{project['name']}}</strong></label></a>
-                        </div>
-                        <div id="collapse{{project['name']}}"  class="accordion-body collapse">
-                            <div class="accordion-inner">
-                                <label>Branches</label>
-                                {% if project['branches']|length > 0 %}
+                            <div href="#collapse{{project['name']}}" class="accordion-toggle">
+                                <div class="span6">
+                                    <strong>{{project['name']}}</strong>
+                                </div>
+                                <div class="span6">
+                                    {% if project['branches']|length > 0 %}
                                     <select name="projects[{{project['id']}}]">
                                         {% for branch,selected in project['branches'] %}
                                         <option value="{{branch}}" {% if selected %} selected="selected" {% endif %}>{{branch}}</option>
                                         {% endfor %}
                                     </select>
-                                {% endif %}
+                                    {% endif %}
+                                </div>
                             </div>
                         </div>
                     </div>
+                    {% if loop.index % 2 == 0 %}
+                        </div>
+                        <div class="row-fluid">
+                    {% endif %}
                 {% endfor %}
+            </div>
 
+            <div style="clear: both">&nbsp;</div>
+            <br />
             Persons to notify once the VM is ready:<br />
             <select multiple class="chosen-select span6" data-placeholder="Choose all persons you want..." name="users[]">
                 {% for user in users %}
@@ -48,10 +57,6 @@
 <script>
 window.onload =
     function(){
-        $(".collapse").collapse({
-          toggle: false
-        });
-
         $(".chosen-select").chosen({search_contains: true});
     };
 
