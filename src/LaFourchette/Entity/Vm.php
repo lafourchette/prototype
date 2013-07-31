@@ -246,4 +246,9 @@ class Vm
         return $this->vmProjects;
     }
 
+    public function __toString()
+    {
+        return $this->name . '-' . $this->getInteg()->getName();
+    }
+
 }
