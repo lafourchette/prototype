@@ -37,6 +37,7 @@ class GetVmId extends ConsoleAbstract
         $vmManager = $this->getVmManager();
 
         $status = Vm::$availableStatus;
+        $status[] = VM::EXPIRED;
 
         $vms = $vmManager->loadBy(array('status' => $status));
 
