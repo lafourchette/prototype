@@ -31,35 +31,53 @@ class VmProject
 
     /**
      * @ORM\Column(type="string", name="branch")
-     * @var int
+     * @var string
      */
     protected $branch;
-    
+
+    /**
+     * @return Vm
+     */
     public function getVm()
     {
         return $this->vm;
     }
 
+    /**
+     * @param Vm $vm
+     */
     public function setVm(Vm $vm)
     {
         $this->vm = $vm;
     }
 
+    /**
+     * @return Project
+     */
     public function getProject()
     {
         return $this->project;
     }
 
+    /**
+     * @param Project $project
+     */
     public function setProject(Project $project)
     {
         $this->project = $project;
     }
 
+    /**
+     * @return string
+     */
     public function getBranch()
     {
         return $this->branch;
     }
 
+    /**
+     * @param string $branch
+     */
     public function setBranch($branch)
     {
         $this->branch = $branch;

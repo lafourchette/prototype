@@ -35,47 +35,74 @@ class User
      * @var string
      */    
     protected $dn;
-    
+
+    /**
+     * @return string
+     */
     public function __toString()
     {
         return $this->username;
     }
-    
+
+    /**
+     * @param string $dn
+     */
     public function setDn($dn)
     {
         $this->dn = $dn;
     }
-    
+
+    /**
+     * @return string
+     */
     public function getDn()
     {
         return $this->dn;
     }
 
+    /**
+     * @return int
+     */
     public function getIdUser()
     {
         return $this->idUser;
     }
 
+    /**
+     * @param int $idUser
+     */
     public function setIdUser($idUser)
     {
         $this->idUser = $idUser;
     }
 
+    /**
+     * @return string
+     */
     public function getUsername()
     {
         return $this->username;
     }
 
+    /**
+     * @param string $username
+     */
     public function setUsername($username)
     {
         $this->username = $username;
     }
 
+    /**
+     * @return string
+     */
     public function getEmail()
     {
         return $this->email;
     }
 
+    /**
+     * @param string $email
+     */
     public function setEmail($email)
     {
         $this->email = $email;

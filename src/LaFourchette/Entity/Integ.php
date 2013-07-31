@@ -78,103 +78,163 @@ class Integ
      * @var object
      */
     protected $vm;
-    
 
+
+    /**
+     * @return int
+     */
     public function getIdInteg()
     {
         return $this->idInteg;
     }
 
+    /**
+     * @param int $id
+     */
     public function setIdInteg($id)
     {
         $this->id = $id;
     }
 
+    /**
+     * @return null|string
+     */
     public function getName()
     {
         return $this->name;
     }
 
+    /**
+     * @param string $name
+     */
     public function setName($name)
     {
         $this->name = $name;
     }
 
+    /**
+     * @return string
+     */
     public function getSuffix()
     {
         return $this->suffix;
     }
 
+    /**
+     * @param string $suffix
+     */
     public function setSuffix($suffix)
     {
         $this->suffix = $suffix;
     }
 
+    /**
+     * @return string
+     */
     public function getPath()
     {
         return $this->path;
     }
 
+    /**
+     * @param string $path
+     */
     public function setPath($path)
     {
         $this->path = $path;
     }
 
+    /**
+     * @return null|string
+     */
     public function getServer()
     {
         return $this->server;
     }
 
+    /**
+     * @param string $server
+     */
     public function setServer($server)
     {
         $this->server = $server;
     }
 
+    /**
+     * @return string
+     */
     public function getSshKey()
     {
         return $this->sshKey;
     }
 
+    /**
+     * @param string $sshKey
+     */
     public function setSshKey($sshKey)
     {
         $this->sshKey = $sshKey;
     }
 
+    /**
+     * @return string
+     */
     public function getSshUser()
     {
         return $this->sshUser;
     }
 
+    /**
+     * @param string $sshUser
+     */
     public function setSshUser($sshUser)
     {
         $this->sshUser = $sshUser;
     }
 
+    /**
+     * @return string
+     */
     public function getIp()
     {
         return $this->ip;
     }
 
+    /**
+     * @param string $ip
+     */
     public function setIp($ip)
     {
         $this->ip = $ip;
     }
 
+    /**
+     * @return string
+     */
     public function getMac()
     {
         return $this->mac;
     }
 
+    /**
+     * @param string $mac
+     */
     public function setMac($mac)
     {
         $this->mac = $mac;
     }
 
+    /**
+     * @return string
+     */
     public function getGithubKey()
     {
         return $this->githubKey;
     }
 
+    /**
+     * @param string $githubKey
+     */
     public function setGithubKey($githubKey)
     {
         $this->githubKey = $githubKey;

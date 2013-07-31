@@ -5,6 +5,7 @@ namespace LaFourchette\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use LaFourchette\Entity\VmProject;
+use LaFourchette\Entity\User;
 
 /**
  * @ORM\Entity
@@ -76,7 +77,7 @@ class Vm
     /**
      * @ORM\OneToOne(targetEntity="LaFourchette\Entity\User")
      * @ORM\JoinColumn(name="created_by", referencedColumnName="id_user")
-     * @var object
+     * @var User
      */
     protected $createdBy;
 
@@ -92,82 +93,130 @@ class Vm
      * @var VmProject[]
      */
     protected $vmProjects;
-    
+
+    /**
+     * @return \DateTime
+     */
     public function getExpiredDt()
     {
         return $this->expiredDt;
     }
 
+    /**
+     * @param \DateTime $expiredDt
+     */
     public function setExpiredDt(\DateTime $expiredDt)
     {
         $this->expiredDt = $expiredDt;
     }
 
+    /**
+     * @return int
+     */
     public function getIdVm()
     {
         return $this->idVm;
     }
 
+    /**
+     * @param int $id
+     */
     public function setIdVm($id)
     {
         $this->idVm = $id;
     }
 
+    /**
+     * @return int
+     */
     public function getStatus()
     {
         return $this->status;
     }
 
+    /**
+     * @param int $status
+     */
     public function setStatus($status)
     {
         $this->status = $status;
     }
 
+    /**
+     * @return \DateTime
+     */
     public function getCreateDt()
     {
         return $this->createDt;
     }
 
+    /**
+     * @param \DateTime $createDt
+     */
     public function setCreateDt(\DateTime $createDt)
     {
         $this->createDt = $createDt;
     }
 
+    /**
+     * @return \DateTime
+     */
     public function getUpdateDt()
     {
         return $this->updateDt;
     }
 
+    /**
+     * @param \DateTime $updateDt
+     */
     public function setUpdateDt(\DateTime $updateDt)
     {
         $this->updateDt = $updateDt;
     }
 
+    /**
+     * @return \DateTime
+     */
     public function getDeleteDt()
     {
         return $this->deleteDt;
     }
 
+    /**
+     * @param \DateTime $deleteDt
+     */
     public function setDeleteDt(\DateTime $deleteDt)
     {
         $this->deleteDt = $deleteDt;
     }
 
+    /**
+     * @return string
+     */
     public function getName()
     {
         return $this->name;
     }
 
+    /**
+     * @param $name
+     */
     public function setName($name)
     {
         $this->name = $name;
     }
 
+    /**
+     * @return User
+     */
     public function getCreatedBy()
     {
         return $this->createdBy;
     }
 
+    /**
+     * @param User $createdBy
+     */
     public function setCreatedBy(User $createdBy)
     {
         $this->createdBy = $createdBy;
