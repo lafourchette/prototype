@@ -40,12 +40,16 @@
 
             <div style="clear: both">&nbsp;</div>
             <br />
-            Persons to notify once the VM is ready:<br />
-            <select multiple class="chosen-select span6" data-placeholder="Choose all persons you want..." name="users[]">
-                {% for user in users %}
-                    <option value="{{ user.username }}" {% if user.username == app.session.get('user').username %} selected {% endif %}>{{ user.username }} - {{ user.email }}</option>
-                {% endfor %}
-            </select>
+            <div class="span12">
+                Persons to notify once the VM is ready:<br />
+                <div class="span 2">&nbsp;</div>
+                <select multiple class="chosen-select span8" data-placeholder="Choose all persons you want..." name="users[]">
+                    {% for user in users %}
+                        <option value="{{ user.username }}" {% if user.username == app.session.get('user').username %} selected {% endif %}>{{ user.username }} - {{ user.email }}</option>
+                    {% endfor %}
+                </select>
+                <div class="span 2">&nbsp;</div>
+            </div>
 
             <hr class="bs-docs-separator">
             <button type="submit" id="launch-prototype" class="btn btn-info"><i class="icon-plus-sign icon-white"></i> Create a Prototype</button>
@@ -57,7 +61,7 @@
 <script>
 window.onload =
     function(){
-        $(".chosen-select").chosen({search_contains: true});
+        $(".chosen-select").chosen({search_contains: true, inherit_select_classes: true, width: "75%"});
     };
 
 </script>
