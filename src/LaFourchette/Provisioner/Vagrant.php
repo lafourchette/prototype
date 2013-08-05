@@ -119,7 +119,7 @@ class Vagrant extends ProvisionerAbstract
      * @param VM $vm
      * @throws Exception\UnableToStartException
      */
-    public function start(VM $vm, $provisionEnable = true, $node = 'project.lafourchette.local')
+    public function start(VM $vm, $provisionEnable = true, $node = 'integ.lafourchette.local')
     {
         switch ($this->getStatus($vm)) {
             case VM::SUSPEND:
@@ -172,7 +172,7 @@ class Vagrant extends ProvisionerAbstract
         $this->generateFact($vm);
     }
 
-    protected function generateFact(Vm $vm, $node = 'project.lafourchette.local')
+    protected function generateFact(Vm $vm, $node = 'integ.lafourchette.local')
     {
         $integ  = $vm->getInteg();
         $mac = str_replace(':', '', $integ->getMac());
