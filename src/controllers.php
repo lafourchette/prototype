@@ -82,6 +82,41 @@ $app->get('/force-expire-prototype/{idVm}', function ($idVm) use ($app) {
 })
     ->bind('force-expire-prototype');
 
+$app->get('/ask-more-prototype/{idVm}', function ($idVm) use ($app) {
+    $vmManager = $app['vm.manager'];
+    /**
+     * @var Vm $vm
+     */
+    $vm = $vmManager->load($idVm);
+
+    if ($vm->getCreatedBy()->getIdUser() == $app['session']->get('user')->getIdUser()) {
+        $date = $vm->getExpiredDt();
+        $date->add(new \DateInterval('PT2H'));
+
+        /**
+         * Force the clone because without it doctrine do not detect the change and so it do not update the db
+         */
+        $vm->setExpiredDt(clone $date);
+        $vm->setStatus(Vm::STOPPED);
+        $vmManager->save($vm);
+
+        $app[ 'session' ]->set( 'flash', array(
+            'type'    =>'success',
+            'short'   =>'2 hours has been added for your VM',
+            'ext'     =>'Please don\'t abuse of this feature. Do you really need as much time to test your stuff?',
+        ) );
+    } else {
+        $app[ 'session' ]->set( 'flash', array(
+            'type'    =>'error',
+            'short'   =>'You have no rigth to do this.',
+            'ext'     =>'You can only add time of a VM that you have created.',
+        ) );
+    }
+
+    return $app->redirect('/');
+})
+    ->bind('ask-more-prototype');
+
 $app->post('/launch-prototype', function () use ($app) {
     if(null === $projects = $app['request']->request->get('projects')) {
         throw new \Exception('The "projects" variable is missing');
