@@ -32,7 +32,7 @@ class Expired extends NotifyAbstract
         $str = <<<EOS
 Bonjour,
 
-L'environnement de test {$name} a expiré et va être détruire d'ici quelques instants.
+L'environnement de test {$name} a expiré et va être supprimé d'ici quelques instants.
 
 En espérant que la recette du/des projets a été fructueuse.
 
