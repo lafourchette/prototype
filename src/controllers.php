@@ -162,6 +162,12 @@ $app->post('/launch-prototype', function () use ($app) {
                 $userNotifyManager->save($userNotify);
         }
     }
+
+    $app[ 'session' ]->set( 'flash', array(
+        'type'    =>'success',
+        'short'   =>'Your prototype will be ready soon.',
+        'ext'     =>'You will receive an email as soon as it will be ready to be use.',
+    ) );
     
     return $app->redirect('/');
 })
