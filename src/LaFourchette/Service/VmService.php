@@ -89,7 +89,7 @@ class VmService
          */
         $provisionner = $this->getProvisionner();
 
-        $provisionner->start($vm, true, 'integ.lafourchette.local');
+        //$provisionner->start($vm, true, 'integ.lafourchette.local');
         $provisionner->stop($vm);
     }
 
