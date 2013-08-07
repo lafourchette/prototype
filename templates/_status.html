@@ -34,7 +34,7 @@
                     <td>&nbsp;</td>
                 {% endif %}
                 <td>
-                    {% if app.session.get('user').username == vm.createdBy.username %}
+                    {% if app.session.get('user').username == vm.createdBy.username && vm.status != 4 %}
                         <a href="/force-expire-prototype/{{ vm.idVm }}" class="btn btn-danger">Force the expiration</a>
                         <a href="/ask-more-prototype/{{ vm.idVm }}" class="btn btn-success">Ask for 2 hours more</a>
                     {% else %}

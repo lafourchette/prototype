@@ -24,7 +24,7 @@ class VmManager extends AbstractManager
         
         $qb->select('v')
            ->where($qb->expr()->notIn('v.status', ':status'))
-           ->setParameter('status', Vm::$archiveStatus);
+           ->setParameter('status', Vm::$freeStatus);
         
         return $qb->getQuery()->getResult();
     }
