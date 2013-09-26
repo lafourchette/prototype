@@ -29,7 +29,7 @@
                 <td>{{vm.createdBy.username}}</td>
                 <td>{{vm.expiredDt|date('Y-m-d H:i:s')}}</td>
                 {% if vm.status == 0 %}
-                    <td><a href="http://status{{vm.integ.suffix}}">Go to status page</a></td>
+                    <td><a href="http://status{{vm.integ.suffix}}" target="_blank">Go to status page</a></td>
                 {% else %}
                     <td>&nbsp;</td>
                 {% endif %}
