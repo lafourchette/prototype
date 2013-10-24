@@ -220,6 +220,7 @@ class Vagrant extends ProvisionerAbstract
 
         $suffix = $integ->getSuffix();
         $ip = $integ->getIp();
+        $bridge = $integ->getBridge();
         $githubKey = $vm->getInteg()->getGithubKey();
 
         $fact = <<<EOS
@@ -258,7 +259,7 @@ Facts = {
   'share' => false,
   'network_type' => 'public',
   #'ip' => '{$ip}',
-  'bridge' => 'eth0',
+  'bridge' => '{$bridge}',
   'mac' => '{$mac}' # used only in public network
 }
 EOS;

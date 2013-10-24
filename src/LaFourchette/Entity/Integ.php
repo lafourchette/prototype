@@ -67,6 +67,12 @@ class Integ
     protected $mac;
 
     /**
+     * @ORM\Column(type="string")
+     * @var string
+     */
+    protected $bridge;    
+
+    /**
      * @ORM\Column(type="string", name="github_key")
      * @var string
      */
@@ -207,6 +213,22 @@ class Integ
     {
         $this->ip = $ip;
     }
+
+    /**
+     * @return string
+     */
+    public function getBridge()
+    {
+        return $this->bridge;
+    }
+
+    /**
+     * @param string $bridge
+     */
+    public function setBridge($bridge)
+    {
+        $this->bridge = $bridge;
+    }    
 
     /**
      * @return string
