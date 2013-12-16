@@ -73,6 +73,12 @@ class Integ
     protected $bridge;    
 
     /**
+     * @ORM\Column(type="string")
+     * @var string
+     */
+    protected $netmask;
+
+    /**
      * @ORM\Column(type="string", name="github_key")
      * @var string
      */
@@ -245,6 +251,23 @@ class Integ
     {
         $this->mac = $mac;
     }
+
+    /**
+     * @return string
+     */
+    public function getNetmask()
+    {
+        return $this->netmask;
+    }
+
+    /**
+     * @param string $mac
+     */
+    public function setNetmask($netmask)
+    {
+        $this->netmask = $netmask;
+    }
+    
 
     /**
      * @return string

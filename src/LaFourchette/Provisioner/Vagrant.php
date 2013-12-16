@@ -176,6 +176,7 @@ class Vagrant extends ProvisionerAbstract
     {
         $integ  = $vm->getInteg();
         $mac = str_replace(':', '', $integ->getMac());
+        $netmask = $integ->getNetmask();
 
         $branches['branches_lafourchette_portal'] = 'master';
         $branches['branches_lafourchette_mailer'] = 'master';
@@ -260,7 +261,8 @@ Facts = {
   'network_type' => 'public',
   'ip' => '{$ip}',
   'bridge' => '{$bridge}',
-  'mac' => '{$mac}' # used only in public network
+  'mac' => '{$mac}', # used only in public network
+  'netmask' => '{$netmask}' # used only in public network
 }
 EOS;
 
