@@ -1,17 +1,26 @@
 {% if la_fourchette_prototype_integ_availability() == false %}
-    <div class="alert alert-error">
+    <div class="alert alert-danger">
         <strong>Warning!</strong> There is no slot available for now<br />You need to wait for an empty one
     </div>
 {% else %}
     <div class="alert alert-info">
-        Slot available, come and get some!!
+        Slot available, <strong>come and get some!!</strong>
+    </div>
+{% endif %}
+
+{% if la_fourchette_prototype_integ_availability() == true %}
+    <div class="col-lg-3 pull-right">
+        <a href="{{app.request.baseUrl}}/create-prototype" class="btn btn-info btn-block hulk m_y">
+            Create a prototype
+        </a>
     </div>
 {% endif %}
 
 {% if vms|length > 0 %}
-    <table  class="table table-hover">
+    <table class="col-lg-12 table-striped" id="prototypes">
+        <thead>
         <tr>
-            <th>Id</th>
+            <th>ID</th>
             <th>Integ</th>
             <th>Name</th>
             <th>Status</th>
@@ -20,10 +29,12 @@
             <th>Link</th>
             <th>Actions</th>
         </tr>
+        </thead>
+        <tbody>
         {% for vm in vms %}
             <tr>
-                <td>{{vm.idVm}}</td>
-                <td>{{vm.integ.name}}</td>
+                <td class="text-center">{{vm.idVm}}</td>
+                <td class="uppercase">{{vm.integ.name}}</td>
                 <td>{{vm}}</td>
                 <td>{{la_fourchette_prototype_vm_status(vm.status)}}</td>
                 <td>{{vm.createdBy.username}}</td>
@@ -35,17 +46,14 @@
                 {% endif %}
                 <td>
                     {% if app.session.get('user').username == vm.createdBy.username and vm.status != 4 %}
-                        <a href="/force-expire-prototype/{{ vm.idVm }}" class="btn btn-danger">Force the expiration</a>
-                        <a href="/ask-more-prototype/{{ vm.idVm }}" class="btn btn-success">Ask for 2 hours more</a>
+                        <a href="/force-expire-prototype/{{ vm.idVm }}" class="btn btn-danger" title="Force the expiration"><i class="icon-unlink nabilla"></i></a>
+                        <a href="/ask-more-prototype/{{ vm.idVm }}" class="btn btn-success" title="Ask for 2 hours more"><i class="icon-rocket nabilla"></i></a>
                     {% else %}
                         &nbsp;
                     {% endif %}
                 </td>
             </tr>
         {% endfor %}
+        </tbody>
     </table>
-{% endif %}
-
-{% if la_fourchette_prototype_integ_availability() == true %}
-    <a href="{{app.request.baseUrl}}/create-prototype" class="btn btn-info"><i class="icon-plus-sign icon-white"></i> Create a Prototype</a>
 {% endif %}

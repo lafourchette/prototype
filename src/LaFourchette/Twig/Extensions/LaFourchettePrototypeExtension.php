@@ -38,25 +38,25 @@ class LaFourchettePrototypeExtension extends \Twig_Extension
         switch($status)
         {
             case Vm::RUNNING;
-                return '<i class="label label-info">Running</i>';
+                return '<label class="label label-info">Running</label>';
                 break;
             case Vm::STOPPED:
-                return '<i class="label label-important">Stopped</i>';
+                return '<label class="label label-important">Stopped</label>';
                 break;
             case Vm::SUSPEND:
-                return '<i class="label label-warning">Suspend</i>';
+                return '<label class="label label-warning">Suspend</label>';
                 break;
             case Vm::EXPIRED:
-                return '<i class="label">Expired</i>';
+                return '<label class="label label-default">Expired</label>';
                 break;
             case Vm::TO_START:
-                return '<i class="label label-info">To start</i>';
+                return '<label class="label label-info">To start</label>';
                 break;
             case Vm::STARTED:
-                return '<i class="label label-info">Starting</i>';
+                return '<label class="label label-info">Starting</label>';
                 break;
             case Vm::ARCHIVED:
-                return '<i class="label label-info">Archived</i>';
+                return '<label class="label label-info">Archived</label>';
                 break;
             default:
                 return 'no status available';

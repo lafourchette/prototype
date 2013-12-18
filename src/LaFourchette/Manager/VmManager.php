@@ -29,4 +29,25 @@ class VmManager extends AbstractManager
         return $qb->getQuery()->getResult();
     }
 
+    public function getActive()
+    {
+        return $this->getByStatus(Vm::RUNNING);
+    }
+
+    public function getToStart()
+    {
+        return $this->getByStatus(Vm::TO_START);
+    }
+
+    private function getByStatus($status)
+    {
+        $qb = $this->repository->createQueryBuilder('v');
+        
+        $qb->select('count(v)')
+           ->where('v.status = :status')
+           ->setParameter('status', $status);
+        
+        return $qb->getQuery()->getSingleScalarResult();
+    }
+
 }

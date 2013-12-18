@@ -48,6 +48,8 @@ $app->get('/create-prototype', function () use ($app) {
     $params = array();
     $params['repositories'] = $app['github.manager']->getAllRepositoriesWithBranch();
     $params['users'] = $app['ldap.manager']->listUsers();
+    $params['vmActive'] = $app['vm.manager']->getActive();
+    $params['vmToStart'] = $app['vm.manager']->getToStart();
 
     return $app['twig']->render('create.html', $params);
 })
