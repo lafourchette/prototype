@@ -13,7 +13,6 @@ class Vagrant extends ProvisionerAbstract
 
     /**
      * @var string
-     * @TODO: get it in configuration
      */
     protected $repo = '';
 
@@ -137,9 +136,9 @@ class Vagrant extends ProvisionerAbstract
     {
         switch ($this->getStatus($vm)) {
             case VM::SUSPEND:
-                new \Exception('VM is already running');
+                throw new \Exception('VM is already running');
             case VM::RUNNING:
-                new \Exception('VM is already running');
+                throw new \Exception('VM is already running');
             case VM::STOPPED:
                 //Do nothing;
                 break;
@@ -172,14 +171,22 @@ class Vagrant extends ProvisionerAbstract
         }
     }
 
-    // @codeCoverageIgnore
+    /**
+     * @codeCoverageIgnore
+     * @param  VM     $vm 
+     * @return void     
+     */
     public function stop(VM $vm)
     {
         $cmd = 'vagrant halt --force';
         $this->run($vm, $cmd);
     }
 
-    // @codeCoverageIgnore
+    /**
+     * @codeCoverageIgnore
+     * @param  VM     $vm 
+     * @return void     
+     */
     public function initialise(VM $vm)
     {
         $cmd = $this->getCloneVmCommand();
@@ -291,14 +298,22 @@ EOS;
         $this->run($vm, $cmd);
     }
 
-    // @codeCoverageIgnore
+    /**
+     * @codeCoverageIgnore
+     * @param  VM     $vm 
+     * @return void     
+     */
     public function reset(VM $vm)
     {
         $this->stop($vm);
         $this->start($vm);
     }
 
-    // @codeCoverageIgnore
+    /**
+     * @codeCoverageIgnore
+     * @param  VM     $vm 
+     * @return void     
+     */
     public function delete(VM $vm)
     {
         $cmd = 'vagrant halt --force';
