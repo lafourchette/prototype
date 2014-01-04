@@ -7,8 +7,8 @@ class VagrantProvisionnerTest extends \PHPUnit_Framework_Testcase
 
     public function testFactFile()
     {
-        $vagrantProvisionner = $this->getMock('\LaFourchette\Provisioner\Vagrant', array('__construct', 'run'), array('git@github.com:lafourchette/lafourchette-vm', '1.2.0'));
-        $vagrantProvisionner
+        $vagrantProvisionnerMock = $this->getMock('\LaFourchette\Provisioner\Vagrant', array('__construct', 'run'), array('git@github.com:lafourchette/lafourchette-vm', '1.2.0'));
+        $vagrantProvisionnerMock
             ->expects($this->any())
             ->method('run')
             ->will($this->returnValue('Please update Facts file !'));
@@ -18,15 +18,15 @@ class VagrantProvisionnerTest extends \PHPUnit_Framework_Testcase
         $integ->setPath('/test');
         $vm->setInteg($integ);
 
-        $status = $vagrantProvisionner->getStatus($vm);
+        $status = $vagrantProvisionnerMock->getStatus($vm);
 
         $this->assertEquals(\LaFourchette\Entity\Vm::STOPPED, $status);
     }
 
     public function testVmNotCreated()
     {
-        $vagrantProvisionner = $this->getMock('\LaFourchette\Provisioner\Vagrant', array('__construct', 'run'), array('depot', 'branch'));
-        $vagrantProvisionner
+        $vagrantProvisionnerMock = $this->getMock('\LaFourchette\Provisioner\Vagrant', array('__construct', 'run'), array('depot', 'branch'));
+        $vagrantProvisionnerMock
             ->expects($this->any())
             ->method('run')
             ->will($this->returnValue(' not created ('));
@@ -36,15 +36,15 @@ class VagrantProvisionnerTest extends \PHPUnit_Framework_Testcase
         $integ->setPath('/test');
         $vm->setInteg($integ);
 
-        $status = $vagrantProvisionner->getStatus($vm);
+        $status = $vagrantProvisionnerMock->getStatus($vm);
 
         $this->assertEquals(\LaFourchette\Entity\Vm::STOPPED, $status);
     }
 
     public function testPowerOffNonExpiredVm()
     {
-        $vagrantProvisionner = $this->getMock('\LaFourchette\Provisioner\Vagrant', array('__construct', 'run'), array('depot', 'branch'));
-        $vagrantProvisionner
+        $vagrantProvisionnerMock = $this->getMock('\LaFourchette\Provisioner\Vagrant', array('__construct', 'run'), array('depot', 'branch'));
+        $vagrantProvisionnerMock
             ->expects($this->any())
             ->method('run')
             ->will($this->returnValue('  poweroff ('));
@@ -55,15 +55,15 @@ class VagrantProvisionnerTest extends \PHPUnit_Framework_Testcase
         $vm->setInteg($integ);
         $vm->setExpiredDt(new \DateTime(date('Y-m-d H:i:s', strtotime('+1 day'))));
 
-        $status = $vagrantProvisionner->getStatus($vm);
+        $status = $vagrantProvisionnerMock->getStatus($vm);
 
         $this->assertEquals(\LaFourchette\Entity\Vm::STOPPED, $status);
     }
 
     public function testPowerOffExpiredVm()
     {
-        $vagrantProvisionner = $this->getMock('\LaFourchette\Provisioner\Vagrant', array('__construct', 'run'), array('depot', 'branch'));
-        $vagrantProvisionner
+        $vagrantProvisionnerMock = $this->getMock('\LaFourchette\Provisioner\Vagrant', array('__construct', 'run'), array('depot', 'branch'));
+        $vagrantProvisionnerMock
             ->expects($this->any())
             ->method('run')
             ->will($this->returnValue('  poweroff ('));
@@ -74,15 +74,15 @@ class VagrantProvisionnerTest extends \PHPUnit_Framework_Testcase
         $vm->setInteg($integ);
         $vm->setExpiredDt(new \DateTime('2014-01-01 10:10:10'));
 
-        $status = $vagrantProvisionner->getStatus($vm);
+        $status = $vagrantProvisionnerMock->getStatus($vm);
 
         $this->assertEquals(\LaFourchette\Entity\Vm::EXPIRED, $status);
     }
 
     public function testRunningNonExpiredVm()
     {
-        $vagrantProvisionner = $this->getMock('\LaFourchette\Provisioner\Vagrant', array('__construct', 'run'), array('depot', 'branch'));
-        $vagrantProvisionner
+        $vagrantProvisionnerMock = $this->getMock('\LaFourchette\Provisioner\Vagrant', array('__construct', 'run'), array('depot', 'branch'));
+        $vagrantProvisionnerMock
             ->expects($this->any())
             ->method('run')
             ->will($this->returnValue(' running ('));
@@ -93,15 +93,15 @@ class VagrantProvisionnerTest extends \PHPUnit_Framework_Testcase
         $vm->setInteg($integ);
         $vm->setExpiredDt(new \DateTime(date('Y-m-d H:i:s', strtotime('+1 day'))));
 
-        $status = $vagrantProvisionner->getStatus($vm);
+        $status = $vagrantProvisionnerMock->getStatus($vm);
 
         $this->assertEquals(\LaFourchette\Entity\Vm::RUNNING, $status);
     }
 
     public function testRunningExpiredVm()
     {
-        $vagrantProvisionner = $this->getMock('\LaFourchette\Provisioner\Vagrant', array('__construct', 'run'), array('depot', 'branch'));
-        $vagrantProvisionner
+        $vagrantProvisionnerMock = $this->getMock('\LaFourchette\Provisioner\Vagrant', array('__construct', 'run'), array('depot', 'branch'));
+        $vagrantProvisionnerMock
             ->expects($this->any())
             ->method('run')
             ->will($this->returnValue(' running ('));
@@ -112,15 +112,15 @@ class VagrantProvisionnerTest extends \PHPUnit_Framework_Testcase
         $vm->setInteg($integ);
         $vm->setExpiredDt(new \DateTime('2014-01-01 10:10:10'));
 
-        $status = $vagrantProvisionner->getStatus($vm);
+        $status = $vagrantProvisionnerMock->getStatus($vm);
 
         $this->assertEquals(\LaFourchette\Entity\Vm::EXPIRED, $status);
     }
 
     public function testSupendedVm()
     {
-        $vagrantProvisionner = $this->getMock('\LaFourchette\Provisioner\Vagrant', array('__construct', 'run'), array('depot', 'branch'));
-        $vagrantProvisionner
+        $vagrantProvisionnerMock = $this->getMock('\LaFourchette\Provisioner\Vagrant', array('__construct', 'run'), array('depot', 'branch'));
+        $vagrantProvisionnerMock
             ->expects($this->any())
             ->method('run')
             ->will($this->returnValue('  saved ('));
@@ -130,7 +130,7 @@ class VagrantProvisionnerTest extends \PHPUnit_Framework_Testcase
         $integ->setPath('/test');
         $vm->setInteg($integ);
 
-        $status = $vagrantProvisionner->getStatus($vm);
+        $status = $vagrantProvisionnerMock->getStatus($vm);
 
         $this->assertEquals(\LaFourchette\Entity\Vm::SUSPEND, $status);
     }    
@@ -143,8 +143,8 @@ class VagrantProvisionnerTest extends \PHPUnit_Framework_Testcase
 
 EOF;
 
-        $vagrantProvisionner = $this->getMock('\LaFourchette\Provisioner\Vagrant', array('__construct', 'run'), array('depot', 'branch'));
-        $vagrantProvisionner
+        $vagrantProvisionnerMock = $this->getMock('\LaFourchette\Provisioner\Vagrant', array('__construct', 'run'), array('depot', 'branch'));
+        $vagrantProvisionnerMock
             ->expects($this->any())
             ->method('run')
             ->will($this->returnValue($return));
@@ -153,8 +153,53 @@ EOF;
         $integ = new \LaFourchette\Entity\Integ();
         $integ->setPath('/test');
         $vm->setInteg($integ);
-        $status = $vagrantProvisionner->getStatus($vm);
+        $status = $vagrantProvisionnerMock->getStatus($vm);
 
         $this->assertEquals(\LaFourchette\Entity\Vm::MISSING, $status);
     }
+
+    public function testStartSupendWorkflow()
+    {
+        $vagrantProvisionnerMock = $this->getMock('\LaFourchette\Provisioner\Vagrant', array('__construct', 'run','getStatus'), array('depot', 'branch'));
+        $vmMock = $this->getMock('\LaFourchette\Entity\Vm');
+        $vagrantProvisionnerMock->expects($this->any())
+             ->method('getStatus')
+             ->with($vmMock)
+             ->will($this->returnValue(\LaFourchette\Entity\Vm::SUSPEND));
+
+        //First case, cannot supend the vm if it's already running
+        $this->setExpectedException('Exception', 'VM is already running');
+        $vagrantProvisionnerMock->start($vmMock);    
+
+    }
+
+    public function testStartRunningWorkflow()
+    {
+        $vagrantProvisionnerMock = $this->getMock('\LaFourchette\Provisioner\Vagrant', array('__construct', 'run', 'initialise', 'generateFact', 'getStatus'), array('depot', 'branch'));
+        $vmMock = $this->getMock('\LaFourchette\Entity\Vm');
+        $vagrantProvisionnerMock->expects($this->any())
+             ->method('getStatus')
+             ->with($vmMock)
+             ->will($this->returnValue(\LaFourchette\Entity\Vm::RUNNING));
+
+        //First case, cannot supend the vm if it's already running
+        $this->setExpectedException('Exception', 'VM is already running');
+        $vagrantProvisionnerMock->start($vmMock);    
+
+    }
+
+    public function testStartMissingWorkflow()
+    {
+        $vagrantProvisionnerMock = $this->getMock('\LaFourchette\Provisioner\Vagrant', array('__construct', 'run', 'initialise', 'generateFact', 'getStatus'), array('depot', 'branch'));
+        $vmMock = $this->getMock('\LaFourchette\Entity\Vm');
+        $vagrantProvisionnerMock->expects($this->any())
+             ->method('getStatus')
+             ->with($vmMock)
+             ->will($this->returnValue(\LaFourchette\Entity\Vm::MISSING));
+
+        //First case, cannot supend the vm if it's already running
+        $this->setExpectedException('Exception', 'The Vm have not started');
+        $vagrantProvisionnerMock->start($vmMock);    
+
+    }    
 }
