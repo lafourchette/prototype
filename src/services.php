@@ -56,7 +56,7 @@ $app['notify.service'] = $app->share(function() use ($app) {
 
 $app['vm.provisionner'] = $app->share(function() use ($app) {
     //TODO: use a factory
-    $provisionner = new \LaFourchette\Provisioner\Vagrant();
+    $provisionner = new \LaFourchette\Provisioner\Vagrant($app['vm.repo'], $app['vm.default.branch']);
     return $provisionner;
 });
 

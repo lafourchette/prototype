@@ -8,11 +8,24 @@ use Symfony\Component\Process\Process;
 
 class Vagrant extends ProvisionerAbstract
 {
+
+    const CLONE_VM_CMD = 'git clone %s . && git checkout -t origin/%s';
+
     /**
      * @var string
      * @TODO: get it in configuration
      */
-    protected $depot = 'git@github.com:lafourchette/lafourchette-vm.git';
+    protected $repo = '';
+
+
+    protected $defaultBranch = '';
+
+
+    public function __construct($repo, $defaultBranch)
+    {
+        $this->repo = $repo;
+        $this->defaultBranch = $defaultBranch;
+    }
 
     /**
      * @param $integ
@@ -99,7 +112,7 @@ class Vagrant extends ProvisionerAbstract
      */
     protected function run(VM $vm, $cmd)
     {
-
+        // @codeCoverageIgnoreStart
         echo "\nRunning command : " . $cmd . "\n";
 
         $cmd = $this->getPrefixCommand($vm->getInteg(), $cmd);
@@ -113,6 +126,7 @@ class Vagrant extends ProvisionerAbstract
         echo "\n";
 
         return $output;
+        // @codeCoverageIgnoreEnd
     }
 
     /**
@@ -158,18 +172,25 @@ class Vagrant extends ProvisionerAbstract
         }
     }
 
+    // @codeCoverageIgnore
     public function stop(VM $vm)
     {
         $cmd = 'vagrant halt --force';
         $this->run($vm, $cmd);
     }
 
+    // @codeCoverageIgnore
     public function initialise(VM $vm)
     {
-        $cmd = 'git clone git@github.com:lafourchette/lafourchette-vm.git .';
+        $cmd = $this->getCloneVmCommand();
         $this->run($vm, $cmd);
 
         $this->generateFact($vm);
+    }
+
+    private function getCloneVmCommand()
+    {
+        return sprintf(self::CLONE_VM_CMD, $this->repo, $this->defaultBranch);
     }
 
     protected function generateFact(Vm $vm, $node = 'integ.lafourchette.local')
@@ -270,12 +291,14 @@ EOS;
         $this->run($vm, $cmd);
     }
 
+    // @codeCoverageIgnore
     public function reset(VM $vm)
     {
         $this->stop($vm);
         $this->start($vm);
     }
 
+    // @codeCoverageIgnore
     public function delete(VM $vm)
     {
         $cmd = 'vagrant halt --force';
