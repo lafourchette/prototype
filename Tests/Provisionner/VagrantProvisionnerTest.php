@@ -5,7 +5,7 @@ namespace LaFourchette\Prototype\Tests\Provisionner;
 class VagrantProvisionnerTest extends \PHPUnit_Framework_Testcase
 {
 
-    public function testFactFile()
+    public function testMissingFactFile()
     {
         $vagrantProvisionnerMock = $this->getMock('\LaFourchette\Provisioner\Vagrant', array('__construct', 'run'), array('git@github.com:lafourchette/lafourchette-vm', '1.2.0'));
         $vagrantProvisionnerMock
