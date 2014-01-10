@@ -52,3 +52,4 @@ Sponsor : Laurent CHENAY
 .m_r{margin-right: 10px;}
 .uppercase{text-transform:uppercase;}
 .spacer{display: block;height: 20px;}
+#log {overflow: scroll; max-height:600px; width: 98%;}

@@ -5,11 +5,14 @@ use LaFourchette\Entity\VM;
 use LaFourchette\Manager\VmManager;
 use LaFourchette\Provisioner\Exception\UnableToStartException;
 use Symfony\Component\Process\Process;
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
 
 class Vagrant extends ProvisionerAbstract
 {
 
     const CLONE_VM_CMD = 'git clone %s . && git checkout -t origin/%s';
+    const LOG_FILE_MASK = 'vm-file-%s';
 
     /**
      * @var string
@@ -112,18 +115,22 @@ class Vagrant extends ProvisionerAbstract
     protected function run(VM $vm, $cmd)
     {
         // @codeCoverageIgnoreStart
-        echo "\nRunning command : " . $cmd . "\n";
+        $log = new Logger('vm-channel'.$vm->getIdVm());
+        $handler = new StreamHandler(sprintf(__DIR__.'../../../../logs/%s.log', sprintf(self::LOG_FILE_MASK, $vm->getIdVm())), Logger::INFO);
+        // $handler->setFormatter(new \Monolog\Formatter\LineFormatter("[%datetime%] : %message% %context% %extra%\n"));
+        $handler->setFormatter(new \Monolog\Formatter\HtmlFormatter());
+        $log->pushHandler($handler);
+
+        $log->info("\nRunning command : " . $cmd . "\n");
 
         $cmd = $this->getPrefixCommand($vm->getInteg(), $cmd);
         $process = new Process($cmd);
         $process->setTimeout(0);
-
-        $process->run(function ($type, $output) {echo ' > ' . str_replace("\n", "\n > ", $output);});
+        $process->run();
 
         $output = $process->getOutput();
-
-        echo "\n";
-
+        $log->info($output);
+        
         return $output;
         // @codeCoverageIgnoreEnd
     }

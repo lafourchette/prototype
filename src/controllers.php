@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Component\Process\Process;
 use LaFourchette\Entity\Vm;
 
 $app->get('/', function () use ($app) {
@@ -44,6 +45,61 @@ $app->get('/login', function () use ($app) {
 })
 ->bind('login');
 
+$app->get('/show-prototype/{idVm}', function ($idVm) use ($app) {
+    $filename = sprintf(__DIR__.'/../logs/%s.log', sprintf(\LaFourchette\Provisioner\Vagrant::LOG_FILE_MASK, $idVm));
+    $html = '';
+    if(file_exists($filename))
+    {
+        $html = file_get_contents($filename);
+    }
+    return $app['twig']->render('show.html', array(
+        'vm' => $app['vm.manager']->load($idVm), 
+        'users' => $app['user_notify.manager']->loadBy(array('vm' => $idVm)),
+        'log_content' => $html
+    ));
+})
+->bind('show');
+
+$app->get('/enlarge-version/{idVm}', function ($idVm) use ($app) {
+    $filename = sprintf(__DIR__.'/../logs/%s.log', sprintf(\LaFourchette\Provisioner\Vagrant::LOG_FILE_MASK, $idVm));
+    $html = '';
+    if(file_exists($filename))
+    {
+        $html = file_get_contents($filename);
+    }
+    return new Response($html, 200);
+})
+->bind('enlarge_version');
+
+$app->get('/_ajax_log/{idVm}', function ($idVm) use ($app) {
+
+    $filename = sprintf(__DIR__.'/../logs/%s.log', sprintf(\LaFourchette\Provisioner\Vagrant::LOG_FILE_MASK, $idVm));
+
+    $lastModified = 0;
+    if(file_exists($filename))
+    {
+        $lastModified = filemtime($filename);        
+    }
+
+    $data = array();
+    $data['status'] = 0;
+
+    //Test if the file has been mofidied since the last 5 min
+    if($lastModified >= strtotime('-1 min')){
+        $process = new Process(sprintf('cat %s', $filename));
+        $process->setTimeout(5);
+        $process->run();
+        $data['msg'] = $process->getOutput();
+    } else {
+        $data['status'] = 1;
+    }
+
+
+    return new JsonResponse($data, 200);
+
+})
+->bind('_ajax_log');
+
 $app->get('/create-prototype', function () use ($app) {
     $params = array();
     $params['repositories'] = $app['github.manager']->getAllRepositoriesWithBranch();
@@ -57,9 +113,6 @@ $app->get('/create-prototype', function () use ($app) {
 
 $app->get('/force-expire-prototype/{idVm}', function ($idVm) use ($app) {
     $vmManager = $app['vm.manager'];
-    /**
-     * @var Vm $vm
-     */
     $vm = $vmManager->load($idVm);
 
     if ($vm->getCreatedBy()->getIdUser() == $app['session']->get('user')->getIdUser()) {
