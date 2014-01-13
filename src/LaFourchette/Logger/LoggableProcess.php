@@ -8,7 +8,7 @@ use Symfony\Component\Process\Process;
 class LoggableProcess extends Process
 {
     /** @var LoggerInterface */
-    private $logger;
+    public $logger;
 
     public function setLogger(LoggerInterface $logger = null)
     {
@@ -17,20 +17,21 @@ class LoggableProcess extends Process
 
     public function run($callable = null)
     {
+        $that = $this;
         return parent::run(
-            function ($type, $data) use ($callable) {
+            function ($type, $data) use ($callable, $that) {
                 if (null !== $callable) {
                     $data = call_user_func($callable, $type, $data);
                 }
 
-                if (null === $this->logger) {
+                if (null === $that->logger) {
                     return;
                 }
 
-                $this->logger->info($data, array(
+                $that->logger->info($data, array(
                     'type' => $type,
-                    'cmd' => $this->getCommandLine(),
-                    'procid' => $this->getPid(),
+                    'cmd' => $that->getCommandLine(),
+                    'procid' => $that->getPid(),
                 ));
             }
         );
