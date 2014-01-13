@@ -8,6 +8,7 @@ use LaFourchette\Notify;
 use LaFourchette\Provisioner\Exception\UnableToStartException;
 use LaFourchette\Provisioner\ProvisionerInterface;
 use LaFourchette\Service\NotifyService;
+use LaFourchette\Logger\VmLogger;
 
 class VmService
 {
@@ -82,6 +83,15 @@ class VmService
         $vmManager->flush($vm);
     }
 
+    private function deleteLogFile(Vm $vm)
+    {
+        $filename = VmLogger::getLogFile($vm->getIdVm());
+        if(file_exists($filename))
+        {
+            @unlink("$filename"); 
+        }
+    }
+
     public function prepare(Vm $vm)
     {
         /**
@@ -144,6 +154,7 @@ class VmService
         $vmManager = $this->getVmManager();
         $this->delete($vm);
         $vm->setStatus(VM::EXPIRED);
+        $this->deleteLogFile($vm);
         $vmManager->flush($vm);
         $this->prepare($vm);
     }
