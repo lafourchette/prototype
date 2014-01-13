@@ -5,14 +5,14 @@ use LaFourchette\Entity\VM;
 use LaFourchette\Manager\VmManager;
 use LaFourchette\Provisioner\Exception\UnableToStartException;
 use Symfony\Component\Process\Process;
-use Monolog\Logger;
-use Monolog\Handler\StreamHandler;
+use LaFourchette\Logger\LoggableProcess;
+use LaFourchette\Logger\VmLogger;
 
 class Vagrant extends ProvisionerAbstract
 {
 
     const CLONE_VM_CMD = 'git clone %s . && git checkout -t origin/%s';
-    const LOG_FILE_MASK = 'vm-file-%s';
+    const GIT_PULL_VM_CMD = 'git fetch && git checkout %s && git pull';
 
     /**
      * @var string
@@ -115,21 +115,17 @@ class Vagrant extends ProvisionerAbstract
     protected function run(VM $vm, $cmd)
     {
         // @codeCoverageIgnoreStart
-        $log = new Logger('vm-channel'.$vm->getIdVm());
-        $handler = new StreamHandler(sprintf(__DIR__.'../../../../logs/%s.log', sprintf(self::LOG_FILE_MASK, $vm->getIdVm())), Logger::INFO);
-        // $handler->setFormatter(new \Monolog\Formatter\LineFormatter("[%datetime%] : %message% %context% %extra%\n"));
-        $handler->setFormatter(new \Monolog\Formatter\HtmlFormatter());
-        $log->pushHandler($handler);
-
-        $log->info("\nRunning command : " . $cmd . "\n");
+        $logger = new VmLogger();
+        $logger->setVm($vm);
+        $vmLogger = $logger->createLogger();
 
         $cmd = $this->getPrefixCommand($vm->getInteg(), $cmd);
-        $process = new Process($cmd);
+        $process = new LoggableProcess($cmd);
+        $process->setLogger($vmLogger);
         $process->setTimeout(0);
-        $process->run();
+        $process->run(array('\LaFourchette\Logger\VmProcessLogFormatter', 'format'));
 
         $output = $process->getOutput();
-        $log->info($output);
         
         return $output;
         // @codeCoverageIgnoreEnd
@@ -154,7 +150,7 @@ class Vagrant extends ProvisionerAbstract
                 break;
         }
 
-        $cmd = 'git pull';
+        $cmd = $this->getPullVmCommand();
         $this->run($vm, $cmd);
 
         $this->generateFact($vm, $node);
@@ -201,6 +197,12 @@ class Vagrant extends ProvisionerAbstract
 
         $this->generateFact($vm);
     }
+
+    private function getPullVmCommand()
+    {
+        return sprintf(self::GIT_PULL_VM_CMD, $this->defaultBranch);
+    }
+
 
     private function getCloneVmCommand()
     {

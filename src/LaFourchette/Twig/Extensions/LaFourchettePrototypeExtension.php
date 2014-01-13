@@ -3,6 +3,8 @@
 namespace LaFourchette\Twig\Extensions;
 
 use LaFourchette\Entity\Vm;
+use LaFourchette\Logger\VmLogger;
+use \GeSHi;
 
 /**
  * Description of PrototypeExtension
@@ -25,8 +27,23 @@ class LaFourchettePrototypeExtension extends \Twig_Extension
     {
         return array(
             'la_fourchette_prototype_vm_status' =>  new \Twig_Function_Method($this, 'vmStatus',array('is_safe' => array(true))),
+            'la_fourchette_prototype_show_log' =>  new \Twig_Function_Method($this, 'showLog',array('is_safe' => array(true))),
             'la_fourchette_prototype_integ_availability' => new \Twig_Function_Method($this, 'integAvailability')
             );
+    }
+
+    public function showLog(Vm $vm)
+    {
+        $logFile = VmLogger::getLogFile($vm->getIdVm());
+
+        if(!file_exists($logFile))
+        {
+            return null;
+        }
+
+        $geshi = new \GeSHi(file_get_contents($logFile), 'bash');
+
+        return $geshi->parse_code();
     }
     
     /**

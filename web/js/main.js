@@ -4,4 +4,8 @@ $(document).ready(function()
     {
         $('#create-prototype').submit();
     });
+
+    $('#refresh-log').click(function() {
+        location.reload();
+    });
 });

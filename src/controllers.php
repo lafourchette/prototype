@@ -8,7 +8,9 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Process\Process;
+
 use LaFourchette\Entity\Vm;
+use LaFourchette\Logger\VmLogger;
 
 $app->get('/', function () use ($app) {
     return $app['twig']->render('index.html', array());
@@ -46,34 +48,23 @@ $app->get('/login', function () use ($app) {
 ->bind('login');
 
 $app->get('/show-prototype/{idVm}', function ($idVm) use ($app) {
-    $filename = sprintf(__DIR__.'/../logs/%s.log', sprintf(\LaFourchette\Provisioner\Vagrant::LOG_FILE_MASK, $idVm));
-    $html = '';
-    if(file_exists($filename))
-    {
-        $html = file_get_contents($filename);
-    }
     return $app['twig']->render('show.html', array(
         'vm' => $app['vm.manager']->load($idVm), 
-        'users' => $app['user_notify.manager']->loadBy(array('vm' => $idVm)),
-        'log_content' => $html
+        'users' => $app['user_notify.manager']->loadBy(array('vm' => $idVm))
     ));
 })
 ->bind('show');
 
 $app->get('/enlarge-version/{idVm}', function ($idVm) use ($app) {
-    $filename = sprintf(__DIR__.'/../logs/%s.log', sprintf(\LaFourchette\Provisioner\Vagrant::LOG_FILE_MASK, $idVm));
-    $html = '';
-    if(file_exists($filename))
-    {
-        $html = file_get_contents($filename);
-    }
-    return new Response($html, 200);
+    return $app['twig']->render('log.html', array(
+        'vm' => $app['vm.manager']->load($idVm),
+    ));
 })
 ->bind('enlarge_version');
 
 $app->get('/_ajax_log/{idVm}', function ($idVm) use ($app) {
 
-    $filename = sprintf(__DIR__.'/../logs/%s.log', sprintf(\LaFourchette\Provisioner\Vagrant::LOG_FILE_MASK, $idVm));
+    $filename = VmLogger::getLogFile($idVm);
 
     $lastModified = 0;
     if(file_exists($filename))
@@ -85,15 +76,13 @@ $app->get('/_ajax_log/{idVm}', function ($idVm) use ($app) {
     $data['status'] = 0;
 
     //Test if the file has been mofidied since the last 5 min
-    if($lastModified >= strtotime('-1 min')){
-        $process = new Process(sprintf('cat %s', $filename));
-        $process->setTimeout(5);
-        $process->run();
-        $data['msg'] = $process->getOutput();
+    if($lastModified >= strtotime($app['log.max_time_before_logging'])){
+        $data['msg'] = $app['twig']->render('_ajax_log.html', array(
+            'vm' => $app['vm.manager']->load($idVm),
+        ));
     } else {
         $data['status'] = 1;
     }
-
 
     return new JsonResponse($data, 200);
 

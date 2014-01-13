@@ -51,7 +51,9 @@
                     {% else %}
                         &nbsp;
                     {% endif %}
-                    <a href="/show-prototype/{{ vm.idVm }}">show</a>
+                    {% if app.session.get('user').username == vm.createdBy.username and vm.status != -1 %}
+                        <a href="/show-prototype/{{ vm.idVm }}" class="btn btn-success" title="See vm log and details"><i class="icon-info-sign nabilla"></i></a>
+                    {% endif %}
                 </td>
             </tr>
         {% endfor %}
