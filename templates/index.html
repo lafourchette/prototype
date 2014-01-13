@@ -1,5 +1,9 @@
 {% extends "layout.html" %}
 
+{% block meta %}
+<meta http-equiv="refresh" content="60">
+{% endblock %}
+
 {% block content %}
 
 {{ render(app.request.baseUrl ~ '/_status') }}
