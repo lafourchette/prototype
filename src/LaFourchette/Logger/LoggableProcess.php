@@ -18,6 +18,7 @@ class LoggableProcess extends Process
     public function run($callable = null)
     {
         $that = $this;
+
         return parent::run(
             function ($type, $data) use ($callable, $that) {
                 if (null !== $callable) {

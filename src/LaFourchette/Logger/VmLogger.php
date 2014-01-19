@@ -18,8 +18,7 @@ class VmLogger
 
     public function createLogger()
     {
-        if(!$this->vm)
-        {
+        if (!$this->vm) {
             throw new Exception("You need to provide a vm entity for this logger");
         }
 
@@ -51,15 +50,14 @@ class VmLogger
     }
 
     /**
-     * [getLogFile description]
-     * @param  int $idVm
+     * Get log file name 
+     * @param  int    $idVm
      * @param  string $logDir
      * @return string Vm log filename
      */
     public static function getLogFile($idVm, $logDir = null)
     {
-        if(!$logDir)
-        {
+        if (!$logDir) {
             $logDir = __DIR__.'/../../../logs';
         }
 
