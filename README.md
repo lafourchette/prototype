@@ -2,11 +2,27 @@
 
 Read [Functional documentation](doc/index.md)
 
+# Install
+
+*Nginx*
+
+Use template file from installer/lafourchette-prototype
+
+*Sqllite*
+
+''''
+sqlite3 db/dev
+Ctrl+Z
+cat db/dev.sql | sqlite3 db/dev
+''''
+
 # Crontab
 
 The system need a crontab to work properly.
 
+''''
 * * * * * if [ $(ps aux | grep "prototype/console" | grep -v grep | wc -l) -lt 1 ] ; then /var/www/lafourchette-prototype/console prototype:get-vm-id | xargs -P 4 -n 1 -r /var/www/lafourchette-prototype/console prototype:check ; fi;
+''''
 
 This crontab will check each VM to verify if one need to be started, or is they have expired...
 
