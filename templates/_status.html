@@ -45,11 +45,14 @@
                     <td>&nbsp;</td>
                 {% endif %}
                 <td>
-                    {% if app.session.get('user').username == vm.createdBy.username and vm.status != 4 %}
-                        <a href="/force-expire-prototype/{{ vm.idVm }}" class="btn btn-danger" title="Force the expiration"><i class="icon-unlink nabilla"></i></a>
-                        <a href="/ask-more-prototype/{{ vm.idVm }}" class="btn btn-success" title="Ask for 2 hours more"><i class="icon-rocket nabilla"></i></a>
-                    {% else %}
-                        &nbsp;
+                    {% if app.session.get('user').username == vm.createdBy.username %}
+                        {% if vm.status != 4 %}
+                            <a href="/force-expire-prototype/{{ vm.idVm }}" class="btn btn-danger" title="Force the expiration"><i class="icon-unlink nabilla"></i></a>
+                            <a href="/ask-more-prototype/{{ vm.idVm }}" class="btn btn-success" title="Ask for 2 hours more"><i class="icon-rocket nabilla"></i></a>
+                        {% endif %}
+                        {% if vm.status == 1 %}
+                            <a href="/force-start/{{ vm.idVm }}" class="btn btn-default" title="Force starting"><i class="icon-off nabilla"></i></a>
+                        {% endif %}
                     {% endif %}
                     {% if app.session.get('user').username == vm.createdBy.username and vm.status != -1 %}
                         <a href="/show-prototype/{{ vm.idVm }}" class="btn btn-success" title="See vm log and details"><i class="icon-info-sign nabilla"></i></a>

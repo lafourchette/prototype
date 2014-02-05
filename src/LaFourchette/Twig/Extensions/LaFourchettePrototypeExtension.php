@@ -58,7 +58,7 @@ class LaFourchettePrototypeExtension extends \Twig_Extension
                 return '<label class="label label-info">Running</label>';
                 break;
             case Vm::STOPPED:
-                return '<label class="label label-important">Stopped</label>';
+                return '<label class="label label-danger">Stopped</label>';
                 break;
             case Vm::SUSPEND:
                 return '<label class="label label-warning">Suspend</label>';

@@ -18,10 +18,10 @@ $app->get('/', function () use ($app) {
 ->bind('homepage');
 
 $app->get('/login', function () use ($app) {
-    
+
     $username = $app['request']->server->get('PHP_AUTH_USER', false);
     $password = $app['request']->server->get('PHP_AUTH_PW', false);
-    
+
     if($username && $password) {
         $userManager = $app['user.manager'];
 
@@ -42,7 +42,7 @@ $app->get('/login', function () use ($app) {
             }
         }
     }
-    
+
     return $app['login.basic_login_response'];
 })
 ->bind('login');
@@ -67,16 +67,15 @@ $app->get('/_ajax_log/{idVm}', function ($idVm) use ($app) {
     $filename = VmLogger::getLogFile($idVm);
 
     $lastModified = 0;
-    if(file_exists($filename))
-    {
-        $lastModified = filemtime($filename);        
+    if (file_exists($filename)) {
+        $lastModified = filemtime($filename);
     }
 
     $data = array();
     $data['status'] = 0;
 
     //Test if the file has been mofidied since the last 5 min
-    if($lastModified >= strtotime($app['log.max_time_before_logging'])){
+    if ($lastModified >= strtotime($app['log.max_time_before_logging'])){
         $data['msg'] = $app['twig']->render('_ajax_log.html', array(
             'vm' => $app['vm.manager']->load($idVm),
         ));
@@ -100,6 +99,33 @@ $app->get('/create-prototype', function () use ($app) {
 })
     ->bind('create-prototype');
 
+$app->get('/force-start/{idVm}', function ($idVm) use ($app) {
+    $vmManager = $app['vm.manager'];
+    $vm = $vmManager->load($idVm);
+
+    if ($vm->getCreatedBy()->getIdUser() == $app['session']->get('user')->getIdUser()) {
+        $vm->setExpiredDt(new \DateTime());
+        $vm->setStatus(Vm::TO_START);
+        $vmManager->flush($vm);
+
+        $app[ 'session' ]->set('flash', array(
+            'type'    =>'success',
+            'short'   =>'The VM has restarted',
+            'ext'     =>'The given VM has been set to start.',
+        ));
+    } else {
+        $app[ 'session' ]->set('flash', array(
+            'type'    =>'error',
+            'short'   =>'You have no rigth to do this.',
+            'ext'     =>'You can only force the expiration of a VM that you have created.',
+        ));
+    }
+
+    return $app->redirect('/');
+
+})
+    ->bind('force-start');
+
 $app->get('/force-expire-prototype/{idVm}', function ($idVm) use ($app) {
     $vmManager = $app['vm.manager'];
     $vm = $vmManager->load($idVm);
@@ -109,17 +135,17 @@ $app->get('/force-expire-prototype/{idVm}', function ($idVm) use ($app) {
         $vm->setStatus(Vm::EXPIRED);
         $vmManager->flush($vm);
 
-        $app[ 'session' ]->set( 'flash', array(
+        $app[ 'session' ]->set('flash', array(
             'type'    =>'success',
             'short'   =>'The VM has expired',
             'ext'     =>'The given VM has been set to expired. Its slot will be free and could be reuse in some minutes by another person.',
-        ) );
+        ));
     } else {
-        $app[ 'session' ]->set( 'flash', array(
+        $app[ 'session' ]->set('flash', array(
             'type'    =>'error',
             'short'   =>'You have no rigth to do this.',
             'ext'     =>'You can only force the expiration of a VM that you have created.',
-        ) );
+        ));
     }
 
     return $app->redirect('/');
@@ -144,17 +170,17 @@ $app->get('/ask-more-prototype/{idVm}', function ($idVm) use ($app) {
         $vm->setStatus(Vm::RUNNING);
         $vmManager->save($vm);
 
-        $app[ 'session' ]->set( 'flash', array(
+        $app[ 'session' ]->set('flash', array(
             'type'    =>'success',
             'short'   =>'2 hours has been added for your VM',
             'ext'     =>'Please don\'t abuse of this feature. Do you really need as much time to test your stuff?',
-        ) );
+        ));
     } else {
-        $app[ 'session' ]->set( 'flash', array(
+        $app[ 'session' ]->set('flash', array(
             'type'    =>'error',
             'short'   =>'You have no rigth to do this.',
             'ext'     =>'You can only add time of a VM that you have created.',
-        ) );
+        ));
     }
 
     return $app->redirect('/');
@@ -162,15 +188,14 @@ $app->get('/ask-more-prototype/{idVm}', function ($idVm) use ($app) {
     ->bind('ask-more-prototype');
 
 $app->post('/launch-prototype', function () use ($app) {
-    if(null === $projects = $app['request']->request->get('projects')) {
+    if (null === $projects = $app['request']->request->get('projects')) {
         throw new \Exception('The "projects" variable is missing');
     }
 
     $users = $app['request']->request->get('users');
-    
+
     //Refactor this please...
-    if($app['integ_availabibilty.checker']->check())
-    {
+    if ($app['integ_availabibilty.checker']->check()) {
         //Doctrine2 does not handle correctly
         $creator = $app['vm.creator'];
         /**
@@ -207,12 +232,12 @@ $app->post('/launch-prototype', function () use ($app) {
         }
     }
 
-    $app[ 'session' ]->set( 'flash', array(
+    $app[ 'session' ]->set('flash', array(
         'type'    =>'success',
         'short'   =>'Your prototype will be ready soon.',
         'ext'     =>'You will receive an email as soon as it will be ready to be use.',
-    ) );
-    
+    ));
+
     return $app->redirect('/');
 })
 ->bind('launch-prototype');
@@ -229,7 +254,7 @@ $app->get('/logout', function () use ($app) {
         $app['session']->set('isAuthenticated', false);
         $app['session']->set('user', null);
         return $app['login.basic_login_response'];
-    })->bind('logout');
+})->bind('logout');
 
 $app->error(function (\Exception $e, $code) use ($app) {
     if ($app['debug']) {
@@ -246,7 +271,7 @@ $app->error(function (\Exception $e, $code) use ($app) {
 $app->on(KernelEvents::REQUEST, function (GetResponseEvent $event) use ($app) {
     $request = $event->getRequest();
 
-    if ($request->get('_route') === '_profiler') { 
+    if ($request->get('_route') === '_profiler') {
        return;
     }
 
@@ -254,13 +279,13 @@ $app->on(KernelEvents::REQUEST, function (GetResponseEvent $event) use ($app) {
     {
         return;
     }
-    
+
     if (!$app['session']->get('isAuthenticated')) {
         $ret = $app->redirect($app['url_generator']->generate('login'));
     } else {
         $ret = null;
     }
-    
+
     if ($ret instanceof Response) {
         $event->setResponse($ret);
     }
