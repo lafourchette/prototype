@@ -6,7 +6,11 @@ in 1.1 minor versions.
 
 To get the diff between two versions, go to https://github.com/lafourchette/lafourchette-prototype/compare/1.1.0...1.0.0
 
+* 1.1.1 (2014-02-11)
+  * Fix default webmobile branch t o master
+
+
 * 1.1.0 (2014-02-05)
 	* Restart button when the vm is stopped
 	* Fix stopped attribute color
-    * Add log capabilities
+  * Add log capabilities
