@@ -126,7 +126,7 @@ class Vagrant extends ProvisionerAbstract
         $process->run(array('\LaFourchette\Logger\VmProcessLogFormatter', 'format'));
 
         $output = $process->getOutput();
-        
+
         return $output;
         // @codeCoverageIgnoreEnd
     }
@@ -176,8 +176,8 @@ class Vagrant extends ProvisionerAbstract
 
     /**
      * @codeCoverageIgnore
-     * @param  VM     $vm 
-     * @return void     
+     * @param  VM     $vm
+     * @return void
      */
     public function stop(VM $vm)
     {
@@ -187,8 +187,8 @@ class Vagrant extends ProvisionerAbstract
 
     /**
      * @codeCoverageIgnore
-     * @param  VM     $vm 
-     * @return void     
+     * @param  VM     $vm
+     * @return void
      */
     public function initialise(VM $vm)
     {
@@ -218,11 +218,12 @@ class Vagrant extends ProvisionerAbstract
         $branches['branches_lafourchette_portal'] = 'master';
         $branches['branches_lafourchette_mailer'] = 'master';
         $branches['branches_lafourchette_module'] = 'master';
-        $branches['branches_lafourchette_rr'] = 'feature-puppetized';
+        $branches['branches_lafourchette_rr'] = 'master';
         $branches['branches_lafourchette_bo'] = 'master';
         $branches['branches_lafourchette_core'] = 'master';
-        $branches['branches_lafourchette_webmobile'] = 'master-fr-ch';
-        $branches['branches_lafourchette_b2b'] = 'feature-puppetized';
+        $branches['branches_lafourchette_webmobile'] = 'master';
+        $branches['branches_lafourchette_b2b'] = 'master';
+        $branches['branches_lafourchette_payment'] = 'master';
 
         $vmProjects = $vm->getVmProjects();
 
@@ -252,6 +253,9 @@ class Vagrant extends ProvisionerAbstract
                     break;
                 case 'lafourchette-b2b':
                     $branches['branches_lafourchette_b2b'] = $vmProject->getBranch();
+                    break;
+                case 'lafourchette-payment':
+                    $branches['branches_lafourchette_payment'] = $vmProject->getBranch();
                     break;
             }
         }
@@ -287,7 +291,8 @@ Facts = {
     'branches_lafourchette_bo' => '{$branches['branches_lafourchette_bo']}',
     'branches_lafourchette_core' => '{$branches['branches_lafourchette_core']}',
     'branches_lafourchette_webmobile' => '{$branches['branches_lafourchette_webmobile']}',
-    'branches_lafourchette_b2b' => '{$branches['branches_lafourchette_b2b']}'
+    'branches_lafourchette_b2b' => '{$branches['branches_lafourchette_b2b']}',
+    'branches_lafourchette_payment' => '{$branches['branches_lafourchette_payment']}'
   },
   # Key used for cloning lf repos. Copied at VM startup
   'github_private_key' => '{$githubKey}',
@@ -309,8 +314,8 @@ EOS;
 
     /**
      * @codeCoverageIgnore
-     * @param  VM     $vm 
-     * @return void     
+     * @param  VM     $vm
+     * @return void
      */
     public function reset(VM $vm)
     {
@@ -320,8 +325,8 @@ EOS;
 
     /**
      * @codeCoverageIgnore
-     * @param  VM     $vm 
-     * @return void     
+     * @param  VM     $vm
+     * @return void
      */
     public function delete(VM $vm)
     {
