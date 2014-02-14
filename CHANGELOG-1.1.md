@@ -6,8 +6,11 @@ in 1.1 minor versions.
 
 To get the diff between two versions, go to https://github.com/lafourchette/lafourchette-prototype/compare/1.1.0...1.0.0
 
+* 1.1.2 (2014-02-14)
+  * Add lafourchette-b2b-extranet
+
 * 1.1.1 (2014-02-11)
-  * Fix default webmobile branch t o master
+  * Fix default webmobile branch to master
 
 
 * 1.1.0 (2014-02-05)
