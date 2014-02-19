@@ -12,7 +12,7 @@ use LaFourchette\Entity\User;
  */
 class Vm
 {
-    const EXPIRED_AT_DEFAULT_VALUE = 4; //define in hours
+    const EXPIRED_AT_DEFAULT_VALUE = 24; //define in hours
     
     //Status
     const TO_START = -1; //If the vm need to be started
