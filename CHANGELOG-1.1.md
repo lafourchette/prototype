@@ -6,6 +6,8 @@ in 1.1 minor versions.
 
 To get the diff between two versions, go to https://github.com/lafourchette/lafourchette-prototype/compare/1.1.0...1.0.0
 
+* 1.1.3 (2014-02-24)
+  * Add +24h for expired date 
 * 1.1.2 (2014-02-14)
   * Add lafourchette-b2b-extranet
 
