@@ -13,7 +13,7 @@ use LaFourchette\Entity\User;
 class Vm
 {
     const EXPIRED_AT_DEFAULT_VALUE = 24; //define in hours
-    
+
     //Status
     const TO_START = -1; //If the vm need to be started
     const RUNNING = 0; //If vagrant is running
@@ -24,7 +24,7 @@ class Vm
     const STARTED = 5; //If a vm is started
     const ARCHIVED = 6; //If a vm is expired
 
-    
+
     public static $availableStatus = array(self::RUNNING, self::SUSPEND, self::TO_START, self::STARTED);
     public static $archiveStatus = array(self::EXPIRED, self::ARCHIVED);
 

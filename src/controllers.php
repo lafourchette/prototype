@@ -49,7 +49,7 @@ $app->get('/login', function () use ($app) {
 
 $app->get('/show-prototype/{idVm}', function ($idVm) use ($app) {
     return $app['twig']->render('show.html', array(
-        'vm' => $app['vm.manager']->load($idVm), 
+        'vm' => $app['vm.manager']->load($idVm),
         'users' => $app['user_notify.manager']->loadBy(array('vm' => $idVm))
     ));
 })
@@ -161,7 +161,7 @@ $app->get('/ask-more-prototype/{idVm}', function ($idVm) use ($app) {
 
     if ($vm->getCreatedBy()->getIdUser() == $app['session']->get('user')->getIdUser()) {
         $date = $vm->getExpiredDt();
-        $date->add(new \DateInterval('PT2H'));
+        $date->add(new \DateInterval(sprintf('PT%dH', $app['vm.expired_in_value'])));
 
         /**
          * Force the clone because without it doctrine do not detect the change and so it do not update the db
@@ -172,7 +172,7 @@ $app->get('/ask-more-prototype/{idVm}', function ($idVm) use ($app) {
 
         $app[ 'session' ]->set('flash', array(
             'type'    =>'success',
-            'short'   =>'2 hours has been added for your VM',
+            'short'   =>sprintf('%s hours has been added for your VM', $app['vm.expired_in_value']),
             'ext'     =>'Please don\'t abuse of this feature. Do you really need as much time to test your stuff?',
         ));
     } else {

@@ -38,7 +38,7 @@ class LdapManager
     }
 
     /**
-     * 
+     *
      * @param type $userDn
      * @param type $password
      * @return type
@@ -53,7 +53,7 @@ class LdapManager
     }
 
     /**
-     * 
+     *
      * @param type $username
      * @return null|\LaFourchette\Entity\User
      */
@@ -62,19 +62,19 @@ class LdapManager
         if (null === $this->ldapRes) {
             $this->connect();
         }
-        
+
         $result = @ldap_search($this->ldapRes, $this->baseDn, sprintf('uid=%s', $username));
         $entries = @ldap_get_entries($this->ldapRes, $result);
-        
+
         if ($entries['count'] == 0) {
             return null;
         }
-        
+
         $user = new User();
         $user->setDn($entries[0]['dn']);
         $user->setEmail($entries[0]['mail'][0]);
         $user->setUsername($username);
-        
+
         return $user;
     }
 
