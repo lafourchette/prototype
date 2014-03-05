@@ -86,9 +86,8 @@ class VmService
     private function deleteLogFile(Vm $vm)
     {
         $filename = VmLogger::getLogFile($vm->getIdVm());
-        if(file_exists($filename))
-        {
-            @unlink("$filename"); 
+        if (file_exists($filename)) {
+            @unlink("$filename");
         }
     }
 

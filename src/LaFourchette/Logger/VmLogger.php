@@ -50,7 +50,7 @@ class VmLogger
     }
 
     /**
-     * Get log file name 
+     * Get log file name
      * @param  int    $idVm
      * @param  string $logDir
      * @return string Vm log filename

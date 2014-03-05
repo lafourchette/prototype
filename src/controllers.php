@@ -75,7 +75,7 @@ $app->get('/_ajax_log/{idVm}', function ($idVm) use ($app) {
     $data['status'] = 0;
 
     //Test if the file has been mofidied since the last 5 min
-    if ($lastModified >= strtotime($app['log.max_time_before_logging'])){
+    if ($lastModified >= strtotime($app['log.max_time_before_logging'])) {
         $data['msg'] = $app['twig']->render('_ajax_log.html', array(
             'vm' => $app['vm.manager']->load($idVm),
         ));
@@ -104,7 +104,6 @@ $app->get('/force-start/{idVm}', function ($idVm) use ($app) {
     $vm = $vmManager->load($idVm);
 
     if ($vm->getCreatedBy()->getIdUser() == $app['session']->get('user')->getIdUser()) {
-        $vm->setExpiredDt(new \DateTime());
         $vm->setStatus(Vm::TO_START);
         $vmManager->flush($vm);
 

@@ -260,7 +260,7 @@ class Vagrant extends ProvisionerAbstract
                     break;
                 case 'lafourchette-b2b-extranet':
                     $branches['branches_lafourchette_b2b_extranet'] = $vmProject->getBranch();
-                    break;                    
+                    break;
             }
         }
 
