@@ -72,7 +72,7 @@ class CcExporter
                   ->setLastBuildTime($vm->getUpdateDt()->format('Y-m-d\TH\\:i\\:s\Z'))
                   ->setLastBuildLabel((string) $vm->getIdVm())
                   ->setLastBuildStatus($vm->getCcStatus())
-                  ->setName((string) $vm)
+                  ->setName($vm->getInteg()->getName())
                   ->setWebUrl($this->urlGenerator->generate('homepage', array(), true));
 
         return $prototype;
