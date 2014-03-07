@@ -276,4 +276,21 @@ class Vm
     {
         $this->usersNotify = $usersNotify;
     }
+
+    public function getCcActivity()
+    {
+        if (in_array($this->getStatus(), array(self::TO_START, self::STARTED))) {
+            return 'Building';
+        }
+        return 'Sleeping';
+    }
+
+    public function getCcStatus()
+    {
+        if(in_array($this->getStatus(), self::$availableStatus)) {
+            return 'Success';
+        } elseif(self::STOPPED == $this->getStatus()) {
+            return 'Failure';
+        }
+    }
 }

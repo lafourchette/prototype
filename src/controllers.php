@@ -1,16 +1,16 @@
 <?php
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
-use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\Process\Process;
-
+use LaFourchette\Entity\User;
 use LaFourchette\Entity\Vm;
 use LaFourchette\Logger\VmLogger;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Component\Process\Process;
 
 $app->get('/', function () use ($app) {
     return $app['twig']->render('index.html', array());
@@ -22,19 +22,18 @@ $app->get('/login', function () use ($app) {
     $username = $app['request']->server->get('PHP_AUTH_USER', false);
     $password = $app['request']->server->get('PHP_AUTH_PW', false);
 
-    if($username && $password) {
+    if ($username && $password) {
         $userManager = $app['user.manager'];
 
         //Retrieve user information
         $ldapUser = $app['ldap.manager']->getUserInfo($username);
 
-        if(null !== $ldapUser) {
+        if (null !== $ldapUser) {
             $user = $userManager->getOrCreate($ldapUser);
 
-            if(null !== $user) {
+            if (null !== $user) {
                 $isAuthenticated = $app['ldap.manager']->bind($user->getDn(), $password);
-                if($isAuthenticated)
-                {
+                if ($isAuthenticated) {
                     $app['session']->set('isAuthenticated', $isAuthenticated);
                     $app['session']->set('user', $user);
                     return $app->redirect($app['url_generator']->generate('homepage'));
@@ -46,6 +45,13 @@ $app->get('/login', function () use ($app) {
     return $app['login.basic_login_response'];
 })
 ->bind('login');
+
+$app->get('/cc.xml', function () use ($app) {
+    $exporter = $app['vm.cc.exporter'];
+
+    return $exporter->export();
+})
+->bind('cc');
 
 $app->get('/show-prototype/{idVm}', function ($idVm) use ($app) {
     return $app['twig']->render('show.html', array(

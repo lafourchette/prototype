@@ -29,11 +29,11 @@ class User
      * @var string
      */
     protected $email;
-    
+
     /**
      * @ORM\Column(type="string")
      * @var string
-     */    
+     */
     protected $dn;
 
     /**
