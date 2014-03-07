@@ -6,6 +6,9 @@ in 1.1 minor versions.
 
 To get the diff between two versions, go to https://github.com/lafourchette/lafourchette-prototype/compare/1.1.0...1.0.0
 
+* 1.1.6 (2014-03-07)
+  * Add CCtray
+
 * 1.1.5 (2014-03-05)
   * Do not set expireDt when we force the start
 
