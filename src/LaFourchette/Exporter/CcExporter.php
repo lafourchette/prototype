@@ -46,7 +46,7 @@ class CcExporter
         $data = array();
         foreach($this->vms as $vm) {
             $prototype = $this->createPrototype($vm);
-            $data['Project'] = array(
+            $data['Project'][] = array(
                     '@activity' => $prototype->getActivity(),
                     '@lastBuildTime' => $prototype->getLastBuildTime(),
                     '@lastBuildLabel' => $prototype->getLastBuildLabel(),
