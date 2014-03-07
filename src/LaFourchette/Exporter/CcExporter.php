@@ -6,12 +6,13 @@ use LaFourchette\Formatter\CcXmlExporterFormatter;
 use LaFourchette\Manager\VmManager;
 use LaFourchette\Model\Prototype;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
 use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
 use Symfony\Component\Serializer\Serializer;
 
-class CcExporterHandler
+class CcExporter
 {
     /**
     * $vms
@@ -19,9 +20,12 @@ class CcExporterHandler
     */
     protected $vms = null;
 
-    public function __construct(VmManager $vmManager)
+    protected $urlGenerator = null;
+
+    public function __construct(VmManager $vmManager, UrlGenerator $urlGenerator)
     {
         $this->vms = $vmManager->loadVm();
+        $this->urlGenerator = $urlGenerator;
     }
 
     /**
@@ -69,7 +73,7 @@ class CcExporterHandler
                   ->setLastBuildLabel((string) $vm->getIdVm())
                   ->setLastBuildStatus($vm->getCcStatus())
                   ->setName((string) $vm)
-                  ->setWebUrl('');
+                  ->setWebUrl($this->urlGenerator->generate('homepage', array(), true));
 
         return $prototype;
     }

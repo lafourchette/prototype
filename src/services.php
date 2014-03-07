@@ -82,5 +82,5 @@ $app['ldap.manager'] = $app->share(function() use ($app){
 });
 
 $app['vm.cc.exporter'] = $app->share(function() use ($app){
-    return new \LaFourchette\Exporter\CcExporterHandler($app['vm.manager']);
+    return new \LaFourchette\Exporter\CcExporter($app['vm.manager'], $app['url_generator']);
 });
