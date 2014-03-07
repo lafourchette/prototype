@@ -22,7 +22,7 @@
         "knplabs/github-api": "~1.2@dev",
         "monolog/monolog": "dev-master",
         "dflydev/doctrine-orm-service-provider": "v1.0.0",
-        "symfony/serializer": "~2.2",
+        "symfony/serializer": "2.3.*",
         "easybook/geshi": "1.0.8.12"
     },
     "require-dev":{
