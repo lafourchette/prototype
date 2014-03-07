@@ -6,6 +6,9 @@ in 1.1 minor versions.
 
 To get the diff between two versions, go to https://github.com/lafourchette/lafourchette-prototype/compare/1.1.0...1.0.0
 
+* 1.1.7 (2014-03-07)
+  * Use integ name for project name instead of vm name
+
 * 1.1.6 (2014-03-07)
   * Add CCtray
 
