@@ -133,7 +133,7 @@ class VagrantProvisionnerTest extends \PHPUnit_Framework_Testcase
         $status = $vagrantProvisionnerMock->getStatus($vm);
 
         $this->assertEquals(\LaFourchette\Entity\Vm::SUSPEND, $status);
-    }    
+    }
 
     public function testMissingVmFiles()
     {
@@ -169,7 +169,7 @@ EOF;
 
         //First case, cannot supend the vm if it's already running
         $this->setExpectedException('Exception', 'VM is already running');
-        $vagrantProvisionnerMock->start($vmMock);    
+        $vagrantProvisionnerMock->start($vmMock);
 
     }
 
@@ -184,7 +184,7 @@ EOF;
 
         //First case, cannot supend the vm if it's already running
         $this->setExpectedException('Exception', 'VM is already running');
-        $vagrantProvisionnerMock->start($vmMock);    
+        $vagrantProvisionnerMock->start($vmMock);
 
     }
 
@@ -199,7 +199,7 @@ EOF;
 
         //First case, cannot supend the vm if it's already running
         $this->setExpectedException('Exception', 'The Vm have not started');
-        $vagrantProvisionnerMock->start($vmMock);    
+        $vagrantProvisionnerMock->start($vmMock);
 
-    }    
+    }
 }
