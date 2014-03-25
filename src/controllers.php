@@ -251,7 +251,7 @@ $app->post('/launch-prototype', function () use ($app) {
 # Include or render for twig
 
 $app->get('/_status', function () use ($app) {
-    return $app['twig']->render('_status.html', array('vms' => $app['vm.manager']->loadVm()));
+    return $app['twig']->render('_status.html', array('vms' => $app['vm.manager']->loadVm(), 'default_expiration_delay' => Vm::EXPIRED_AT_DEFAULT_VALUE));
 })
 ->bind('_status');
 
@@ -277,11 +277,10 @@ $app->on(KernelEvents::REQUEST, function (GetResponseEvent $event) use ($app) {
     $request = $event->getRequest();
 
     if ($request->get('_route') === '_profiler') {
-       return;
+        return;
     }
 
-    if ($request->get('_route') === 'login')
-    {
+    if ($request->get('_route') === 'login') {
         return;
     }
 
