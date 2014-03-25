@@ -6,7 +6,11 @@ Read [Functional documentation](doc/index.md)
 
 *Nginx*
 
-Use template file from installer/lafourchette-prototype
+```bash
+sudo cp installer/nginx.conf /etc/nginx/sites-available/lafourchette-prototype
+sudo ln -s /etc/nginx/sites-available/lafourchette-prototype /etc/nginx/sites-enabled/lafourchette-prototype
+sudo service nginx reload
+```
 
 *Sqllite*
 
