@@ -10,11 +10,11 @@ Use template file from installer/lafourchette-prototype
 
 *Sqllite*
 
-''''
+```bash
 sqlite3 db/dev
 Ctrl+Z
 cat db/dev.sql | sqlite3 db/dev
-''''
+```
 
 # Crontab
 
