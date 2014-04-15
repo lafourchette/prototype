@@ -77,7 +77,7 @@ class Check extends ConsoleAbstract
                         case Vm::RUNNING:
                             $output->writeln('  - Running');
                             $expireDt = $vm->getExpiredDt();
-                            $expireDt->add(new \DateInterval('P1D'));
+                            $expireDt->add(new \DateInterval('PT1H'));
                             if ($expireDt > new \DateTime()) {
                                 $notify->send('expire_soon', $vm);
                             }
