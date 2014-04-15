@@ -76,6 +76,11 @@ class Check extends ConsoleAbstract
                     switch ($currentStatus){
                         case Vm::RUNNING:
                             $output->writeln('  - Running');
+                            $expireDt = $vm->getExpiredDt();
+                            $expireDt->add(new \DateInterval('P1D'));
+                            if ($expireDt > new \DateTime()) {
+                                $notify->send('expire_soon', $vm);
+                            }
                             break;
                         case Vm::STOPPED:
                             if ($savedStatus != Vm::STOPPED && $savedStatus != Vm::EXPIRED && $savedStatus != Vm::ARCHIVED) {
