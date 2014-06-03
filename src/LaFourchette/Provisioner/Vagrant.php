@@ -225,6 +225,7 @@ class Vagrant extends ProvisionerAbstract
         $branches['branches_lafourchette_b2b'] = 'master';
         $branches['branches_lafourchette_payment'] = 'master';
         $branches['branches_lafourchette_b2b_extranet'] = 'master';
+        $branches['branches_lafourchette_b2brrapi'] = 'master';
 
         $vmProjects = $vm->getVmProjects();
 
@@ -260,6 +261,9 @@ class Vagrant extends ProvisionerAbstract
                     break;
                 case 'lafourchette-b2b-extranet':
                     $branches['branches_lafourchette_b2b_extranet'] = $vmProject->getBranch();
+                    break;
+                case 'lafourchette-b2b-rr-api':
+                    $branches['branches_lafourchette_b2brrapi'] = $vmProject->getBranch();
                     break;
             }
         }
@@ -297,7 +301,8 @@ Facts = {
     'branches_lafourchette_webmobile' => '{$branches['branches_lafourchette_webmobile']}',
     'branches_lafourchette_b2b' => '{$branches['branches_lafourchette_b2b']}',
     'branches_lafourchette_payment' => '{$branches['branches_lafourchette_payment']}',
-    'branches_lafourchette_b2b_extranet' => '{$branches['branches_lafourchette_b2b_extranet']}'
+    'branches_lafourchette_b2b_extranet' => '{$branches['branches_lafourchette_b2b_extranet']}',
+    'branches_lafourchette_b2brrapi' => '{$branches['branches_lafourchette_b2brrapi']}'
   },
   # Key used for cloning lf repos. Copied at VM startup
   'github_private_key' => '{$githubKey}',

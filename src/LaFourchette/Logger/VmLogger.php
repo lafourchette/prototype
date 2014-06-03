@@ -25,7 +25,7 @@ class VmLogger
         $logger = new Logger('vm-channel'.$this->getVm()->getIdVm());
         $handler = new StreamHandler(self::getLogFile($this->getVm()->getIdVm()), Logger::INFO);
         //[%datetime%] : %message% %context% %extra%\n
-        $handler->setFormatter(new \Monolog\Formatter\LineFormatter("[%datetime%] : %message%", 'Y-m-d H:i:s'));
+        $handler->setFormatter(new \Monolog\Formatter\LineFormatter("[%datetime%] : %message%\n", 'Y-m-d H:i:s'));
         $logger->pushHandler($handler);
 
         return $logger;
