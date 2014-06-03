@@ -8,6 +8,8 @@ To get the diff between two versions, go to https://github.com/lafourchette/lafo
 
 * 1.1.8 (2014-06-03)
   * add notification email 1h before expiration
+  * add b2b rr api project
+  * fix log formatter
 
 * 1.1.7 (2014-03-07)
   * Use integ name for project name instead of vm name
