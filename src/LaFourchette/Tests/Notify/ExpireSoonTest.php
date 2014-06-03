@@ -1,5 +1,5 @@
 <?php
-namespace LaFourchette\Prototype\Tests\Notify;
+namespace LaFourchette\Tests\Notify;
 
 use LaFourchette\Notify\ExpireSoon;
 use LaFourchette\Tests\ProphecyTestCase;
