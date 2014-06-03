@@ -7,6 +7,16 @@ use \LaFourchette\Entity\Vm;
 class ExpireSoon extends NotifyAbstract
 {
     /**
+     * @var string
+     */
+    protected $toExpireIn;
+
+    public function __construct($toExpireIn)
+    {
+        $this->toExpireIn = $toExpireIn;
+    }
+
+    /**
      * @param Vm $vm
      * @return string
      */
@@ -14,7 +24,7 @@ class ExpireSoon extends NotifyAbstract
         $integ = $vm->getInteg();
         $name = $integ->getName();
 
-        return sprintf('Votre environnement de test %s va expirer dans 1h', $name);
+        return sprintf('Votre environnement de test %s va expirer dans %s h', $name, $this->toExpireIn);
     }
 
     /**
@@ -29,7 +39,7 @@ class ExpireSoon extends NotifyAbstract
         $str = <<<EOS
 Bonjour,
 
-L'environnement de test {$name} va expirer dans 1h et par conséquent va être supprimé.
+L'environnement de test {$name} va expirer dans {$this->toExpireIn}h et par conséquent va être supprimé.
 
 Si vous en avez encore l'utilité veuillez rajouter un nouveau délais dessus.
 
