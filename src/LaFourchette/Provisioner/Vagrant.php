@@ -265,6 +265,12 @@ class Vagrant extends ProvisionerAbstract
                 case 'lafourchette-b2b-rr-api':
                     $branches['branches_lafourchette_b2brrapi'] = $vmProject->getBranch();
                     break;
+               case 'lafourchette-b2b-stats':
+                    $branches['branches_lafourchette_b2b-stats'] = $vmProject->getBranch();
+                    break;
+               case 'lafourchette-recovery':
+                    $branches['branches_lafourchette_recovery'] = $vmProject->getBranch();
+                    break;
             }
         }
 
