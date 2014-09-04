@@ -85,6 +85,7 @@ class LdapManager
         }
 
         $result = ldap_search($this->ldapRes, $this->baseDn, "(mail=*)", array("mail", "uid", "dn"));
+        ldap_sort($this->ldapRes, $result, 'mail');
         $entries = ldap_get_entries($this->ldapRes, $result);
 
         $users = array();

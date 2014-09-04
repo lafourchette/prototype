@@ -46,6 +46,12 @@ $app->get('/login', function () use ($app) {
 })
 ->bind('login');
 
+$app->get('/users', function () use ($app) {
+    return $app['twig']->render('users.html', array(
+        'users' => $app['ldap.manager']->listUsers()
+    ));
+});
+
 $app->get('/cc.xml', function () use ($app) {
     $exporter = $app['vm.cc.exporter'];
 
