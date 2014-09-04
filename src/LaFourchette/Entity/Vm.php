@@ -24,6 +24,8 @@ class Vm
     const STARTED = 5; //If a vm is started
     const ARCHIVED = 6; //If a vm is expired
 
+    const TYPE_DEFAULT = 0;
+    const TYPE_V2      = 1;
 
     public static $availableStatus = array(self::RUNNING, self::SUSPEND, self::TO_START, self::STARTED);
     public static $archiveStatus = array(self::EXPIRED, self::ARCHIVED);
@@ -102,6 +104,12 @@ class Vm
     protected $usersNotify;
 
     /**
+     * @ORM\Column(type="integer", name="type")
+     * @var int
+     */
+    protected $type;
+
+    /**
      * @return \DateTime
      */
     public function getExpiredDt()
@@ -115,6 +123,22 @@ class Vm
     public function setExpiredDt(\DateTime $expiredDt)
     {
         $this->expiredDt = $expiredDt;
+    }
+
+    /**
+     * @param int $type
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+    }
+
+    /**
+     * @return int
+     */
+    public function getType()
+    {
+        return $this->type;
     }
 
     /**

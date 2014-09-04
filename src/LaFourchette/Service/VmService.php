@@ -19,9 +19,9 @@ class VmService
     protected $vmManager = null;
 
     /**
-     * @var ProvisionerInterface|null
+     * @var ProvisionerInterface[]
      */
-    protected $provisionner = null;
+    protected $provisionners = array();
 
     /**
      * @var NotifyService|null
@@ -38,14 +38,22 @@ class VmService
         return $this->vmManager;
     }
 
-    public function setProvisionner(ProvisionerInterface $provisionner)
+    /**
+     * @param $type
+     * @param ProvisionerInterface $provisionner
+     */
+    public function setProvisionner($type, ProvisionerInterface $provisionner)
     {
-        $this->provisionner = $provisionner;
+        $this->provisionners[$type] = $provisionner;
     }
 
-    public function getProvisionner()
+    /**
+     * @param $type
+     * @return ProvisionerInterface
+     */
+    public function getProvisionner(Vm $vm)
     {
-        return $this->provisionner;
+        return $this->provisionners[$vm->getType()];
     }
 
     /**
@@ -67,7 +75,7 @@ class VmService
     public function initialise(Vm $vm)
     {
         $vmManager = $this->getVmManager();
-        $provisioner = $this->getProvisionner();
+        $provisioner = $this->getProvisionner($vm);
         $provisioner->initialise($vm);
         $vm->setStatus(VM::STOPPED);
         $vmManager->flush($vm);
@@ -76,7 +84,7 @@ class VmService
     public function delete(Vm $vm)
     {
         $vmManager = $this->getVmManager();
-        $provisioner = $this->getProvisionner();
+        $provisioner = $this->getProvisionner($vm);
         $provisioner->delete($vm);
 
         $vm->setStatus(Vm::STOPPED);
@@ -96,7 +104,7 @@ class VmService
         /**
          * @var VM $vm
          */
-        $provisionner = $this->getProvisionner();
+        $provisionner = $this->getProvisionner($vm);
 
         //$provisionner->start($vm, true, 'integ.lafourchette.local');
         $provisionner->stop($vm);
@@ -110,7 +118,7 @@ class VmService
         /**
          * @var VM $vm
          */
-        $provisionner = $this->getProvisionner();
+        $provisionner = $this->getProvisionner($vm);
 
         $vm->setStatus(VM::STARTED);
         $vmManager->flush($vm);
@@ -132,7 +140,7 @@ class VmService
 
     public function getStatus(Vm $vm)
     {
-        return $this->getProvisionner()->getStatus($vm);
+        return $this->getProvisionner($vm)->getStatus($vm);
     }
 
     public function stop(Vm $vm)
@@ -142,7 +150,7 @@ class VmService
         /**
          * @var VM $vm
          */
-        $provisionner = $this->getProvisionner();
+        $provisionner = $this->getProvisionner($vm);
         $vm->setStatus(Vm::STOPPED);
         $vmManager->flush($vm);
         $provisionner->stop($vm);
