@@ -13,6 +13,7 @@ use LaFourchette\Entity\Vm;
 class VmCreator implements CreatorInterface
 {
 
+
     protected $integDecider;
 
     public function __construct(IntegDecider $integDecider)
