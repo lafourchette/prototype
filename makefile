@@ -8,6 +8,7 @@ composer.phar:
 
 build: composer.phar
 	php ./composer.phar install
+	git describe --tags > VERSION
 
 install: sqlite3-exists
 	cp installer/nginx.conf /etc/nginx/sites-available/lafourchette-prototype
