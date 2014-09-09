@@ -18,9 +18,11 @@ install: sqlite3-exists
 	[ -e /etc/nginx/sites-enabled/lafourchette-prototype ] || ln -s /etc/nginx/sites-available/lafourchette-prototype /etc/nginx/sites-enabled/lafourchette-prototype
 	service nginx reload
 
-test:
-	[ -e db/dev ] || ( cat db/dev.sql | sqlite3 db/dev )
+test: db/dev
 	php -S localhost:8000 -t web web/index_dev.php
 
+db/dev:
+	cat db/dev.sql | sqlite3 db/dev
+
 clean:
-	[ -e db/dev ] && rm db/dev
+	rm -f db/dev
