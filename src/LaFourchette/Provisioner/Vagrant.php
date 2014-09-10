@@ -162,7 +162,7 @@ class Vagrant extends ProvisionerAbstract
             case VM::SUSPEND:
             case VM::STOPPED:
             case VM::MISSING:
-                throw new UnableToStartException('The Vm have not started');
+                throw new UnableToStartException('The Vm has not started');
             case VM::RUNNING:
                 //TODO: nothing
                 break;

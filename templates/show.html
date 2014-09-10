@@ -16,11 +16,19 @@
                             <div class="pull-right opensans vm-expiration">
                                 <strong>Expired at</strong> {{vm.expiredDt|date('Y-m-d H:i:s')}}
                             </div>
+                            {% if vm.type == 1 %}
+                                <img src="/img/kirk.png" style="width: 200px; height: 182px" /><br />
+                                <strong>This is a v2 Spock !</strong>
+                            {% endif %}
                         </div>
                     </div><!-- //row -->
                     <div id="details" class="row sep_top">
                         <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+
                             <h3>Projects</h3>
+                            {% if vm.type == 1 %}
+                            The v2 does not ship with configurable project branches
+                            {% else %}
                             <div class="list-group">
                                 {% for project in vm.vmProjects %}
                                 <a href="#" class="list-group-item">
@@ -29,23 +37,26 @@
                                 </a>
                                 {% endfor %}
                             </div>
+                            {% endif %}
+
+                            <h3>Users notified</h3>
+                            {% for user in users %}
+                            <span class="bold clearfix">{{user.user.username}}</span>
+                            <a href="#">{{user.user.email}}</a>
+                            {% endfor %}
+
                         </div>
                         <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-                            <h3>Users notified</h3>
+
+                            <h3>Logs</h3>
                             {% if la_fourchette_prototype_show_log(vm) %}
                                 <a href="{{ path('enlarge_version', {'idVm': vm.IdVm})}}" target="blank">Enlarge version</a>
                             {% else %}
-                                <a href="javascript:void(0)" id="refresh-log">Refresh the page to see the log<a>    
+                                <a href="javascript:void(0)" id="refresh-log">Refresh the page to see the log</a>
                             {% endif %}
                             <div id="log">
                             {{ la_fourchette_prototype_show_log(vm) }}
                             </div>
-                            {% for user in users %}
-                                <span class="bold clearfix">{{user.user.username}}</span>
-                                <a href="#">{{user.user.email}}</a>
-                            {% endfor %}
-                            <div class="spacer"></div>
-                            <div class="spacer"></div>
                         </div>
                     </div><!-- //row -->
                     <div class="spacer"></div>
