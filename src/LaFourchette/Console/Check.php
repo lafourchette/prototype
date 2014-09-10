@@ -48,7 +48,9 @@ class Check extends ConsoleAbstract
 
         $output->writeln('Start the checks of all VM');
 
+
         foreach ($vms as $vm) {
+            /** @var VM $vm */
             $output->writeln('> VM ' . $vm->__toString());
             $savedStatus = $vm->getStatus();
             $currentStatus = $this->application['vm.service']->getStatus($vm);
