@@ -1,6 +1,6 @@
 <?php
 
-namespace LaFourchette\Prototype\Tests\Provisionner;
+namespace LaFourchette\Tests\Provisionner;
 
 class VagrantProvisionnerTest extends \PHPUnit_Framework_Testcase
 {

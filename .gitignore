@@ -7,3 +7,4 @@ composer.lock
 db/dev
 .DS_Store
 .idea
+tmp
