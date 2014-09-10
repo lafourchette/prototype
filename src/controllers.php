@@ -46,6 +46,12 @@ $app->get('/login', function () use ($app) {
 })
 ->bind('login');
 
+$app->get('/users', function () use ($app) {
+    return $app['twig']->render('users.html', array(
+        'users' => $app['ldap.manager']->listUsers()
+    ));
+});
+
 $app->get('/cc.xml', function () use ($app) {
     $exporter = $app['vm.cc.exporter'];
 
@@ -192,6 +198,9 @@ $app->get('/ask-more-prototype/{idVm}', function ($idVm) use ($app) {
 })
     ->bind('ask-more-prototype');
 
+/**
+ * Call on create-prototype page, actually does the creation
+ */
 $app->post('/launch-prototype', function () use ($app) {
     if (null === $projects = $app['request']->request->get('projects')) {
         throw new \Exception('The "projects" variable is missing');
@@ -206,7 +215,7 @@ $app->post('/launch-prototype', function () use ($app) {
         /**
          * @var Vm $vm
          */
-        $vm = $creator->create();
+        $vm = $creator->create($app['request']->get('vmType'));
 
         $user = $app['user.manager']->getOrCreate($app['session']->get('user'));
         $vm->setCreatedBy($user);

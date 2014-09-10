@@ -31,6 +31,14 @@
 <form id="create-prototype" class="form-block" action="{{app.request.baseUrl}}/launch-prototype" method="POST" class="accordion" id="accordion">
 <div class="row">
     <div id="projects" class="col-lg-12">
+        Select a VM version : 
+        <select name="vmType" class="col-lg-12">
+            <option value="0" selected="selected">Standard</option>
+            <option value="1">v2.0.x</option>
+        </select>
+    </div>
+
+    <div id="projects" class="col-lg-12">
     <div class="row">
         {% for project in repositories %}
             

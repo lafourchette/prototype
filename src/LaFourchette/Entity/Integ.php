@@ -141,7 +141,7 @@ class Integ
     }
 
     /**
-     * @return string
+     * @return string Absolute path where the guest VM actually lives on the host.
      */
     public function getPath()
     {

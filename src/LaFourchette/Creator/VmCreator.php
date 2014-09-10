@@ -13,6 +13,7 @@ use LaFourchette\Entity\Vm;
 class VmCreator implements CreatorInterface
 {
 
+
     protected $integDecider;
 
     public function __construct(IntegDecider $integDecider)
@@ -20,7 +21,7 @@ class VmCreator implements CreatorInterface
         $this->integDecider = $integDecider;
     }
 
-    public function create()
+    public function create($vmType = Vm::TYPE_DEFAULT)
     {
         $integ = $this->integDecider->decide(); // Integ Entity
 
@@ -40,6 +41,7 @@ class VmCreator implements CreatorInterface
         $vm->setUpdateDt(new \DateTime());
         $vm->setExpiredDt($expiredAt);
         $vm->setInteg($integ);
+        $vm->setType($vmType);
 
         return $vm;
     }
