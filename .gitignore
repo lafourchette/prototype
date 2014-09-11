@@ -8,3 +8,4 @@ db/dev
 .DS_Store
 .idea
 tmp
+VERSION
