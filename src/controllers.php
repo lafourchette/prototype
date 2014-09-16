@@ -264,6 +264,11 @@ $app->get('/_status', function () use ($app) {
 })
 ->bind('_status');
 
+$app->post('/_comment', function(Request $request) use ($app){
+    $app['vm.manager']->comment($request->get('id'), $request->get('value'));
+    return $request->get('value');
+});
+
 $app->get('/logout', function () use ($app) {
         $app['session']->set('isAuthenticated', false);
         $app['session']->set('user', null);

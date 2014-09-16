@@ -1,10 +1,17 @@
 {% extends "layout.html" %}
 
 {% block meta %}
-<meta http-equiv="refresh" content="60">
+    <meta http-equiv="refresh" content="60">
 {% endblock %}
 
 {% block content %}
+    {{ render(app.request.baseUrl ~ '/_status') }}
+{% endblock %}
 
-{{ render(app.request.baseUrl ~ '/_status') }}
+{% block footer_js %}
+    <script>
+        $(document).ready(function() {
+            $('.edit').editable('/_comment');
+        });
+    </script>
 {% endblock %}

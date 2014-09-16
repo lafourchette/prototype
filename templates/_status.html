@@ -23,6 +23,7 @@
             <th>ID</th>
             <th>Integ</th>
             <th>Name</th>
+            <th>Comment</th>
             <th>Status</th>
             <th>Created By</th>
             <th>Expired in</th>
@@ -36,6 +37,9 @@
                 <td class="text-center">{{vm.idVm}}</td>
                 <td class="uppercase">{{vm.integ.name}}</td>
                 <td>{{vm}}</td>
+                <td>
+                    <div class="edit" id="{{vm.idVm}}">{% if vm.comment is empty %}Comment here{% else %}{{vm.comment}}{% endif %}</div>
+                </td>
                 <td>{{la_fourchette_prototype_vm_status(vm.status)}}</td>
                 <td>{{vm.createdBy.username}}</td>
                 <td>{{vm.expiredDt|date('Y-m-d H:i:s')}}</td>

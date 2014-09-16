@@ -77,6 +77,12 @@ class Vm
     protected $name;
 
     /**
+     * @ORM\Column(type="string", name="comment")
+     * @var string
+     */
+    protected $comment;
+
+    /**
      * @ORM\OneToOne(targetEntity="LaFourchette\Entity\User")
      * @ORM\JoinColumn(name="created_by", referencedColumnName="id_user")
      * @var User
@@ -123,6 +129,22 @@ class Vm
     public function setExpiredDt(\DateTime $expiredDt)
     {
         $this->expiredDt = $expiredDt;
+    }
+
+    /**
+     * @param string $comment
+     */
+    public function setComment($comment)
+    {
+        $this->comment = $comment;
+    }
+
+    /**
+     * @return string
+     */
+    public function getComment()
+    {
+        return $this->comment;
     }
 
     /**

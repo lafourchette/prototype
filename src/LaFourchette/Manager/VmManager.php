@@ -39,6 +39,14 @@ class VmManager extends AbstractManager
         return $this->getByStatus(Vm::TO_START);
     }
 
+    public function comment($id, $comment)
+    {
+        $vm = $this->load($id);
+        $vm->setComment($comment);
+
+        $this->save($vm);
+    }
+
     private function getByStatus($status)
     {
         $qb = $this->repository->createQueryBuilder('v');
