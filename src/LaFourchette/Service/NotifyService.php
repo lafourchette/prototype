@@ -7,9 +7,14 @@ use LaFourchette\Notify\NotifyAbstract;
 
 class NotifyService
 {
-
     protected $notify = array();
 
+    protected $hipchat = null;
+
+    public function __construct($hipchat)
+    {
+        $this->hipchat = $hipchat;
+    }
 
     public function addNotifyMessage($name, $notifyMessage)
     {
@@ -26,6 +31,8 @@ class NotifyService
         foreach ($vm->getUsersNotify() as $userNotify) {
             mail($userNotify->getUser()->getEmail(), $subject, $content);
         }
+
+        $this->hipchat->message_room('CI', 'Prototype', $subject);
     }
 
     /**

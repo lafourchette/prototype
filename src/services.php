@@ -46,7 +46,7 @@ $app['vm_project.creator'] = $app->share(function() use ($app){
 
 
 $app['notify.service'] = $app->share(function() use ($app) {
-    $notify = new \LaFourchette\Service\NotifyService();
+    $notify = new \LaFourchette\Service\NotifyService($app['hipchat.client']);
     $notify->addNotifyMessage('expired', new \LaFourchette\Notify\Expired());
     $notify->addNotifyMessage('expire_soon', new \LaFourchette\Notify\ExpireSoon($app['vm.to_expire_in']));
     $notify->addNotifyMessage('ready', new \LaFourchette\Notify\Ready());
@@ -91,4 +91,8 @@ $app['ldap.manager'] = $app->share(function() use ($app){
 
 $app['vm.cc.exporter'] = $app->share(function() use ($app){
     return new \LaFourchette\Exporter\CcExporter($app['vm.manager'], $app['url_generator']);
+});
+
+$app['hipchat.client'] = $app->share(function() use ($app){
+    return new HipChat\HipChat('***REMOVED***'); // notification...
 });
