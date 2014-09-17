@@ -3,7 +3,6 @@ logs/*
 cache/*
 vendor
 composer.phar
-composer.lock
 db/dev
 .DS_Store
 .idea
