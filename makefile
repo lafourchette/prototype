@@ -31,3 +31,6 @@ clean:
 	rm -f db/dev
 	rm -rf logs/*.log
 	rm -rf tmp
+
+close:
+	touch MAINTENANCE.lock

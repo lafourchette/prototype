@@ -8,3 +8,4 @@ db/dev
 .idea
 tmp
 VERSION
+MAINTENANCE.lock

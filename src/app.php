@@ -25,6 +25,16 @@ $app['twig'] = $app->share($app->extend('twig', function($twig, $app) {
     return $twig;
 }));
 
+// Maintenance
+$app->before( function() use ( $app ) {
+    if(file_exists('MAINTENANCE.lock')){
+        return new \Symfony\Component\HttpFoundation\Response(
+            $app['twig']->render('maintenance.html'),
+            503
+        );
+    }
+});
+
 $app->before( function() use ( $app ) {
     $flash = $app[ 'session' ]->get( 'flash' );
     $app[ 'session' ]->set( 'flash', null );
