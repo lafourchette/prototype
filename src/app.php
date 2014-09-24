@@ -26,8 +26,8 @@ $app['twig'] = $app->share($app->extend('twig', function($twig, $app) {
 }));
 
 // Maintenance
-$app->before( function() use ( $app ) {
-    if(file_exists('MAINTENANCE.lock')){
+$app->before( function() use ($app) {
+    if (file_exists('../MAINTENANCE.lock')){
         return new \Symfony\Component\HttpFoundation\Response(
             $app['twig']->render('maintenance.html'),
             503
