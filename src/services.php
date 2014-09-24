@@ -1,7 +1,7 @@
 <?php
 
 $app['vm.manager'] = $app->share(function() use ($app){
-    return new \LaFourchette\Manager\VmManager($app['orm.em'],'\LaFourchette\Entity\VM');
+    return new \LaFourchette\Manager\VmManager($app['orm.em'],'\LaFourchette\Entity\Vm');
 });
 
 $app['integ.manager'] = $app->share(function() use ($app){

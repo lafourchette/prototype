@@ -3,7 +3,7 @@
 namespace LaFourchette\Console;
 
 use LaFourchette\Entity\Integ;
-use LaFourchette\Entity\VM;
+use LaFourchette\Entity\Vm;
 use LaFourchette\Manager\VmManager;
 use LaFourchette\Provisioner\Vagrant;
 use Symfony\Component\Console\Application;
