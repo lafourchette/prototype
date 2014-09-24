@@ -12,12 +12,6 @@ class Ready extends NotifyAbstract
         $suffix = $integ->getSuffix();
         $name = $integ->getName();
 
-        $projectList = '';
-
-        foreach($vm->getVmProjects() as $vmProject) {
-            $projectList .= ' - ' . $vmProject->getProject()->getName() . ' : ' . $vmProject->getBranch() . "\n";
-        }
-
         $expiredDt = $vm->getExpiredDt()->format('Y-m-d H:i:s');
 
         $str = <<<EOS
@@ -27,9 +21,6 @@ Votre environnement de test {$name} est prêt.
 
 Pour connaitre toutes les urls et commencer à s'en servir, rendez-vous sur cette page :
 - http://status{$suffix}
-
-Voici un récapitulatif de ce qui a été installé :
-{$projectList}
 
 Votre VM expirera automatiquement le {$expiredDt}.
 
