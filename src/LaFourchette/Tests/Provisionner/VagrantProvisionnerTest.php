@@ -198,7 +198,7 @@ EOF;
              ->will($this->returnValue(\LaFourchette\Entity\Vm::MISSING));
 
         //First case, cannot supend the vm if it's already running
-        $this->setExpectedException('Exception', 'The Vm have not started');
+        $this->setExpectedException('Exception', 'The Vm has not started');
         $vagrantProvisionnerMock->start($vmMock);
 
     }
