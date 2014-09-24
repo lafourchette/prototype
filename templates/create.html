@@ -34,7 +34,7 @@
         Select a Integ version :
         <select name="integ" class="col-lg-12">
             {% for integ in integs %}
-                <option value="{{ integ.idInteg }}">{{ integ.name }}</option>
+                <option value="{{ integ.idInteg }}">{{ integ.name }} - {{ integ.node.name }}</option>
             {% endfor %}
         </select>
     </div>

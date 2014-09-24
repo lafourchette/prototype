@@ -23,6 +23,9 @@ class IntegManager extends AbstractManager
     {
         $rsm = new ResultSetMapping();
         $rsm->addEntityResult('LaFourchette\Entity\Integ', 'i');
+        $rsm->addJoinedEntityResult('LaFourchette\Entity\Node', 'n', 'i', 'node');
+        $rsm->addFieldResult('n', 'id_node', 'idNode');
+        $rsm->addFieldResult('n', 'nodeName', 'name');
         $rsm->addFieldResult('i', 'id_integ', 'idInteg');
         $rsm->addFieldResult('i', 'name', 'name');
         $rsm->addFieldResult('i', 'suffix', 'suffix');
@@ -35,7 +38,24 @@ class IntegManager extends AbstractManager
         $rsm->addFieldResult('i', 'github_key', 'githubKey');
         $rsm->addFieldResult('i', 'netmask', 'netmask');
 
-        $query = $this->em->createNativeQuery('select integ.id_integ, integ.name, integ.suffix, integ.path, integ.ssh_key, integ.ssh_user, integ.ip, integ.mac, integ.bridge, integ.netmask, integ.github_key from integ left join vm on integ.id_integ = vm.id_integ and vm.status not in (:status) where vm.id_vm is null and integ.is_actived = 1 order by integ.name ASC', $rsm);
+        $query = $this->em->createNativeQuery('select
+            i.id_integ,
+            i.name,
+            i.suffix,
+            i.path,
+            i.ssh_key,
+            i.ssh_user,
+            i.ip,
+            i.mac,
+            i.bridge,
+            i.netmask,
+            i.github_key,
+            n.name as nodeName,
+            n.id_node
+          from integ i
+          inner join node n on i.id_node = n.id_node
+          left join vm on i.id_integ = vm.id_integ
+          and vm.status not in (:status) where vm.id_vm is null and i.is_actived = 1 order by i.name ASC', $rsm);
         $query->setParameter(':status', Vm::$freeStatus);
 
         return $query->getResult();

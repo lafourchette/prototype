@@ -30,6 +30,28 @@ class Node
      */
     protected $ip = null;
 
+    /**
+     * @ORM\OneToOne(targetEntity="Integ", mappedBy="node")
+     * @var object
+     */
+    protected $integ;
+
+
+    /**
+     * @return int
+     */
+    public function getIdNode()
+    {
+        return $this->idNode;
+    }
+
+    /**
+     * @param int $id
+     */
+    public function setIdNode($id)
+    {
+        $this->idNode = $id;
+    }
 
     /**
      * @return null|string

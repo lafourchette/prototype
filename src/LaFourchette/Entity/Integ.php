@@ -38,9 +38,10 @@ class Integ
     protected $path;
 
     /**
-     * @ORM\OneToOne(targetEntity="Node")
+     * @ORM\OneToOne(targetEntity="Node", inversedBy="integ")
      * @ORM\JoinColumn(name="id_node", referencedColumnName="id_node")
-     **/
+     * @var object
+     */
     protected $node;
 
     /**
