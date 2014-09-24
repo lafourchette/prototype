@@ -59,7 +59,7 @@ abstract class AbstractManager implements ManagerInterface
     {
         $this->em->flush($entity);
     }
-    
+
     public function save($entity)
     {
         $this->em->persist($entity);

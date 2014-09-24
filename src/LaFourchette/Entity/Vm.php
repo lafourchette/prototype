@@ -41,7 +41,7 @@ class Vm
     protected $idVm;
 
     /**
-     * @ORM\OneToOne(targetEntity="LaFourchette\Entity\Integ")
+     * @ORM\OneToOne(targetEntity="LaFourchette\Entity\Integ", inversedBy="vm")
      * @ORM\JoinColumn(name="id_integ", referencedColumnName="id_integ")
      * @var object
      */
@@ -94,13 +94,6 @@ class Vm
      * @var \DateTime
      */
     protected $expiredDt;
-
-    /**
-     * @ORM\OneToMany(targetEntity="LaFourchette\Entity\VmProject", mappedBy="vm", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(name="id_vm", referencedColumnName="id_vm")
-     * @var VmProject[]
-     */
-    protected $vmProjects;
 
     /**
      * @ORM\OneToMany(targetEntity="LaFourchette\Entity\UserNotify", mappedBy="vm", cascade={"persist", "remove"})
@@ -292,14 +285,6 @@ class Vm
     }
 
     /**
-     * @return VmProject[]
-     */
-    public function getVmProjects()
-    {
-        return $this->vmProjects;
-    }
-
-    /**
      * @return string
      */
     public function __toString()
@@ -333,9 +318,9 @@ class Vm
 
     public function getCcStatus()
     {
-        if(in_array($this->getStatus(), self::$availableStatus)) {
+        if (in_array($this->getStatus(), self::$availableStatus)) {
             return 'Success';
-        } elseif(self::STOPPED == $this->getStatus()) {
+        } elseif (self::STOPPED == $this->getStatus()) {
             return 'Failure';
         }
     }

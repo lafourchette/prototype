@@ -102,7 +102,7 @@ $app->get('/_ajax_log/{idVm}', function ($idVm) use ($app) {
 
 $app->get('/create-prototype', function () use ($app) {
     $params = array();
-    $params['repositories'] = $app['github.manager']->getAllRepositoriesWithBranch();
+    $params['integs'] = $app['integ.manager']->loadAllAvailable();
     $params['users'] = $app['ldap.manager']->listUsers();
     $params['vmActive'] = $app['vm.manager']->getActive();
     $params['vmToStart'] = $app['vm.manager']->getToStart();
@@ -202,9 +202,6 @@ $app->get('/ask-more-prototype/{idVm}', function ($idVm) use ($app) {
  * Call on create-prototype page, actually does the creation
  */
 $app->post('/launch-prototype', function () use ($app) {
-    if (null === $projects = $app['request']->request->get('projects')) {
-        throw new \Exception('The "projects" variable is missing');
-    }
 
     $users = $app['request']->request->get('users');
 
@@ -212,37 +209,27 @@ $app->post('/launch-prototype', function () use ($app) {
     if ($app['integ_availabibilty.checker']->check()) {
         //Doctrine2 does not handle correctly
         $creator = $app['vm.creator'];
-        /**
-         * @var Vm $vm
-         */
-        $vm = $creator->create($app['request']->get('vmType'));
+        //Get Integ Parameter
+        $integ = $app['integ.manager']->load($app['request']->request->get('integ'));
+        $vm = $creator->create();
 
         $user = $app['user.manager']->getOrCreate($app['session']->get('user'));
         $vm->setCreatedBy($user);
+        $vm->setInteg($integ);
         //Save the vm first
         $app['vm.manager']->save($vm);
-
-        //Create a related object between project and vm
-        foreach ($projects as $projectId => $branch) {
-            $vmProjectCreator = $app['vm_project.creator'];
-            $vmProjectCreator->addBranch($branch);
-            $vmProjectCreator->addProject($app['project.manager']->load($projectId));
-            $vmProjectCreator->addVm($vm);
-            $vmProject = $vmProjectCreator->create();
-            $app['vm_project.manager']->save($vmProject);
-        }
 
         $userManager = $app['user.manager'];
         $userNotifyManager = $app['user_notify.manager'];
 
         foreach ($users as $userName) {
             $ldapUser = $app['ldap.manager']->getUserInfo($userName);
-                $user = $userManager->getOrCreate($ldapUser);
+            $user = $userManager->getOrCreate($ldapUser);
 
-                $userNotify = new \LaFourchette\Entity\UserNotify();
-                $userNotify->setUser($user);
-                $userNotify->setVm($vm);
-                $userNotifyManager->save($userNotify);
+            $userNotify = new \LaFourchette\Entity\UserNotify();
+            $userNotify->setUser($user);
+            $userNotify->setVm($vm);
+            $userNotifyManager->save($userNotify);
         }
     }
 

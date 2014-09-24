@@ -3,6 +3,7 @@
 namespace LaFourchette\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use LaFourchette\Entity\Node;
 
 /**
  * @ORM\Entity
@@ -37,10 +38,10 @@ class Integ
     protected $path;
 
     /**
-     * @ORM\Column(type="string")
-     * @var null|string
-     */
-    protected $server;
+     * @ORM\OneToOne(targetEntity="Node")
+     * @ORM\JoinColumn(name="id_node", referencedColumnName="id_node")
+     **/
+    protected $node;
 
     /**
      * @ORM\Column(type="string", name="ssh_key")
@@ -70,7 +71,7 @@ class Integ
      * @ORM\Column(type="string")
      * @var string
      */
-    protected $bridge;    
+    protected $bridge;
 
     /**
      * @ORM\Column(type="string")
@@ -85,12 +86,26 @@ class Integ
     protected $githubKey;
 
     /**
-     * @ORM\ManyToOne(targetEntity="LaFourchette\Entity\Vm")
-     * @ORM\JoinColumn(name="id_integ", referencedColumnName="id_vm")
+     * @ORM\Column(type="boolean", name="is_actived")
+     * @var bool
+     */
+    protected $isActived;
+
+    /**
+     * @ORM\OneToOne(targetEntity="Vm", mappedBy="integ")
      * @var object
      */
     protected $vm;
 
+    public function getIsActived()
+    {
+        return $this->isActived;
+    }
+
+    public function setIsActived($isActived)
+    {
+        return $this->isActived = $isActived;
+    }
 
     /**
      * @return int
@@ -157,19 +172,19 @@ class Integ
     }
 
     /**
-     * @return null|string
+     * @return Node
      */
-    public function getServer()
+    public function getNode()
     {
-        return $this->server;
+        return $this->node;
     }
 
     /**
-     * @param string $server
+     * @param Node $node
      */
-    public function setServer($server)
+    public function setNode(Node $node)
     {
-        $this->server = $server;
+        $this->node = $node;
     }
 
     /**
@@ -234,7 +249,7 @@ class Integ
     public function setBridge($bridge)
     {
         $this->bridge = $bridge;
-    }    
+    }
 
     /**
      * @return string
@@ -267,7 +282,7 @@ class Integ
     {
         $this->netmask = $netmask;
     }
-    
+
 
     /**
      * @return string
@@ -284,5 +299,4 @@ class Integ
     {
         $this->githubKey = $githubKey;
     }
-
 }

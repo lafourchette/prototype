@@ -7,7 +7,6 @@ use Symfony\Component\Process\Process;
 
 class LoggableProcess extends Process
 {
-    /** @var LoggerInterface */
     public $logger;
 
     public function setLogger(LoggerInterface $logger = null)

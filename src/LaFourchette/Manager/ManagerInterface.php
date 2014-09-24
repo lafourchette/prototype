@@ -31,7 +31,7 @@ interface ManagerInterface
     /**
      * Finds many objects by an array of criteria
      *
-     * @param array $criteria The array of criteria 
+     * @param array $criteria The array of criteria
      * @param array $order Array of order (ex : array('myField' => 'DESC'))
      *
      * @return array
@@ -39,7 +39,7 @@ interface ManagerInterface
     public function loadBy(array $criteria, array $order = null);
 
     /**
-     * Finds all objects 
+     * Finds all objects
      *
      * @return array
      */

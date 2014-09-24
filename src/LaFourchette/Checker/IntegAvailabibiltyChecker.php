@@ -19,11 +19,12 @@ class IntegAvailabibiltyChecker implements CheckerInterface
 
     public function check()
     {
-        if(null === $this->integManager->getBestInteg())
-        {
-           return false; 
+        $vmAvailable = $this->integManager->loadAllAvailable();
+
+        if (empty($vmAvailable)) {
+           return false;
         }
-        
+
         return true;
     }
 
@@ -31,5 +32,4 @@ class IntegAvailabibiltyChecker implements CheckerInterface
     {
         return 'integ_availabibilty';
     }
-
 }

@@ -35,27 +35,30 @@ class Vagrant extends ProvisionerAbstract
      * @return string
      * @throws \Exception
      */
-    protected function getPrefixCommand($integ, $realCommand)
+    protected function getPrefixCommand($integ, $realCommand, $ssh = true, $prefix = true)
     {
         $cmd = '';
 
         $sshUser = $integ->getSshUser();
         $sshKey = $integ->getSshKey();
-        $server = $integ->getServer();
+        $server = $integ->getNode()->getIp();
 
-        if (trim($sshUser) != '' && trim($server) != '') {
-            $encapsultate = 'ssh -o "StrictHostKeyChecking no" ' . $sshUser . '@' . $server . ' ';
+        if ($ssh) {
+            if (trim($sshUser) != '' && trim($server) != '') {
+                $encapsultate = 'ssh -o "StrictHostKeyChecking no" ' . $sshUser . '@' . $server . ' ';
+            }
         }
 
-        $path = $integ->getPath();
+        if ($prefix) {
+            $path = $integ->getPath();
+            if (trim($path) !== '') {
+                $cmd .= 'cd ' . $path . '; ';
+            } else {
+                throw new \Exception('Seriously ? no path ? I can deploy the VM everywhere ?');
+            }
 
-        if (trim($path) !== '') {
-            $cmd .= 'cd ' . $path . '; ';
-        } else {
-            throw new \Exception('Seriously ? no path ? I can deploy the VM everywhere ?');
+            $cmd .= $realCommand;
         }
-
-        $cmd .= $realCommand;
 
         if (isset($encapsultate)) {
             $cmd = $encapsultate . ' "' . str_replace('"', '\"', $cmd) . '"';
@@ -110,16 +113,17 @@ class Vagrant extends ProvisionerAbstract
     /**
      * @param VM $vm
      * @param string $cmd
+     * @param bool
      * @return string
      */
-    protected function run(VM $vm, $cmd)
+    protected function run(VM $vm, $cmd, $prefix = true)
     {
         // @codeCoverageIgnoreStart
         $logger = new VmLogger();
         $logger->setVm($vm);
         $vmLogger = $logger->createLogger();
 
-        $cmd = $this->getPrefixCommand($vm->getInteg(), $cmd);
+        $cmd = $this->getPrefixCommand($vm->getInteg(), $cmd, $prefix);
         $process = new LoggableProcess($cmd);
         $process->setLogger($vmLogger);
         $process->setTimeout(0);
@@ -192,6 +196,8 @@ class Vagrant extends ProvisionerAbstract
      */
     public function initialise(VM $vm)
     {
+        $this->run($vm, sprintf('mkdir -p %s', $vm->getInteg()->getPath()), true, false);
+
         $cmd = $this->getCloneVmCommand();
         $this->run($vm, $cmd);
 

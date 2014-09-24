@@ -43,7 +43,7 @@ abstract class ConsoleAbstract
      * @param \Symfony\Component\Console\Application $console
      * @return mixed
      */
-    abstract static public function register(Application $app, \Symfony\Component\Console\Application $console);
+    abstract public static function register(Application $app, \Symfony\Component\Console\Application $console);
 
     /**
      * @return VmManager

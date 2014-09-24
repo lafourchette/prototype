@@ -4,7 +4,6 @@ namespace LaFourchette\Decider;
 
 use LaFourchette\Manager\IntegManager;
 
-
 /**
  * Find the correct integ server to create a prototype
  *
@@ -13,12 +12,12 @@ use LaFourchette\Manager\IntegManager;
 class IntegDecider implements DeciderInterface
 {
     protected $integManager;
-    
+
     public function __construct(IntegManager $integManager)
     {
         $this->integManager = $integManager;
     }
-    
+
     /**
      * Return an available integ
      * @return \LaFourchette\Entity\Integ
@@ -27,7 +26,7 @@ class IntegDecider implements DeciderInterface
     {
         return $this->integManager->getBestInteg();
     }
-    
+
     public function getName()
     {
         return 'integ_decider';

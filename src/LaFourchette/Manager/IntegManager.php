@@ -19,7 +19,7 @@ class IntegManager extends AbstractManager
         parent::__construct($em, $class);
     }
 
-    public function getBestInteg()
+    public function loadAllAvailable()
     {
         $rsm = new ResultSetMapping();
         $rsm->addEntityResult('LaFourchette\Entity\Integ', 'i');
@@ -27,7 +27,6 @@ class IntegManager extends AbstractManager
         $rsm->addFieldResult('i', 'name', 'name');
         $rsm->addFieldResult('i', 'suffix', 'suffix');
         $rsm->addFieldResult('i', 'path', 'path');
-        $rsm->addFieldResult('i', 'server', 'server');
         $rsm->addFieldResult('i', 'ssh_key', 'sshKey');
         $rsm->addFieldResult('i', 'ssh_user', 'sshUser');
         $rsm->addFieldResult('i', 'ip', 'ip');
@@ -36,16 +35,9 @@ class IntegManager extends AbstractManager
         $rsm->addFieldResult('i', 'github_key', 'githubKey');
         $rsm->addFieldResult('i', 'netmask', 'netmask');
 
-        $query = $this->em->createNativeQuery('select integ.id_integ, integ.name, integ.suffix, integ.path, integ.server, integ.ssh_key, integ.ssh_user, integ.ip, integ.mac, integ.bridge, integ.netmask, integ.github_key from integ left join vm on integ.id_integ = vm.id_integ and vm.status not in (:status) where vm.id_vm is null and integ.is_actived = 1 order by random() LIMIT 1', $rsm);
+        $query = $this->em->createNativeQuery('select integ.id_integ, integ.name, integ.suffix, integ.path, integ.ssh_key, integ.ssh_user, integ.ip, integ.mac, integ.bridge, integ.netmask, integ.github_key from integ left join vm on integ.id_integ = vm.id_integ and vm.status not in (:status) where vm.id_vm is null and integ.is_actived = 1 order by integ.name ASC', $rsm);
         $query->setParameter(':status', Vm::$freeStatus);
 
-        try {
-            return $query->getSingleResult();
-        } catch (\Doctrine\ORM\NoResultException $e) {
-            return null;
-        } catch (\Doctrine\ORM\NonUniqueResultException $e) {
-            return null;
-        }
+        return $query->getResult();
     }
-
 }

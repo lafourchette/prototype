@@ -22,6 +22,7 @@
         <tr>
             <th>ID</th>
             <th>Integ</th>
+            <th>Node</th>
             <th>Name</th>
             <th>Comment</th>
             <th>Status</th>
@@ -36,6 +37,7 @@
             <tr>
                 <td class="text-center">{{vm.idVm}}</td>
                 <td class="uppercase">{{vm.integ.name}}</td>
+                <td class="uppercase">{{vm.integ.node.name}}</td>
                 <td>{{vm}}</td>
                 <td>
                     <div class="edit" id="{{vm.idVm}}">{% if vm.comment is empty %}Comment here{% else %}{{vm.comment}}{% endif %}</div>

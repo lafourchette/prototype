@@ -14,30 +14,37 @@ use \GeSHi;
 class LaFourchettePrototypeExtension extends \Twig_Extension
 {
     protected $integAvailabibiltyChecker;
-    
+
     public function __construct(\LaFourchette\Checker\IntegAvailabibiltyChecker $integAvailabibiltyChecker)
     {
         $this->integAvailabibiltyChecker = $integAvailabibiltyChecker;
     }
     /**
-     * 
+     *
      * {@inheritDoc}
      */
     public function getFunctions()
     {
         return array(
-            'la_fourchette_prototype_vm_status' =>  new \Twig_Function_Method($this, 'vmStatus',array('is_safe' => array(true))),
-            'la_fourchette_prototype_show_log' =>  new \Twig_Function_Method($this, 'showLog',array('is_safe' => array(true))),
+            'la_fourchette_prototype_vm_status' =>  new \Twig_Function_Method(
+                $this,
+                'vmStatus',
+                array('is_safe' => array(true))
+            ),
+            'la_fourchette_prototype_show_log' =>  new \Twig_Function_Method(
+                $this,
+                'showLog',
+                array('is_safe' => array(true))
+            ),
             'la_fourchette_prototype_integ_availability' => new \Twig_Function_Method($this, 'integAvailability')
-            );
+        );
     }
 
     public function showLog(Vm $vm)
     {
         $logFile = VmLogger::getLogFile($vm->getIdVm());
 
-        if(!file_exists($logFile))
-        {
+        if (!file_exists($logFile)) {
             return null;
         }
 
@@ -45,16 +52,15 @@ class LaFourchettePrototypeExtension extends \Twig_Extension
 
         return $geshi->parse_code();
     }
-    
+
     /**
-     * 
+     *
      * @param int $status
      */
     public function vmStatus($status)
     {
-        switch($status)
-        {
-            case Vm::RUNNING;
+        switch($status) {
+            case Vm::RUNNING:
                 return '<label class="label label-info">Running</label>';
                 break;
             case Vm::STOPPED:
@@ -79,14 +85,13 @@ class LaFourchettePrototypeExtension extends \Twig_Extension
                 return 'no status available';
                 break;
         }
-        
     }
-    
+
     public function integAvailability()
     {
         return $this->integAvailabibiltyChecker->check();
     }
-    
+
     public function getName()
     {
         return 'la_fourchette_prototype_extension';

@@ -57,5 +57,4 @@ class VmManager extends AbstractManager
 
         return $qb->getQuery()->getSingleScalarResult();
     }
-
 }
