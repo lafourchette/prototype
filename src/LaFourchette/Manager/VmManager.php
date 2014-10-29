@@ -24,6 +24,7 @@ class VmManager extends AbstractManager
 
         $qb->select('v')
            ->where($qb->expr()->notIn('v.status', ':status'))
+           ->orderBy('v.id_integ', 'ASC')
            ->setParameter('status', Vm::$freeStatus);
 
         return $qb->getQuery()->getResult();
