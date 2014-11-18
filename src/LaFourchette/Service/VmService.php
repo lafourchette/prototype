@@ -81,8 +81,14 @@ class VmService
         $vmManager->flush($vm);
     }
 
-    public function delete(Vm $vm)
+    public function delete(Vm $vm, $force = false)
     {
+        $now = new \DateTime();
+        $day = $now->format('w');
+        if( ($day == 0 || $day == 6) && ! $force){
+            throw new \Exception('Cannot delete a VM on weekend unless you force it');
+        }
+
         $vmManager = $this->getVmManager();
         $provisioner = $this->getProvisionner($vm);
         $provisioner->delete($vm);

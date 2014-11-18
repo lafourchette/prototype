@@ -173,7 +173,12 @@ $app->get('/ask-more-prototype/{idVm}', function ($idVm) use ($app) {
     if ($vm->getCreatedBy()->getIdUser() == $app['session']->get('user')->getIdUser()) {
         $date = $vm->getExpiredDt();
         $date->add(new \DateInterval(sprintf('PT%dH', $app['vm.expired_in_value'])));
-
+        $day = $date->format('w');
+        $short = sprintf('%s hours has been added for your VM', $app['vm.expired_in_value']);
+        if ($day == 0 || $day == 6) { // expire on weekend... well add 2 more days then.
+            $date->add(new \DateInterval('P2D'));
+            $short = 'Your VM will expire after the weekend';
+        }
         /**
          * Force the clone because without it doctrine do not detect the change and so it do not update the db
          */
@@ -182,9 +187,9 @@ $app->get('/ask-more-prototype/{idVm}', function ($idVm) use ($app) {
         $vmManager->save($vm);
 
         $app[ 'session' ]->set('flash', array(
-            'type'    =>'success',
-            'short'   =>sprintf('%s hours has been added for your VM', $app['vm.expired_in_value']),
-            'ext'     =>'Please don\'t abuse of this feature. Do you really need as much time to test your stuff?',
+            'type'    => 'success',
+            'short'   => $short,
+            'ext'     => 'Please don\'t abuse of this feature. Do you really need as much time to test your stuff?',
         ));
     } else {
         $app[ 'session' ]->set('flash', array(
