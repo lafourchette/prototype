@@ -20,41 +20,50 @@
     <table class="col-lg-12 table-striped" id="prototypes">
         <thead>
         <tr>
-            <th>ID</th>
-            <th>Integ</th>
-            <th>Node</th>
-            <th>Name</th>
+            <th>Machine</th>
+            <th>Owner</th>
+            <th>Info</th>
             <th>Comment</th>
             <th>Status</th>
-            <th>Created By</th>
-            <th>Expired in</th>
-            <th>Link</th>
+            <th>Expires in</th>
             <th>Actions</th>
         </tr>
         </thead>
         <tbody>
         {% for vm in vms %}
             <tr>
-                <td class="text-center">{{vm.idVm}}</td>
-                <td class="uppercase">{{vm.integ.name}}</td>
-                <td class="uppercase">{{vm.integ.node.name}}</td>
-                <td>{{vm}}</td>
+                <td>{{vm.integ.name}}</td>
+                <td>{{vm.createdBy.username}}</td>
+                <td>
+                    <dl class="dl-horizontal">
+                        <dt>ID</dt>
+                        <dd>{{vm.idVm}}</dd>
+                        <dt>Node</dt>
+                        <dd>{{vm.integ.node.name}}</dd>
+                        <dt>Name</dt>
+                        <dd>{{vm}}</dd>
+                        <dt>Expiration date</dt>
+                        <dd>{{vm.expiredDt|date('Y-m-d H:i:s')}}</dd>
+                    </dl>
+                    {% if vm.status == 0 %}
+                        <a href="http://status{{vm.integ.suffix}}" target="_blank">Status page</a><br />
+                    {% endif %}
+                </td>
+
                 <td>
                     <div class="edit" id="{{vm.idVm}}">{% if vm.comment is empty %}Comment here{% else %}{{vm.comment}}{% endif %}</div>
                 </td>
                 <td>{{la_fourchette_prototype_vm_status(vm.status)}}</td>
-                <td>{{vm.createdBy.username}}</td>
-                <td>{{vm.expiredDt|date('Y-m-d H:i:s')}}</td>
-                {% if vm.status == 0 %}
-                    <td><a href="http://status{{vm.integ.suffix}}" target="_blank">Go to status page</a></td>
-                {% else %}
-                    <td>&nbsp;</td>
-                {% endif %}
+
+                <td>
+                    <b>{{vm.endsIn}}</b>
+                </td>
+
                 <td>
                     {% if app.session.get('user').username == vm.createdBy.username %}
                         {% if vm.status != 4 %}
-                            <a href="/force-expire-prototype/{{ vm.idVm }}" class="btn btn-danger" title="Force the expiration"><i class="icon-unlink nabilla"></i></a>
-                            <a href="/ask-more-prototype/{{ vm.idVm }}" class="btn btn-success" title="Ask for {{ default_expiration_delay }} hours more"><i class="icon-rocket nabilla"></i></a>
+                            <a href="/force-expire-prototype/{{ vm.idVm }}" class="btn btn-danger" title="Force the expiration"><i class="icon-trash nabilla"></i></a>
+                            <a href="/ask-more-prototype/{{ vm.idVm }}" class="btn btn-success" title="Ask for {{ default_expiration_delay }} hours more"><i class="icon-heart nabilla"></i></a>
                         {% endif %}
                         {% if vm.status == 1 %}
                             <a href="/force-start/{{ vm.idVm }}" class="btn btn-default" title="Force starting"><i class="icon-off nabilla"></i></a>
