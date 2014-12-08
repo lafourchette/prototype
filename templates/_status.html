@@ -44,10 +44,11 @@
                         <dd>{{vm}}</dd>
                         <dt>Expiration date</dt>
                         <dd>{{vm.expiredDt|date('Y-m-d H:i:s')}}</dd>
+                        {% if vm.status == 0 %}
+                            <dt>Status page link</dt>
+                            <dd><a href="http://status{{vm.integ.suffix}}" target="_blank">Status page</a></dd>
+                        {% endif %}
                     </dl>
-                    {% if vm.status == 0 %}
-                        <a href="http://status{{vm.integ.suffix}}" target="_blank">Status page</a><br />
-                    {% endif %}
                 </td>
 
                 <td>
