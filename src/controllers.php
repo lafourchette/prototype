@@ -183,7 +183,6 @@ $app->get('/ask-more-prototype/{idVm}', function ($idVm) use ($app) {
          * Force the clone because without it doctrine do not detect the change and so it do not update the db
          */
         $vm->setExpiredDt(clone $date);
-        $vm->setStatus(Vm::RUNNING);
         $vmManager->save($vm);
 
         $app[ 'session' ]->set('flash', array(
