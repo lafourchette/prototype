@@ -64,7 +64,9 @@
                     {% if app.session.get('user').username == vm.createdBy.username %}
                         {% if vm.status != 4 %}
                             <a href="/force-expire-prototype/{{ vm.idVm }}" class="btn btn-danger" title="Force the expiration"><i class="icon-trash nabilla"></i></a>
-                            <a href="/ask-more-prototype/{{ vm.idVm }}" class="btn btn-success" title="Ask for {{ default_expiration_delay }} hours more"><i class="icon-heart nabilla"></i></a>
+                        {% endif %}
+                        {% if vm.status != -1 and vm.status != 5 %}
+                        <a href="/ask-more-prototype/{{ vm.idVm }}" class="btn btn-success" title="Ask for {{ default_expiration_delay }} hours more"><i class="icon-heart nabilla"></i></a>
                         {% endif %}
                         {% if vm.status == 1 %}
                             <a href="/force-start/{{ vm.idVm }}" class="btn btn-default" title="Force starting"><i class="icon-off nabilla"></i></a>
