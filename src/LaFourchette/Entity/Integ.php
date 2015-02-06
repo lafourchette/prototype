@@ -10,90 +10,72 @@ use LaFourchette\Entity\Node;
  */
 class Integ
 {
-
     /**
-     * @ORM\Id
-     * @ORM\Column(type="integer", name="id_integ")
-     * @ORM\GeneratedValue(strategy="AUTO")
      * @var int
      */
     protected $idInteg;
 
     /**
-     * @ORM\Column(type="string")
      * @var string
      */
     protected $name = null;
 
     /**
-     * @ORM\Column(type="string")
      * @var string
      */
     protected $suffix;
 
     /**
-     * @ORM\Column(type="string")
      * @var string
      */
     protected $path;
 
     /**
-     * @ORM\OneToOne(targetEntity="Node", inversedBy="integ")
-     * @ORM\JoinColumn(name="id_node", referencedColumnName="id_node")
      * @var object
      */
     protected $node;
 
     /**
-     * @ORM\Column(type="string", name="ssh_key")
      * @var string
      */
     protected $sshKey;
 
     /**
-     * @ORM\Column(type="string", name="ssh_user")
      * @var string
      */
     protected $sshUser;
 
     /**
-     * @ORM\Column(type="string")
      * @var string
      */
     protected $ip;
 
     /**
-     * @ORM\Column(type="string")
      * @var string
      */
     protected $mac;
 
     /**
-     * @ORM\Column(type="string")
      * @var string
      */
     protected $bridge;
 
     /**
-     * @ORM\Column(type="string")
      * @var string
      */
     protected $netmask;
 
     /**
-     * @ORM\Column(type="string", name="github_key")
      * @var string
      */
     protected $githubKey;
 
     /**
-     * @ORM\Column(type="boolean", name="is_actived")
      * @var bool
      */
     protected $isActived;
 
     /**
-     * @ORM\OneToOne(targetEntity="Vm", mappedBy="integ")
      * @var object
      */
     protected $vm;
@@ -122,6 +104,7 @@ class Integ
     public function setIdInteg($id)
     {
         $this->id = $id;
+        return $this;
     }
 
     /**
@@ -138,6 +121,7 @@ class Integ
     public function setName($name)
     {
         $this->name = $name;
+        return $this;
     }
 
     /**
@@ -154,6 +138,7 @@ class Integ
     public function setSuffix($suffix)
     {
         $this->suffix = $suffix;
+        return $this;
     }
 
     /**
@@ -170,6 +155,7 @@ class Integ
     public function setPath($path)
     {
         $this->path = $path;
+        return $this;
     }
 
     /**
@@ -186,6 +172,7 @@ class Integ
     public function setNode(Node $node)
     {
         $this->node = $node;
+        return $this;
     }
 
     /**
@@ -202,6 +189,7 @@ class Integ
     public function setSshKey($sshKey)
     {
         $this->sshKey = $sshKey;
+        return $this;
     }
 
     /**
@@ -218,6 +206,7 @@ class Integ
     public function setSshUser($sshUser)
     {
         $this->sshUser = $sshUser;
+        return $this;
     }
 
     /**
@@ -234,6 +223,7 @@ class Integ
     public function setIp($ip)
     {
         $this->ip = $ip;
+        return $this;
     }
 
     /**
@@ -250,6 +240,7 @@ class Integ
     public function setBridge($bridge)
     {
         $this->bridge = $bridge;
+        return $this;
     }
 
     /**
@@ -266,6 +257,7 @@ class Integ
     public function setMac($mac)
     {
         $this->mac = $mac;
+        return $this;
     }
 
     /**
@@ -282,6 +274,7 @@ class Integ
     public function setNetmask($netmask)
     {
         $this->netmask = $netmask;
+        return $this;
     }
 
 
@@ -299,5 +292,35 @@ class Integ
     public function setGithubKey($githubKey)
     {
         $this->githubKey = $githubKey;
+        return $this;
+    }
+
+    static public function makeFromArray(array $array)
+    {
+        $node = new Node();
+        $node->setIdNode($array['node']['id_node']);
+        $node->setIp($array['node']['ip']);
+        $node->setName($array['node']['name']);
+
+        $o = new self();
+        $o->setIdInteg($array['id_integ'])
+            ->setName($array['name'])
+            ->setSuffix($array['suffix'])
+            ->setPath($array['path'])
+            ->setNode($node)
+
+            ->setSshKey($array['ssh_key'])
+            ->setSshUser($array['ssh_user'])
+
+            ->setIp($array['ip'])
+            ->setMac($array['mac'])
+            ->setBridge($array['bridge'])
+            ->setNetmask($array['netmask'])
+
+            ->setGithubKey($array['github_key'])
+            ->setIsActived($array['is_actived'])
+        ;
+
+        return $o;
     }
 }

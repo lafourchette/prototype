@@ -5,7 +5,7 @@ $app['vm.manager'] = $app->share(function() use ($app){
 });
 
 $app['integ.manager'] = $app->share(function() use ($app){
-    return new LaFourchette\Manager\IntegManager($app['orm.em'],'\LaFourchette\Entity\Integ');
+    return new LaFourchette\Manager\IntegManager($app['config'],'\LaFourchette\Entity\Integ');
 });
 
 $app['user.manager'] = $app->share(function() use ($app){
