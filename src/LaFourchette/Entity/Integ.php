@@ -2,12 +2,6 @@
 
 namespace LaFourchette\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-use LaFourchette\Entity\Node;
-
-/**
- * @ORM\Entity
- */
 class Integ
 {
     /**

@@ -1,6 +1,7 @@
 <?php
 
 namespace LaFourchette\Manager;
+use LaFourchette\Entity\Integ;
 
 /**
  * Description of VmManager
@@ -20,7 +21,7 @@ class IntegManager implements ManagerInterface
 
     public function loadAllAvailable()
     {
-
+        return $this->collection;
     }
 
     /**
@@ -28,7 +29,15 @@ class IntegManager implements ManagerInterface
      */
     public function load($id)
     {
-        return $this->repository->find($id);
+        $res = null;
+        /** @var Integ $integ */
+        foreach($this->collection as $integ){
+            if($integ->getIdInteg() == $id){
+                $res = $integ;
+                break;
+            }
+        }
+        return $res;
     }
 
     /**
@@ -36,7 +45,7 @@ class IntegManager implements ManagerInterface
      */
     public function loadOneBy(array $criteria)
     {
-        return $this->repository->findOneBy($criteria);
+        throw new \Exception();
     }
 
     /**
@@ -44,7 +53,7 @@ class IntegManager implements ManagerInterface
      */
     public function loadBy(array $criteria, array $order = null)
     {
-        return $this->repository->findBy($criteria, $order);
+        throw new \Exception();
     }
 
     /**
@@ -52,7 +61,7 @@ class IntegManager implements ManagerInterface
      */
     public function loadAll()
     {
-        return $this->repository->findAll();
+        throw new \Exception();
     }
 
     /**
@@ -60,13 +69,11 @@ class IntegManager implements ManagerInterface
      */
     public function flush($entity)
     {
-        $this->em->flush($entity);
+        throw new \Exception();
     }
 
     public function save($entity)
     {
-        $this->em->persist($entity);
-        $this->em->flush();
+        throw new \Exception();
     }
-
 }
