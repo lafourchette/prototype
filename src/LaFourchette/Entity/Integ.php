@@ -97,7 +97,7 @@ class Integ
      */
     public function setIdInteg($id)
     {
-        $this->id = $id;
+        $this->idInteg = $id;
         return $this;
     }
 

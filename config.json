@@ -1,0 +1,25 @@
+{
+    "integs":[
+        {
+            "id_integ": 1,
+            "name": null,
+            "suffix": null,
+            "path": null,
+            "id_node": null,
+            "ssh_key": null,
+            "ssh_user": null,
+            "ip": null,
+            "mac": null,
+            "bridge": null,
+            "netmask": null,
+            "github_key": null,
+            "is_actived": null,
+            "node": {
+                "id_node": 1,
+                "name": "dev1",
+                "ip": "dev.lafourchette.typhon.net"
+            }
+        }
+    ]
+}
+

@@ -32,14 +32,14 @@
         <tbody>
         {% for vm in vms %}
             <tr>
-                <td>{{vm.integ.name}}</td>
+                <td>{{vm.integ}}</td>
                 <td>{{vm.createdBy.username}}</td>
                 <td>
                     <dl class="dl-horizontal">
                         <dt>ID</dt>
                         <dd>{{vm.idVm}}</dd>
                         <dt>Node</dt>
-                        <dd>{{vm.integ.node.name}}</dd>
+                        <dd>{{vm.integ}}</dd>
                         <dt>Name</dt>
                         <dd>{{vm}}</dd>
                         <dt>Expiration date</dt>

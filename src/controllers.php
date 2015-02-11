@@ -220,7 +220,7 @@ $app->post('/launch-prototype', function () use ($app) {
 
         $user = $app['user.manager']->getOrCreate($app['session']->get('user'));
         $vm->setCreatedBy($user);
-        $vm->setInteg($integ);
+        $vm->setInteg($integ->getIdInteg());
         //Save the vm first
         $app['vm.manager']->save($vm);
 
@@ -252,7 +252,8 @@ $app->post('/launch-prototype', function () use ($app) {
 # Include or render for twig
 
 $app->get('/_status', function () use ($app) {
-    return $app['twig']->render('_status.html', array('vms' => $app['vm.manager']->loadVm(), 'default_expiration_delay' => Vm::EXPIRED_AT_DEFAULT_VALUE));
+    $vms = $app['vm.manager']->loadVm();
+    return $app['twig']->render('_status.html', array('vms' => $vms, 'default_expiration_delay' => Vm::EXPIRED_AT_DEFAULT_VALUE));
 })
 ->bind('_status');
 
