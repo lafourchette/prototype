@@ -4,7 +4,7 @@
             "id_integ": 1,
             "name": null,
             "suffix": null,
-            "path": null,
+            "path": "./tmp",
             "id_node": null,
             "ssh_key": null,
             "ssh_user": null,

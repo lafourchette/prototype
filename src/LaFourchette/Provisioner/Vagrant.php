@@ -19,9 +19,15 @@ class Vagrant extends ProvisionerAbstract
      */
     protected $repo = '';
 
+    protected $integManager;
 
     protected $defaultBranch = '';
 
+
+    public function getInteg($id)
+    {
+        return $this->integManager->load($id);
+    }
 
     public function __construct($repo, $defaultBranch)
     {
@@ -74,7 +80,7 @@ class Vagrant extends ProvisionerAbstract
      */
     public function getStatus(VM $vm)
     {
-        $path = $vm->getInteg()->getPath();
+        $path = $this->getInteg($vm->getInteg())->getPath();
         $cmd = 'ls -a ' . $path;
         $output = $this->run($vm, $cmd);
 
@@ -196,7 +202,7 @@ class Vagrant extends ProvisionerAbstract
      */
     public function initialise(VM $vm)
     {
-        $this->run($vm, sprintf('mkdir -p %s', $vm->getInteg()->getPath()), true, false);
+        $this->run($vm, sprintf('mkdir -p %s', $this->getInteg($vm->getInteg())->getPath()), true, false);
 
         $cmd = $this->getCloneVmCommand();
         $this->run($vm, $cmd);
@@ -217,7 +223,7 @@ class Vagrant extends ProvisionerAbstract
 
     protected function generateFact(Vm $vm, $node = 'integ.lafourchette.local')
     {
-        $integ  = $vm->getInteg();
+        $integ  = $this->getInteg($vm->getInteg());
         $mac = str_replace(':', '', $integ->getMac());
         $netmask = $integ->getNetmask();
 
