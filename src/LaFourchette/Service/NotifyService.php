@@ -23,6 +23,7 @@ class NotifyService
 
     public function send($name, Vm $vm)
     {
+        return;
         $message = $this->factory($name);
 
         $content = $message->getContent($vm);
