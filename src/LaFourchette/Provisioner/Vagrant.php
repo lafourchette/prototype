@@ -129,7 +129,7 @@ class Vagrant extends ProvisionerAbstract
         $logger->setVm($vm);
         $vmLogger = $logger->createLogger();
 
-        $cmd = $this->getPrefixCommand($vm->getInteg(), $cmd, $prefix);
+        $cmd = $this->getPrefixCommand($this->getInteg($vm->getInteg()), $cmd, $prefix);
         $process = new LoggableProcess($cmd);
         $process->setLogger($vmLogger);
         $process->setTimeout(0);
