@@ -29,8 +29,8 @@ class LoggableProcess extends Process
                 }
 
                 $that->logger->info($data, array(
-                    'type' => $type,
-                    'cmd' => $that->getCommandLine(),
+                    'type'   => $type,
+                    'cmd'    => $that->getCommandLine(),
                     'procid' => $that->getPid(),
                 ));
             }

@@ -1,6 +1,7 @@
 <?php
 namespace LaFourchette\Provisioner;
 
+use LaFourchette\Entity\Integ;
 use LaFourchette\Entity\VM;
 use LaFourchette\Manager\VmManager;
 use LaFourchette\Provisioner\Exception\UnableToStartException;
@@ -23,7 +24,10 @@ class Vagrant extends ProvisionerAbstract
 
     protected $defaultBranch = '';
 
-
+    /**
+     * @param $id
+     * @return Integ
+     */
     public function getInteg($id)
     {
         return $this->integManager->load($id);
@@ -41,18 +45,14 @@ class Vagrant extends ProvisionerAbstract
      * @return string
      * @throws \Exception
      */
-    protected function getPrefixCommand($integ, $realCommand, $ssh = true, $prefix = true)
+    protected function getPrefixCommand($integ, $realCommand, $prefix = true)
     {
         $cmd = '';
-
         $sshUser = $integ->getSshUser();
-        $sshKey = $integ->getSshKey();
         $server = $integ->getNode()->getIp();
 
-        if ($ssh) {
-            if (trim($sshUser) != '' && trim($server) != '') {
-                $encapsultate = 'ssh -o "StrictHostKeyChecking no" ' . $sshUser . '@' . $server . ' ';
-            }
+        if (trim($sshUser) != '' && trim($server) != '') {
+            $encapsultate = 'ssh -o "StrictHostKeyChecking no" ' . $sshUser . '@' . $server . ' ';
         }
 
         if ($prefix) {
@@ -62,9 +62,9 @@ class Vagrant extends ProvisionerAbstract
             } else {
                 throw new \Exception('Seriously ? no path ? I can deploy the VM everywhere ?');
             }
-
-            $cmd .= $realCommand;
         }
+
+        $cmd .= $realCommand;
 
         if (isset($encapsultate)) {
             $cmd = $encapsultate . ' "' . str_replace('"', '\"', $cmd) . '"';
@@ -82,7 +82,7 @@ class Vagrant extends ProvisionerAbstract
     {
         $path = $this->getInteg($vm->getInteg())->getPath();
         $cmd = 'ls -a ' . $path;
-        $output = $this->run($vm, $cmd);
+        $output = $this->run($vm, $cmd, false);
 
         $result = explode("\n", $output);
 
@@ -129,7 +129,12 @@ class Vagrant extends ProvisionerAbstract
         $logger->setVm($vm);
         $vmLogger = $logger->createLogger();
 
-        $cmd = $this->getPrefixCommand($this->getInteg($vm->getInteg()), $cmd, $prefix);
+        $cmd = $this->getPrefixCommand(
+            $this->getInteg($vm->getInteg()),
+            $cmd,
+            $prefix
+        );
+        
         $process = new LoggableProcess($cmd);
         $process->setLogger($vmLogger);
         $process->setTimeout(0);
