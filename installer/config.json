@@ -1,4 +1,16 @@
 {
+    "debug": true,
+    "ldap.host": "ldap.example.com",
+    "ldap.username": "cn=admin,dc=example,dc=com",
+    "ldap.password": "password",
+    "ldap.port": "389",
+    "ldap.basedn": "dc=example,dc=com",
+    "vm.repo":"git@github.com:example/some-project.git",
+    "vm.default.branch": "master",
+    "log.max_time_before_logging": "-5 min",
+    "asset.version" : 4,
+    "vm.expired_in_value": 24,
+    "vm.to_expire_in": 4,
     "integs":[
         {
             "id_integ": 1,

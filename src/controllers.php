@@ -87,7 +87,7 @@ $app->get('/_ajax_log/{idVm}', function ($idVm) use ($app) {
     $data['status'] = 0;
 
     //Test if the file has been mofidied since the last 5 min
-    if ($lastModified >= strtotime($app['log.max_time_before_logging'])) {
+    if ($lastModified >= strtotime($app['config']['log.max_time_before_logging'])) {
         $data['msg'] = $app['twig']->render('_ajax_log.html', array(
             'vm' => $app['vm.manager']->load($idVm),
         ));
@@ -172,9 +172,9 @@ $app->get('/ask-more-prototype/{idVm}', function ($idVm) use ($app) {
 
     if ($vm->getCreatedBy()->getIdUser() == $app['session']->get('user')->getIdUser()) {
         $date = $vm->getExpiredDt();
-        $date->add(new \DateInterval(sprintf('PT%dH', $app['vm.expired_in_value'])));
+        $date->add(new \DateInterval(sprintf('PT%dH', $app['config']['vm.expired_in_value'])));
         $day = $date->format('w');
-        $short = sprintf('%s hours has been added for your VM', $app['vm.expired_in_value']);
+        $short = sprintf('%s hours has been added for your VM', $app['config']['vm.expired_in_value']);
         if ($day == 0 || $day == 6) { // expire on weekend... well add 2 more days then.
             $date->add(new \DateInterval('P2D'));
             $short = 'Your VM will expire after the weekend';

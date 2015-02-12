@@ -15,12 +15,27 @@ $app->register(new TwigServiceProvider(), array(
     'twig.options' => array('cache' => __DIR__ . '/../cache/twig'),
 ));
 
+$app['config'] = json_decode(file_get_contents(__DIR__ . '/../config.json'), true);
+$app['debug'] = $debug = $app['config']['debug'];
+
+if($debug){
+    $app->register(new \Silex\Provider\MonologServiceProvider(), array(
+        'monolog.logfile' => __DIR__.'/../logs/silex_dev.log',
+    ));
+    /*
+    $app->register($p = new WebProfilerServiceProvider(), array(
+        'profiler.cache_dir' => __DIR__.'/../cache/profiler',
+    ));
+    $app->mount('/_profiler', $p);
+    */
+}
+
 require __DIR__ . '/../src/services.php';
 
 $app['twig'] = $app->share($app->extend('twig', function($twig, $app) {
     // add custom globals, filters, tags, ...
     $twig->addExtension(new \LaFourchette\Twig\Extensions\LaFourchettePrototypeExtension($app['integ_availabibilty.checker']));
-    $twig->addGlobal('asset_version', $app['asset.version']);
+    $twig->addGlobal('asset_version', $app['config']['asset.version']);
 
     return $twig;
 }));
