@@ -134,7 +134,7 @@ class Vagrant extends ProvisionerAbstract
             $cmd,
             $prefix
         );
-        
+
         $process = new LoggableProcess($cmd);
         $process->setLogger($vmLogger);
         $process->setTimeout(0);

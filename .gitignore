@@ -9,3 +9,4 @@ db/dev
 tmp
 VERSION
 MAINTENANCE.lock
+config.json

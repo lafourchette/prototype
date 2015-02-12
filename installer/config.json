@@ -2,7 +2,7 @@
     "integs":[
         {
             "id_integ": 1,
-            "name": null,
+            "name": "local",
             "suffix": null,
             "path": "./tmp",
             "id_node": null,
@@ -13,11 +13,11 @@
             "bridge": null,
             "netmask": null,
             "github_key": null,
-            "is_actived": null,
+            "is_actived": 1,
             "node": {
                 "id_node": 1,
-                "name": "dev1",
-                "ip": "dev.lafourchette.typhon.net"
+                "name": "localhost",
+                "ip": "localhost"
             }
         }
     ]
