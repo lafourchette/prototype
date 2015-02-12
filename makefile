@@ -19,19 +19,22 @@ install: sqlite3-exists
 	service nginx reload
 
 config.json:
-    cp installer/config.json config.json
+	cp installer/config.json config.json
 
 test: db config.json
-    mkdir tmp
+	mkdir tmp
 	echo "Run php -S localhost:8000 -t web web/index.php"
 
 db:
 	cat installer/schema.sql | sqlite3 db
 
 clean:
-	rm -f db
 	rm -rf logs/*.log
 	rm -rf tmp
+
+mrproper: clean
+	rm config.json
+	rm db
 
 close:
 	touch MAINTENANCE.lock
