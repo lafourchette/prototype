@@ -122,18 +122,22 @@ class Vagrant extends ProvisionerAbstract
      * @param bool
      * @return string
      */
-    protected function run(VM $vm, $cmd, $prefix = true)
+    protected function run(VM $vm, $cmd, $prefix = true, $remote = true)
     {
         // @codeCoverageIgnoreStart
         $logger = new VmLogger();
         $logger->setVm($vm);
         $vmLogger = $logger->createLogger();
 
-        $cmd = $this->getPrefixCommand(
-            $this->getInteg($vm->getInteg()),
-            $cmd,
-            $prefix
-        );
+        if($remote){
+            $cmd = $this->getPrefixCommand(
+                $this->getInteg($vm->getInteg()),
+                $cmd,
+                $prefix
+            );
+        }
+
+        echo $cmd . PHP_EOL;
 
         $process = new LoggableProcess($cmd);
         $process->setLogger($vmLogger);
