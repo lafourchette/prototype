@@ -1,7 +1,9 @@
 <?php
 
 namespace LaFourchette\Manager;
+use Doctrine\ORM\Query\ResultSetMapping;
 use LaFourchette\Entity\Integ;
+use LaFourchette\Entity\Vm;
 
 /**
  * Description of VmManager
@@ -12,8 +14,12 @@ class IntegManager implements ManagerInterface
 {
     private $collection = array();
 
-    public function __construct($configuration, $class)
+    private $entityManager;
+
+    public function __construct(\Doctrine\ORM\EntityManager $em, $configuration, $class)
     {
+        $this->entityManager = $em;
+
         foreach ($configuration['integs'] as $i) {
             array_push($this->collection, $class::makeFromArray($i));
         }
@@ -21,7 +27,23 @@ class IntegManager implements ManagerInterface
 
     public function loadAllAvailable()
     {
-        return $this->collection;
+        $query = $this->entityManager->createQuery(
+            'SELECT v.integ FROM LaFourchette\Entity\Vm v WHERE v.status not in (:status) group by v.integ'
+        );
+        $query->setParameter(':status', Vm::$freeStatus);
+        $unavailables = array_map(function($item){
+            return $item['integ'];
+        }, $query->getArrayResult());
+
+        $available = array();
+        foreach($this->collection as $integ)
+        {
+            if(!in_array($integ->getIdInteg(), $unavailables)){
+                array_push($available, $integ);
+            }
+        }
+
+        return $available;
     }
 
     /**
