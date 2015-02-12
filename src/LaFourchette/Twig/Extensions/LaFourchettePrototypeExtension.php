@@ -19,6 +19,7 @@ class LaFourchettePrototypeExtension extends \Twig_Extension
     {
         $this->integAvailabibiltyChecker = $integAvailabibiltyChecker;
     }
+
     /**
      *
      * {@inheritDoc}

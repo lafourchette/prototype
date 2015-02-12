@@ -40,9 +40,8 @@ class Vm
     protected $idVm;
 
     /**
-     * @ORM\OneToOne(targetEntity="LaFourchette\Entity\Integ", inversedBy="vm")
-     * @ORM\JoinColumn(name="id_integ", referencedColumnName="id_integ")
-     * @var object
+     * @ORM\Column(type="integer", name="id_integ")
+     * @var int
      */
     protected $integ;
 
@@ -268,15 +267,15 @@ class Vm
     }
 
     /**
-     * @param Integ $integ
+     * @param int $integ
      */
-    public function setInteg(Integ $integ)
+    public function setInteg($integ)
     {
         $this->integ = $integ;
     }
 
     /**
-     * @return Integ
+     * @return int
      */
     public function getInteg()
     {
@@ -288,7 +287,7 @@ class Vm
      */
     public function __toString()
     {
-        return $this->name . '-' . $this->getInteg()->getName();
+        return $this->name . '-' . $this->getInteg();
     }
 
     /**

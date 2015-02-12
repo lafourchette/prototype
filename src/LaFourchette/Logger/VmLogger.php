@@ -19,7 +19,7 @@ class VmLogger
     public function createLogger()
     {
         if (!$this->vm) {
-            throw new Exception("You need to provide a vm entity for this logger");
+            throw new \Exception("You need to provide a vm entity for this logger");
         }
 
         $logger = new Logger('vm-channel'.$this->getVm()->getIdVm());
@@ -33,7 +33,7 @@ class VmLogger
 
     /**
      * Set Vm
-     * @param LaFourchette\Entity\Vm $vm
+     * @param \LaFourchette\Entity\Vm $vm
      */
     public function setVm(Vm $vm)
     {
@@ -42,7 +42,7 @@ class VmLogger
 
     /**
      * Get Vm entity
-     * @return LaFourchette\Entity\Vm
+     * @return \LaFourchette\Entity\Vm
      */
     public function getVm()
     {
@@ -61,6 +61,6 @@ class VmLogger
             $logDir = __DIR__.'/../../../logs';
         }
 
-        return sprintf($logDir.'/%s.log', sprintf(self::LOG_FILE_MASK, $idVm));
+        return sprintf($logDir.'/'.self::LOG_FILE_MASK.'.log', $idVm);
     }
 }

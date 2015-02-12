@@ -3,9 +3,10 @@ logs/*
 cache/*
 vendor
 composer.phar
-db/dev
+db.sqlite3
 .DS_Store
 .idea
 tmp
 VERSION
 MAINTENANCE.lock
+config.json

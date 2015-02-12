@@ -1,63 +1,101 @@
 <?php
 
 namespace LaFourchette\Manager;
-
-use LaFourchette\Manager\Doctrine\ORM\AbstractManager;
-use LaFourchette\Entity\Vm;
 use Doctrine\ORM\Query\ResultSetMapping;
+use LaFourchette\Entity\Integ;
+use LaFourchette\Entity\Vm;
 
 /**
  * Description of VmManager
  *
  * @author gcavana
  */
-class IntegManager extends AbstractManager
+class IntegManager implements ManagerInterface
 {
+    private $collection = array();
 
-    public function __construct(\Doctrine\ORM\EntityManager $em, $class)
+    private $entityManager;
+
+    public function __construct(\Doctrine\ORM\EntityManager $em, $configuration, $class)
     {
-        parent::__construct($em, $class);
+        $this->entityManager = $em;
+
+        foreach ($configuration['integs'] as $i) {
+            array_push($this->collection, $class::makeFromArray($i));
+        }
     }
 
     public function loadAllAvailable()
     {
-        $rsm = new ResultSetMapping();
-        $rsm->addEntityResult('LaFourchette\Entity\Integ', 'i');
-        $rsm->addJoinedEntityResult('LaFourchette\Entity\Node', 'n', 'i', 'node');
-        $rsm->addFieldResult('n', 'id_node', 'idNode');
-        $rsm->addFieldResult('n', 'nodeName', 'name');
-        $rsm->addFieldResult('i', 'id_integ', 'idInteg');
-        $rsm->addFieldResult('i', 'name', 'name');
-        $rsm->addFieldResult('i', 'suffix', 'suffix');
-        $rsm->addFieldResult('i', 'path', 'path');
-        $rsm->addFieldResult('i', 'ssh_key', 'sshKey');
-        $rsm->addFieldResult('i', 'ssh_user', 'sshUser');
-        $rsm->addFieldResult('i', 'ip', 'ip');
-        $rsm->addFieldResult('i', 'mac', 'mac');
-        $rsm->addFieldResult('i', 'bridge', 'bridge');
-        $rsm->addFieldResult('i', 'github_key', 'githubKey');
-        $rsm->addFieldResult('i', 'netmask', 'netmask');
-
-        $query = $this->em->createNativeQuery('select
-            i.id_integ,
-            i.name,
-            i.suffix,
-            i.path,
-            i.ssh_key,
-            i.ssh_user,
-            i.ip,
-            i.mac,
-            i.bridge,
-            i.netmask,
-            i.github_key,
-            n.name as nodeName,
-            n.id_node
-          from integ i
-          inner join node n on i.id_node = n.id_node
-          left join vm on i.id_integ = vm.id_integ
-          and vm.status not in (:status) where vm.id_vm is null and i.is_actived = 1 order by i.name ASC', $rsm);
+        $query = $this->entityManager->createQuery(
+            'SELECT v.integ FROM LaFourchette\Entity\Vm v WHERE v.status not in (:status) group by v.integ'
+        );
         $query->setParameter(':status', Vm::$freeStatus);
+        $unavailables = array_map(function($item){
+            return $item['integ'];
+        }, $query->getArrayResult());
 
-        return $query->getResult();
+        $available = array();
+        foreach($this->collection as $integ)
+        {
+            if(!in_array($integ->getIdInteg(), $unavailables)){
+                array_push($available, $integ);
+            }
+        }
+
+        return $available;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function load($id)
+    {
+        $res = null;
+        /** @var Integ $integ */
+        foreach($this->collection as $integ){
+            if($integ->getIdInteg() == $id){
+                $res = $integ;
+                break;
+            }
+        }
+        return $res;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function loadOneBy(array $criteria)
+    {
+        throw new \Exception();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function loadBy(array $criteria, array $order = null)
+    {
+        throw new \Exception();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function loadAll()
+    {
+        throw new \Exception();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function flush($entity)
+    {
+        throw new \Exception();
+    }
+
+    public function save($entity)
+    {
+        throw new \Exception();
     }
 }

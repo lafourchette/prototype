@@ -32,21 +32,19 @@
         <tbody>
         {% for vm in vms %}
             <tr>
-                <td>{{vm.integ.name}}</td>
+                <td>Integ {{vm.integ}}</td>
                 <td>{{vm.createdBy.username}}</td>
                 <td>
                     <dl class="dl-horizontal">
                         <dt>ID</dt>
                         <dd>{{vm.idVm}}</dd>
-                        <dt>Node</dt>
-                        <dd>{{vm.integ.node.name}}</dd>
                         <dt>Name</dt>
                         <dd>{{vm}}</dd>
                         <dt>Expiration date</dt>
                         <dd>{{vm.expiredDt|date('Y-m-d H:i:s')}}</dd>
                         {% if vm.status == 0 %}
                             <dt>Status page link</dt>
-                            <dd><a href="http://status{{vm.integ.suffix}}" target="_blank">Status page</a></dd>
+                            <dd><a href="http://status.integ{{vm.integ}}" target="_blank">Status page</a></dd>
                         {% endif %}
                     </dl>
                 </td>

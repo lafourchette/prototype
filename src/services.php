@@ -5,7 +5,7 @@ $app['vm.manager'] = $app->share(function() use ($app){
 });
 
 $app['integ.manager'] = $app->share(function() use ($app){
-    return new LaFourchette\Manager\IntegManager($app['orm.em'],'\LaFourchette\Entity\Integ');
+    return new LaFourchette\Manager\IntegManager($app['orm.em'], $app['config'],'\LaFourchette\Entity\Integ');
 });
 
 $app['user.manager'] = $app->share(function() use ($app){
@@ -31,7 +31,7 @@ $app['integ.decider'] = $app->share(function() use ($app){
 $app['notify.service'] = $app->share(function() use ($app) {
     $notify = new \LaFourchette\Service\NotifyService($app['hipchat.client']);
     $notify->addNotifyMessage('expired', new \LaFourchette\Notify\Expired());
-    $notify->addNotifyMessage('expire_soon', new \LaFourchette\Notify\ExpireSoon($app['vm.to_expire_in']));
+    $notify->addNotifyMessage('expire_soon', new \LaFourchette\Notify\ExpireSoon($app['config']['vm.to_expire_in']));
     $notify->addNotifyMessage('ready', new \LaFourchette\Notify\Ready());
     $notify->addNotifyMessage('killed', new \LaFourchette\Notify\Killed());
     $notify->addNotifyMessage('unable_to_start', new \LaFourchette\Notify\UnableToStart());
@@ -40,13 +40,13 @@ $app['notify.service'] = $app->share(function() use ($app) {
 
 $app['vm.provisionner'] = $app->share(function() use ($app) {
     //TODO: use a factory
-    $provisionner = new \LaFourchette\Provisioner\Vagrant($app['vm.repo'], $app['vm.default.branch']);
+    $provisionner = new \LaFourchette\Provisioner\Vagrant($app['config']['vm.repo'], $app['config']['vm.default.branch']);
     return $provisionner;
 });
 
 $app['vm.provisionner2'] = $app->share(function() use ($app) {
     //TODO: use a factory
-    $provisionner = new \LaFourchette\Provisioner\NewVagrant($app['vm.repo']);
+    $provisionner = new \LaFourchette\Provisioner\NewVagrant($app['integ.manager']);
     return $provisionner;
 });
 
@@ -69,7 +69,13 @@ $app['login.basic_login_response'] = $app->share(function() use ($app) {
 });
 
 $app['ldap.manager'] = $app->share(function() use ($app){
-    return new \LaFourchette\Ldap\LdapManager($app['ldap.host'], $app['ldap.port'], $app['ldap.username'], $app['ldap.password'], $app['ldap.basedn']);
+    return new \LaFourchette\Ldap\LdapManager(
+        $app['config']['ldap.host'],
+        $app['config']['ldap.port'],
+        $app['config']['ldap.username'],
+        $app['config']['ldap.password'],
+        $app['config']['ldap.basedn']
+    );
 });
 
 $app['vm.cc.exporter'] = $app->share(function() use ($app){

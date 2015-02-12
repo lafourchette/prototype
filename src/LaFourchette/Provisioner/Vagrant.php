@@ -1,6 +1,7 @@
 <?php
 namespace LaFourchette\Provisioner;
 
+use LaFourchette\Entity\Integ;
 use LaFourchette\Entity\VM;
 use LaFourchette\Manager\VmManager;
 use LaFourchette\Provisioner\Exception\UnableToStartException;
@@ -19,9 +20,18 @@ class Vagrant extends ProvisionerAbstract
      */
     protected $repo = '';
 
+    protected $integManager;
 
     protected $defaultBranch = '';
 
+    /**
+     * @param $id
+     * @return Integ
+     */
+    public function getInteg($id)
+    {
+        return $this->integManager->load($id);
+    }
 
     public function __construct($repo, $defaultBranch)
     {
@@ -35,18 +45,14 @@ class Vagrant extends ProvisionerAbstract
      * @return string
      * @throws \Exception
      */
-    protected function getPrefixCommand($integ, $realCommand, $ssh = true, $prefix = true)
+    protected function getPrefixCommand($integ, $realCommand, $prefix = true)
     {
         $cmd = '';
-
         $sshUser = $integ->getSshUser();
-        $sshKey = $integ->getSshKey();
         $server = $integ->getNode()->getIp();
 
-        if ($ssh) {
-            if (trim($sshUser) != '' && trim($server) != '') {
-                $encapsultate = 'ssh -o "StrictHostKeyChecking no" ' . $sshUser . '@' . $server . ' ';
-            }
+        if (trim($sshUser) != '' && trim($server) != '') {
+            $encapsultate = 'ssh -o "StrictHostKeyChecking no" ' . $sshUser . '@' . $server . ' ';
         }
 
         if ($prefix) {
@@ -56,9 +62,9 @@ class Vagrant extends ProvisionerAbstract
             } else {
                 throw new \Exception('Seriously ? no path ? I can deploy the VM everywhere ?');
             }
-
-            $cmd .= $realCommand;
         }
+
+        $cmd .= $realCommand;
 
         if (isset($encapsultate)) {
             $cmd = $encapsultate . ' "' . str_replace('"', '\"', $cmd) . '"';
@@ -74,9 +80,9 @@ class Vagrant extends ProvisionerAbstract
      */
     public function getStatus(VM $vm)
     {
-        $path = $vm->getInteg()->getPath();
+        $path = $this->getInteg($vm->getInteg())->getPath();
         $cmd = 'ls -a ' . $path;
-        $output = $this->run($vm, $cmd);
+        $output = $this->run($vm, $cmd, false);
 
         $result = explode("\n", $output);
 
@@ -116,14 +122,23 @@ class Vagrant extends ProvisionerAbstract
      * @param bool
      * @return string
      */
-    protected function run(VM $vm, $cmd, $prefix = true)
+    protected function run(VM $vm, $cmd, $prefix = true, $remote = true)
     {
         // @codeCoverageIgnoreStart
         $logger = new VmLogger();
         $logger->setVm($vm);
         $vmLogger = $logger->createLogger();
 
-        $cmd = $this->getPrefixCommand($vm->getInteg(), $cmd, $prefix);
+        if($remote){
+            $cmd = $this->getPrefixCommand(
+                $this->getInteg($vm->getInteg()),
+                $cmd,
+                $prefix
+            );
+        }
+
+        echo $cmd . PHP_EOL;
+
         $process = new LoggableProcess($cmd);
         $process->setLogger($vmLogger);
         $process->setTimeout(0);
@@ -196,7 +211,7 @@ class Vagrant extends ProvisionerAbstract
      */
     public function initialise(VM $vm)
     {
-        $this->run($vm, sprintf('mkdir -p %s', $vm->getInteg()->getPath()), true, false);
+        $this->run($vm, sprintf('mkdir -p %s', $this->getInteg($vm->getInteg())->getPath()), true, false);
 
         $cmd = $this->getCloneVmCommand();
         $this->run($vm, $cmd);
@@ -217,7 +232,7 @@ class Vagrant extends ProvisionerAbstract
 
     protected function generateFact(Vm $vm, $node = 'integ.lafourchette.local')
     {
-        $integ  = $vm->getInteg();
+        $integ  = $this->getInteg($vm->getInteg());
         $mac = str_replace(':', '', $integ->getMac());
         $netmask = $integ->getNetmask();
 
