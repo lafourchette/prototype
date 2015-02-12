@@ -21,12 +21,12 @@ install: sqlite3-exists
 config.json:
 	cp installer/config.json config.json
 
-test: db config.json
+test: db.sqlite3 config.json
 	mkdir tmp
 	echo "Run php -S localhost:8000 -t web web/index.php"
 
-db:
-	cat installer/schema.sql | sqlite3 db
+db.sqlite3:
+	cat installer/schema.sql | sqlite3 db.sqlite3
 
 clean:
 	rm -rf logs/*.log

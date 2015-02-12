@@ -63,7 +63,7 @@ $app->before( function() use ( $app ) {
 $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
     'db.options' => array(
         'driver' => 'pdo_sqlite',
-        'path' => __DIR__ . '/../db/dev',
+        'path' => __DIR__ . '/../db.sqlite3',
     ),
 ));
 
