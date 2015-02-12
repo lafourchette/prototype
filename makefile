@@ -23,7 +23,7 @@ config.json:
 
 test: db config.json
     mkdir tmp
-	echo "Run php -S localhost:8000 -t web web/index_dev.php"
+	echo "Run php -S localhost:8000 -t web web/index.php"
 
 db:
 	cat installer/schema.sql | sqlite3 db
