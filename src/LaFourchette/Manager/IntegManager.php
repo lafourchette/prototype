@@ -38,7 +38,7 @@ class IntegManager implements ManagerInterface
         $available = array();
         foreach($this->collection as $integ)
         {
-            if(!in_array($integ->getIdInteg(), $unavailables)){
+            if(!in_array($integ->getIdInteg(), $unavailables) && $integ->getIsActived()){
                 array_push($available, $integ);
             }
         }
