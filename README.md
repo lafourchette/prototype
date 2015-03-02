@@ -37,7 +37,8 @@ Configuration goes that way
     "type":"github", // github remote file
     "repository":"",
     "path":"",
-    "token":""
+    "token":"",
+    "user":""
 }]
 ```
 
