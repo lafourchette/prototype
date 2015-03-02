@@ -8,6 +8,7 @@ use LaFourchette\Entity\User;
 
 /**
  * @ORM\Entity
+ * @ORM\Table(name="vm")
  */
 class Vm
 {

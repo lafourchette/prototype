@@ -22,7 +22,7 @@ config.json:
 	cp installer/config.json config.json
 
 test: db.sqlite3 config.json
-	mkdir tmp
+	[ -e tmp ] || mkdir tmp
 	echo "Run php -S localhost:8000 -t web web/index.php"
 
 db.sqlite3:
@@ -34,7 +34,7 @@ clean:
 
 mrproper: clean
 	rm config.json
-	rm db
+	rm db.sqlite3
 
 close:
 	touch MAINTENANCE.lock

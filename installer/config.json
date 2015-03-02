@@ -32,6 +32,10 @@
                 "ip": "localhost"
             }
         }
-    ]
+    ],
+    "provisioners":[{
+        "type": "local",
+        "path": "installer/example.sh"
+    }]
 }
 

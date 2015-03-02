@@ -46,7 +46,10 @@ $app['vm.provisionner'] = $app->share(function() use ($app) {
 
 $app['vm.provisionner2'] = $app->share(function() use ($app) {
     //TODO: use a factory
-    $provisionner = new \LaFourchette\Provisioner\NewVagrant($app['integ.manager']);
+    $provisionner = new \LaFourchette\Provisioner\NewVagrant(
+        $app['integ.manager'],
+        isset($app['config']['provisioners']) ? $app['config']['provisioners'] : array()
+    );
     return $provisionner;
 });
 

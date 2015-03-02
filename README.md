@@ -28,6 +28,19 @@ You need to install the crontab manually. It will check each VM to verify if one
 * * * * * if [ $(ps aux | grep "prototype/console" | grep -v grep | wc -l) -lt 1 ] ; then /var/www/lafourchette-prototype/console prototype:get-vm-id | xargs -P 4 -n 1 -r /var/www/lafourchette-prototype/console prototype:check ; fi;
 ```
 
+Configuration goes that way
+```javascript
+"provisioners":[{
+    "type": "local", // local file
+    "path": "."
+},{
+    "type":"github", // github remote file
+    "repository":"",
+    "path":"",
+    "token":""
+}]
+```
+
 Testing
 -------
 ```bash
