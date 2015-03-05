@@ -22,8 +22,8 @@
             <div class="panel panel-default">
                 <header>
                     <h3 class="panel-title">
-                    <span class="integ-number textgrey">integ {{vm.idVm}}</span>
-                    <span class="integ-name edit" id="{{vm.idVm}}">{% if vm.comment is empty %}Comment here{% else %}{{vm.comment}}{% endif %}</span>
+                    <div class="integ-number textgrey pull-left">integ {{vm.idVm}}</div>
+                    <div class="integ-name edit pull-left" id="{{vm.idVm}}">{% if vm.comment is empty %}Comment here{% else %}{{vm.comment}}{% endif %}</div>
                     {% if vm.status == 0 %}
                     <a href="{% if vm.status == 0 %}http://status.integ{{vm.integ}}{% endif %}" class="label flatblue pull-right">{{la_fourchette_prototype_vm_status(vm.status)}}</a>
                     <!-- TODO : conditions for status colors (running=flatblue, free=flatgreen, building=flatpurple) -->
