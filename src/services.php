@@ -86,5 +86,5 @@ $app['vm.cc.exporter'] = $app->share(function() use ($app){
 });
 
 $app['hipchat.client'] = $app->share(function() use ($app){
-    return new HipChat\HipChat('***REMOVED***'); // notification...
+    return new HipChat\HipChat($app['config']['hipchat']); // notification...
 });
