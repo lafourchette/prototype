@@ -28,6 +28,7 @@
                     <a href="{% if vm.status == 0 %}http://status.integ{{vm.integ}}{% endif %}" class="label flatblue pull-right">{{la_fourchette_prototype_vm_status(vm.status)}}</a>
                     <!-- TODO : conditions for status colors (running=flatblue, free=flatgreen, building=flatpurple) -->
                     </h3>
+                    {% endif %}
                 </header>
                 <article id="panel-001" class="panel-body nopl nopr">
                     <section class="row">
