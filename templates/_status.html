@@ -3,7 +3,7 @@
         <strong>Warning!</strong> There is no slot available for now<br />You need to wait for an empty one
     </div>
 {% else %}
-    <div class="alert alert-info">
+    <div class="alert alert-success">
         Slot available, <strong>come and get some!!</strong>
     </div>
 {% endif %}
@@ -17,65 +17,59 @@
 {% endif %}
 
 {% if vms|length > 0 %}
-    <table class="col-lg-12 table-striped" id="prototypes">
-        <thead>
-        <tr>
-            <th>Machine</th>
-            <th>Owner</th>
-            <th>Info</th>
-            <th>Comment</th>
-            <th>Status</th>
-            <th>Expires in</th>
-            <th>Actions</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for vm in vms %}
-            <tr>
-                <td>Integ {{vm.integ}}</td>
-                <td>{{vm.createdBy.username}}</td>
-                <td>
-                    <dl class="dl-horizontal">
-                        <dt>ID</dt>
-                        <dd>{{vm.idVm}}</dd>
-                        <dt>Name</dt>
-                        <dd>{{vm}}</dd>
-                        <dt>Expiration date</dt>
-                        <dd>{{vm.expiredDt|date('Y-m-d H:i:s')}}</dd>
-                        {% if vm.status == 0 %}
-                            <dt>Status page link</dt>
-                            <dd><a href="http://status.integ{{vm.integ}}" target="_blank">Status page</a></dd>
-                        {% endif %}
-                    </dl>
-                </td>
-
-                <td>
-                    <div class="edit" id="{{vm.idVm}}">{% if vm.comment is empty %}Comment here{% else %}{{vm.comment}}{% endif %}</div>
-                </td>
-                <td>{{la_fourchette_prototype_vm_status(vm.status)}}</td>
-
-                <td>
-                    <b>{{vm.endsIn}}</b>
-                </td>
-
-                <td>
-                    {% if app.session.get('user').username == vm.createdBy.username %}
-                        {% if vm.status != 4 %}
-                            <a href="/force-expire-prototype/{{ vm.idVm }}" class="btn btn-danger" title="Force the expiration"><i class="icon-trash nabilla"></i></a>
-                        {% endif %}
-                        {% if vm.status != -1 and vm.status != 5 %}
-                        <a href="/ask-more-prototype/{{ vm.idVm }}" class="btn btn-success" title="Ask for {{ default_expiration_delay }} hours more"><i class="icon-heart nabilla"></i></a>
-                        {% endif %}
-                        {% if vm.status == 1 %}
-                            <a href="/force-start/{{ vm.idVm }}" class="btn btn-default" title="Force starting"><i class="icon-off nabilla"></i></a>
-                        {% endif %}
-                    {% endif %}
-                    {% if app.session.get('user').username == vm.createdBy.username and vm.status != -1 %}
-                        <a href="/show-prototype/{{ vm.idVm }}" class="btn btn-success" title="See vm log and details"><i class="icon-info-sign nabilla"></i></a>
-                    {% endif %}
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    {% for vm in vms %}
+        <article class="col-lg-6 col-md-6 col-xs-12">
+            <div class="panel panel-default">
+                <header>
+                    <h3 class="panel-title">
+                    <span class="integ-number textgrey">integ {{vm.idVm}}</span>
+                    <span class="integ-name edit" id="{{vm.idVm}}">{% if vm.comment is empty %}Comment here{% else %}{{vm.comment}}{% endif %}</span>
+                    {% if vm.status == 0 %}
+                    <a href="{% if vm.status == 0 %}http://status.integ{{vm.integ}}{% endif %}" class="label flatblue pull-right">{{la_fourchette_prototype_vm_status(vm.status)}}</a>
+                    <!-- TODO : conditions for status colors (running=flatblue, free=flatgreen, building=flatpurple) -->
+                    </h3>
+                </header>
+                <article id="panel-001" class="panel-body nopl nopr">
+                    <section class="row">
+                        <article class="col-lg-6 col-md-6 col-xs-6 nopl">
+                            <div class="small textgrey">EXPIRES IN</div>
+                            <div class="bold">{{vm.endsIn}}</div>
+                        </article>
+                        <article class="col-lg-6 col-md-6 col-xs-6 nopr">
+                            <div class="profile-pic pull-right">
+                                <span class="textgrey">{{vm.createdBy.username}}</span>
+                            </div>
+                        </article>
+                    </section>
+                    <section class="row m_t">
+                        <article class="col-lg-6 col-md-6 nopl">
+                            <a href="#" class="btn btn-default"><i class="fa fa-info-circle"></i></a>
+                            <a href="#" class="btn btn-default"><i class="fa fa-clock-o"></i></a>
+                            <a href="#" class="btn btn-danger"><i class="fa fa-trash-o"></i></a>
+                        </article>
+                        <a data-toggle="collapse" href="#more-001" class="col-lg-6 col-md-6 lh text-right nopr">
+                            <i class="fa fa-plus-square"></i>
+                            See more
+                        </a>
+                        <section id="more-001" class="collapse">
+                                <table class="table">
+                                    <tr>
+                                        <td>ID</td>
+                                        <td>{{vm.idVm}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Name</td>
+                                        <td>{{vm}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Expiration date</td>
+                                        <td>{{vm.expiredDt|date('Y-m-d H:i:s')}}</td>
+                                    </tr>
+                                </table>
+                        </section>
+                    </section>
+                </article>
+            </div><!-- /panel -->
+        </article>
+    {% endfor %}
 {% endif %}
