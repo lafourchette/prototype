@@ -23,7 +23,7 @@ class VmManager extends AbstractManager
         $qb = $this->repository->createQueryBuilder('v');
 
         $qb->select('v, u')
-           ->innerJoin('v.createdBy', 'u')
+           ->leftJoin('v.createdBy', 'u')
            ->where($qb->expr()->notIn('v.status', ':status'))
            ->orderBy('v.integ', 'ASC')
            ->setParameter('status', Vm::$freeStatus);
