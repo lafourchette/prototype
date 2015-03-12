@@ -2,6 +2,7 @@
 
 namespace LaFourchette\Twig\Extensions;
 
+use LaFourchette\Entity\User;
 use LaFourchette\Entity\Vm;
 use LaFourchette\Logger\VmLogger;
 use \GeSHi;
@@ -27,18 +28,32 @@ class LaFourchettePrototypeExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            'la_fourchette_prototype_vm_status' =>  new \Twig_Function_Method(
+            'la_fourchette_prototype_vm_status' => new \Twig_Function_Method(
                 $this,
                 'vmStatus',
                 array('is_safe' => array(true))
             ),
-            'la_fourchette_prototype_show_log' =>  new \Twig_Function_Method(
+            'la_fourchette_prototype_show_log' => new \Twig_Function_Method(
                 $this,
                 'showLog',
                 array('is_safe' => array(true))
             ),
-            'la_fourchette_prototype_integ_availability' => new \Twig_Function_Method($this, 'integAvailability')
+            'la_fourchette_prototype_integ_availability' => new \Twig_Function_Method(
+                $this,
+                'integAvailability'
+            ),
+            'vm_username' => new \Twig_Function_Method(
+                    $this,
+                    'vmUsername',
+                    array('is_safe' => array(true))
+                ),
         );
+    }
+
+    public function vmUsername(Vm $vm)
+    {
+        $created = $vm->getCreatedBy();
+        return $created instanceof User ? $created->getUsername() : 'unknown';
     }
 
     public function showLog(Vm $vm)

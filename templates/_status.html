@@ -33,7 +33,7 @@
         {% for vm in vms %}
             <tr>
                 <td>Integ {{vm.integ}}</td>
-                <td>{{vm.createdBy.username}}</td>
+                <td>{{vm_username(vm)}}</td>
                 <td>
                     <dl class="dl-horizontal">
                         <dt>ID</dt>
@@ -59,7 +59,7 @@
                 </td>
 
                 <td>
-                    {% if app.session.get('user').username == vm.createdBy.username %}
+                    {% if app.session.get('user').username == vm_username(vm) %}
                         {% if vm.status != 4 %}
                             <a href="/force-expire-prototype/{{ vm.idVm }}" class="btn btn-danger" title="Force the expiration"><i class="icon-trash nabilla"></i></a>
                         {% endif %}
@@ -70,7 +70,7 @@
                             <a href="/force-start/{{ vm.idVm }}" class="btn btn-default" title="Force starting"><i class="icon-off nabilla"></i></a>
                         {% endif %}
                     {% endif %}
-                    {% if app.session.get('user').username == vm.createdBy.username and vm.status != -1 %}
+                    {% if app.session.get('user').username == vm_username(vm) and vm.status != -1 %}
                         <a href="/show-prototype/{{ vm.idVm }}" class="btn btn-success" title="See vm log and details"><i class="icon-info-sign nabilla"></i></a>
                     {% endif %}
                 </td>
