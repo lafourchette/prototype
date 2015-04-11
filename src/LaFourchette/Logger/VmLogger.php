@@ -13,7 +13,6 @@ class VmLogger
 {
     const LOG_FILE_MASK = 'vm-file-%s';
 
-    protected $logDir = null;
     protected $vm = null;
 
     public function createLogger()
