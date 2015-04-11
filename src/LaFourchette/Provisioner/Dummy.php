@@ -9,39 +9,69 @@
 namespace LaFourchette\Provisioner;
 
 use LaFourchette\Entity\VM;
+use LaFourchette\Logger\DummyLogger;
+use LaFourchette\Logger\LoggerFactory;
+use LaFourchette\Logger\LoggableProcess;
 
 class Dummy extends ProvisionerAbstract {
-    const OUTPUT_FILE = 'toto.log';
+
+    const TYPE_DEFAULT = 99;
+
+    protected $logger;
 
     public function getStatus(VM $vm)
     {
-        // TODO: Implement getStatus() method.
+        return new \Exception(__METHOD__ . ' not implemented in this context for ' . __CLASS__);
     }
 
+    /**
+     * @param VM $vm
+     * @return mixed
+     */
     public function start(VM $vm)
     {
-//        $cmd = 'vagrant up --no-provision';
-        $cmd = 'echo provisioner start > ' . OUTPUT_FILE;
-        $this->run($vm, $cmd, false, false);
+        $dummyLogger = LoggerFactory::create(LoggerFactory::LOGGER_DUMMY);
+
+        $cmd = 'echo dummy provisioner start';
+
+        echo $cmd . PHP_EOL;
+
+        $process = new LoggableProcess($cmd);
+        $process->setLogger($dummyLogger);
+        $process->setTimeout(0);
+        $process->run(array('\LaFourchette\Logger\DummyProcessLogFormatter', 'format'));
+
+        return $process->getOutput();
     }
 
     public function stop(VM $vm)
     {
-        $this->run($vm, 'echo provisioner stop > ' . OUTPUT_FILE, false, false);
+        $dummyLogger = LoggerFactory::create(LoggerFactory::LOGGER_DUMMY);
+
+        $cmd = 'echo dummy provisioner stop';
+
+        echo $cmd . PHP_EOL;
+
+        $process = new LoggableProcess($cmd);
+        $process->setLogger($dummyLogger);
+        $process->setTimeout(0);
+        $process->run(array('\LaFourchette\Logger\DummyProcessLogFormatter', 'format'));
+
+        return $process->getOutput();
     }
 
     public function initialise(VM $vm)
     {
-        // TODO: Implement initialise() method.
+        return new \Exception(__METHOD__ . ' not implemented in this context for ' . __CLASS__);
     }
 
     public function reset(VM $vm)
     {
-        // TODO: Implement reset() method.
+        return new \Exception(__METHOD__ . ' not implemented in this context for ' . __CLASS__);
     }
 
     public function delete(VM $vm)
     {
-        // TODO: Implement delete() method.
+        return new \Exception(__METHOD__ . ' not implemented in this context for ' . __CLASS__);
     }
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<phpunit bootstrap="./config/bootstrap_test.php" colors="true">
+<phpunit bootstrap="./tests/bootstrap_test.php" colors="true">
 
     <testsuites>
         <testsuite name="lafourchette-prototype Test Suite">
