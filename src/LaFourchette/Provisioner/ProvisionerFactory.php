@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Diego
- * Date: 11/04/2015
- * Time: 12:25
- */
 
 namespace LaFourchette\Provisioner;
 
@@ -27,11 +21,11 @@ class ProvisionerFactory
      */
     public static function create($provisionerName, $repo = null, $defaultBranch = null)
     {
-        if (trim($provisionerName) === ''){
-            throw new \Exception ('Type de provisioner manquant');
+        if (trim($provisionerName) === '') {
+            throw new \Exception('Type de provisioner manquant');
         }
 
-        switch (trim($provisionerName)){
+        switch (trim($provisionerName)) {
             case self::PROVISIONER_VAGRANT:
                 $provisioner = new BaseVagrant($repo, $defaultBranch);
                 break;

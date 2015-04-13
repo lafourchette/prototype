@@ -99,5 +99,4 @@ class LdapManager
 
         return $users;
     }
-
 }

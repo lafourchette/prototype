@@ -12,7 +12,7 @@ class GithubFile
     private $token;
     private $user;
 
-    public function __construct($repo,$path,$token, $user)
+    public function __construct($repo, $path, $token, $user)
     {
         $this->repo = $repo;
         $this->path = $path;
@@ -25,19 +25,19 @@ class GithubFile
         $url = sprintf('https://api.github.com/repos/%s/contents/%s', $this->repo, $this->path);
         echo $url . PHP_EOL;
         $ch = curl_init();
-        curl_setopt($ch,CURLOPT_URL,$url);
-        curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
-        curl_setopt($ch,CURLOPT_CONNECTTIMEOUT,1);
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 1);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array(
             'Authorization: token '.$this->token,
             'Accept: application/vnd.github.v3.raw',
             'User-Agent: '.$this->user
         ));
         $content = curl_exec($ch);
-        if($err = curl_error($ch)){
+        if ($err = curl_error($ch)) {
             throw new \Exception('Curl error'.$err);
         }
         curl_close($ch);
         return $content;
     }
-} 
+}

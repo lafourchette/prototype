@@ -18,7 +18,7 @@ $app->register(new TwigServiceProvider(), array(
 $app['config'] = json_decode(file_get_contents(__DIR__ . '/../config.json'), true);
 $app['debug'] = $debug = $app['config']['debug'];
 
-if($debug){
+if ($debug) {
     $app->register(new \Silex\Provider\MonologServiceProvider(), array(
         'monolog.logfile' => __DIR__.'/../logs/silex_dev.log',
     ));
@@ -32,7 +32,7 @@ if($debug){
 
 require __DIR__ . '/../src/services.php';
 
-$app['twig'] = $app->share($app->extend('twig', function($twig, $app) {
+$app['twig'] = $app->share($app->extend('twig', function ($twig, $app) {
     // add custom globals, filters, tags, ...
     $twig->addExtension(new \LaFourchette\Twig\Extensions\LaFourchettePrototypeExtension($app['integ_availabibilty.checker']));
     $twig->addGlobal('asset_version', $app['config']['asset.version']);
@@ -41,8 +41,8 @@ $app['twig'] = $app->share($app->extend('twig', function($twig, $app) {
 }));
 
 // Maintenance
-$app->before( function() use ($app) {
-    if (file_exists('../MAINTENANCE.lock')){
+$app->before(function () use ($app) {
+    if (file_exists('../MAINTENANCE.lock')) {
         return new \Symfony\Component\HttpFoundation\Response(
             $app['twig']->render('maintenance.html'),
             503
@@ -50,13 +50,12 @@ $app->before( function() use ($app) {
     }
 });
 
-$app->before( function() use ( $app ) {
-    $flash = $app[ 'session' ]->get( 'flash' );
-    $app[ 'session' ]->set( 'flash', null );
+$app->before(function () use ($app) {
+    $flash = $app[ 'session' ]->get('flash');
+    $app[ 'session' ]->set('flash', null);
 
-    if ( !empty( $flash ) )
-    {
-        $app[ 'twig' ]->addGlobal( 'flash', $flash );
+    if (!empty($flash)) {
+        $app[ 'twig' ]->addGlobal('flash', $flash);
     }
 });
 

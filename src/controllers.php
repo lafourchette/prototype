@@ -257,7 +257,7 @@ $app->get('/_status', function () use ($app) {
 })
 ->bind('_status');
 
-$app->post('/_comment', function(Request $request) use ($app){
+$app->post('/_comment', function (Request $request) use ($app) {
     $app['vm.manager']->comment($request->get('id'), $request->get('value'));
     return $request->get('value');
 });

@@ -20,7 +20,8 @@ class ExpireSoon extends NotifyAbstract
      * @param Vm $vm
      * @return string
      */
-    public function getSubject(Vm $vm) {
+    public function getSubject(Vm $vm)
+    {
         $integ = $vm->getInteg();
         $name = $integ->getName();
 

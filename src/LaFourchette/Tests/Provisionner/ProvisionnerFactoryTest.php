@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Diego
- * Date: 11/04/2015
- * Time: 16:20
- */
 
 namespace LaFourchette\Tests\Provisionner;
-
 
 use LaFourchette\Provisioner\ProvisionerFactory;
 

@@ -15,7 +15,7 @@ if ('cli-server' === php_sapi_name()) {
 
 $app = require __DIR__.'/../src/app.php';
 
-if($app['debug']){
+if ($app['debug']) {
     error_reporting(-1);
     Symfony\Component\Debug\DebugClassLoader::enable();
     Symfony\Component\HttpKernel\Debug\ErrorHandler::register();

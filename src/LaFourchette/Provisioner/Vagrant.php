@@ -88,28 +88,28 @@ class Vagrant extends ProvisionerAbstract
 
         if (count($result) == 0) {
             throw new \Exception('Destination directory does not exists');
-        } else if (count($result) == 3 && $result = array('.', '..', '')) {
+        } elseif (count($result) == 3 && $result = array('.', '..', '')) {
             return VM::MISSING;
         } else {
             $output = $this->run($vm, 'vagrant status');
 
             if (strpos($output, 'Please update Facts file !') !== false) {
                 return VM::STOPPED;
-            } else if (strpos($output, ' running (') !== false) {
+            } elseif (strpos($output, ' running (') !== false) {
                 $now = new \DateTime();
                 if ($now > $vm->getExpiredDt()) {
                     return VM::EXPIRED;
                 }
                 return VM::RUNNING;
-            } else if (strpos($output, ' not created (') !== false) {
+            } elseif (strpos($output, ' not created (') !== false) {
                 return VM::STOPPED;
-            } else if (strpos($output, ' poweroff (') !== false) {
+            } elseif (strpos($output, ' poweroff (') !== false) {
                 $now = new \DateTime();
                 if ($now > $vm->getExpiredDt()) {
                     return VM::EXPIRED;
                 }
                 return VM::STOPPED;
-            } else if (strpos($output, ' saved (') !== false) {
+            } elseif (strpos($output, ' saved (') !== false) {
                 return VM::SUSPEND;
             } else {
             }
@@ -129,7 +129,7 @@ class Vagrant extends ProvisionerAbstract
         $logger->setVm($vm);
         $vmLogger = $logger->createLogger();
 
-        if($remote){
+        if ($remote) {
             $cmd = $this->getPrefixCommand(
                 $this->getInteg($vm->getInteg()),
                 $cmd,

@@ -16,7 +16,6 @@ class LocalFile
 
     public function getContent()
     {
-
         return file_get_contents($this->path);
     }
-} 
+}

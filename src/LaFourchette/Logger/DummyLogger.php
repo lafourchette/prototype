@@ -1,16 +1,17 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Diego
- * Date: 11/04/2015
- * Time: 10:30
- */
 
 namespace LaFourchette\Logger;
 
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 
+/**
+ * Class DummyLogger
+ *
+ * Uses LaFourchette\Logger standards when calling Provisioner\Dummy
+ *
+ * @package LaFourchette\Logger
+ */
 class DummyLogger
 {
     const LOG_FILE_MASK = 'dummy-file';

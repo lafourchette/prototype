@@ -289,7 +289,7 @@ class Integ
         return $this;
     }
 
-    static public function makeFromArray(array $array)
+    public static function makeFromArray(array $array)
     {
         $node = new Node();
         $node->setIdNode($array['node']['id_node']);

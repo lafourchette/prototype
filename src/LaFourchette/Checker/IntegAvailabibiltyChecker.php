@@ -22,7 +22,7 @@ class IntegAvailabibiltyChecker implements CheckerInterface
         $vmAvailable = $this->integManager->loadAllAvailable();
 
         if (empty($vmAvailable)) {
-           return false;
+            return false;
         }
 
         return true;

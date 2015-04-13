@@ -75,7 +75,7 @@ class LaFourchettePrototypeExtension extends \Twig_Extension
      */
     public function vmStatus($status)
     {
-        switch($status) {
+        switch ($status) {
             case Vm::RUNNING:
                 return '<label class="label label-info">Running</label>';
                 break;

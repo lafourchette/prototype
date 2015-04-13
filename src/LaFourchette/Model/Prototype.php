@@ -125,5 +125,4 @@ class Prototype
     {
         return $this->lastBuildStatus;
     }
-
 }

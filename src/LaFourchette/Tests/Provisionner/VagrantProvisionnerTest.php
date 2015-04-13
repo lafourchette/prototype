@@ -160,7 +160,7 @@ EOF;
 
     public function testStartSupendWorkflow()
     {
-        $vagrantProvisionnerMock = $this->getMock('\LaFourchette\Provisioner\Vagrant', array('__construct', 'run','getStatus'), array('depot', 'branch'));
+        $vagrantProvisionnerMock = $this->getMock('\LaFourchette\Provisioner\Vagrant', array('__construct', 'run', 'getStatus'), array('depot', 'branch'));
         $vmMock = $this->getMock('\LaFourchette\Entity\Vm');
         $vagrantProvisionnerMock->expects($this->any())
              ->method('getStatus')
@@ -170,7 +170,6 @@ EOF;
         //First case, cannot supend the vm if it's already running
         $this->setExpectedException('Exception', 'VM is already running');
         $vagrantProvisionnerMock->start($vmMock);
-
     }
 
     public function testStartRunningWorkflow()
@@ -185,7 +184,6 @@ EOF;
         //First case, cannot supend the vm if it's already running
         $this->setExpectedException('Exception', 'VM is already running');
         $vagrantProvisionnerMock->start($vmMock);
-
     }
 
     public function testStartMissingWorkflow()
@@ -200,6 +198,5 @@ EOF;
         //First case, cannot supend the vm if it's already running
         $this->setExpectedException('Exception', 'The Vm has not started');
         $vagrantProvisionnerMock->start($vmMock);
-
     }
 }

@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Diego
- * Date: 11/04/2015
- * Time: 15:42
- */
 
 namespace LaFourchette\Tests\Provisionner;
 

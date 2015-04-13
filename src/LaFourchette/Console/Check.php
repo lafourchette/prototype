@@ -15,7 +15,7 @@ class Check extends ConsoleAbstract
      * @param \Silex\Application $app
      * @param Application $console
      */
-    static public function register(\Silex\Application $app, Application $console)
+    public static function register(\Silex\Application $app, Application $console)
     {
         $console->register('prototype:check')
             ->setDefinition(array(
@@ -55,8 +55,8 @@ class Check extends ConsoleAbstract
             $savedStatus = $vm->getStatus();
             $currentStatus = $this->application['vm.service']->getStatus($vm);
 
-            if(is_null($currentStatus)) {
-                $output->writeln( 'cannot resolve status for vm ' . $vm->getIdVm());
+            if (is_null($currentStatus)) {
+                $output->writeln('cannot resolve status for vm ' . $vm->getIdVm());
                 continue;
             }
 
@@ -69,7 +69,7 @@ class Check extends ConsoleAbstract
                 $this->application['vm.service']->start($vm);
             } elseif ($savedStatus == Vm::ARCHIVED) {
                 $output->writeln('  - Vm is archived.');
-            } else if ($savedStatus == Vm::EXPIRED) {
+            } elseif ($savedStatus == Vm::EXPIRED) {
                 $output->writeln('  - Has just expired');
                 $notify->send('expired', $vm);
                 $this->application['vm.service']->archived($vm);
@@ -80,7 +80,7 @@ class Check extends ConsoleAbstract
                     $vm->setStatus($currentStatus);
                     $vmManager->save($vm);
 
-                    switch ($currentStatus){
+                    switch ($currentStatus) {
                         case Vm::RUNNING:
                             $output->writeln('  - Running');
                             $expireDt = $vm->getExpiredDt();

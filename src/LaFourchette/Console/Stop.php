@@ -15,7 +15,7 @@ class Stop extends ConsoleAbstract
      * @param Application $console
      * @return mixed|void
      */
-    static public function register(\Silex\Application $app, Application $console)
+    public static function register(\Silex\Application $app, Application $console)
     {
         $console->register('prototype:stop')
             ->addArgument('vm-number', null, InputArgument::REQUIRED, 'The vm number')

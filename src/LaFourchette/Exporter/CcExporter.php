@@ -34,8 +34,7 @@ class CcExporter
      */
     public function export($type = 'xml')
     {
-
-        if(!in_array($type, array('xml', 'json'))) {
+        if (!in_array($type, array('xml', 'json'))) {
             throw new InvalidArgumentException(sprintf('this type "%s" does not exist', $type));
         }
 
@@ -44,7 +43,7 @@ class CcExporter
         $serializer = new Serializer($normalizers, $encoders);
 
         $data = array();
-        foreach($this->vms as $vm) {
+        foreach ($this->vms as $vm) {
             $prototype = $this->createPrototype($vm);
             $data['Project'][] = array(
                     '@activity' => $prototype->getActivity(),
@@ -56,9 +55,7 @@ class CcExporter
                 );
         }
 
-        $response = new Response($serializer->serialize($data, $type)
-            ,200
-            ,array('Content-Type' => sprintf('application/%s;charset=UTF-8', $type))
+        $response = new Response($serializer->serialize($data, $type), 200, array('Content-Type' => sprintf('application/%s;charset=UTF-8', $type))
         );
 
         return $response;

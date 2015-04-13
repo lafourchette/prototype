@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: suarezd
- * Date: 10/04/2015
- * Time: 16:44
- */
 
 namespace LaFourchette\Provisioner;
 
@@ -13,7 +7,8 @@ use LaFourchette\Logger\DummyLogger;
 use LaFourchette\Logger\LoggerFactory;
 use LaFourchette\Logger\LoggableProcess;
 
-class Dummy extends ProvisionerAbstract {
+class Dummy extends ProvisionerAbstract
+{
 
     const TYPE_DEFAULT = 99;
 
