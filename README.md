@@ -6,29 +6,19 @@
 /_/   /_/   \____/\__/\____/\__/\__, / .___/\___/
                                /____/_/
 ```
-Introduction
-------------
+## Introduction
 Prototype was created to help product owner to test their production in a full stack environnement.
 
 * Start/Stop/Build VMs at ease
 * LDAP auth
 * Automatic mail alert on events (start, stopped, expired)
 
-Install
--------
+## Installation
+After cloning the repository:
 ```bash
 make build
-
-# check makefile for installation vars
-sudo make install
 ```
-
-You need to install the crontab manually. It will check each VM to verify if one need to be started, or is they have expired...
-```cron
-* * * * * if [ $(ps aux | grep "prototype/console" | grep -v grep | wc -l) -lt 1 ] ; then /var/www/lafourchette-prototype/console prototype:get-vm-id | xargs -P 4 -n 1 -r /var/www/lafourchette-prototype/console prototype:check ; fi;
-```
-
-Configuration goes that way
+Then edit config.json
 ```javascript
 "provisioners":[{
     "type": "local", // local file
@@ -41,11 +31,9 @@ Configuration goes that way
     "user":""
 }]
 ```
-
-Testing
--------
+And serve it with a webserver, for example
 ```bash
-make test
+php -S localhost:8000 -t web
 ```
 
 Contributors
