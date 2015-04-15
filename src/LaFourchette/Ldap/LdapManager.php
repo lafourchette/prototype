@@ -9,7 +9,7 @@ use LaFourchette\Entity\User;
  *
  * @author gcavana
  */
-class LdapManager
+class LdapManager implements LdapManagerInterface
 {
 
     protected $ldapRes;
@@ -38,7 +38,6 @@ class LdapManager
     }
 
     /**
-     *
      * @param type $userDn
      * @param type $password
      * @return type
@@ -53,7 +52,6 @@ class LdapManager
     }
 
     /**
-     *
      * @param type $username
      * @return null|\LaFourchette\Entity\User
      */

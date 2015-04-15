@@ -22,7 +22,8 @@ $app->get('/login', function () use ($app) {
     $username = $app['request']->server->get('PHP_AUTH_USER', false);
     $password = $app['request']->server->get('PHP_AUTH_PW', false);
 
-    if ($username && $password) {
+    if (($username && $password) || $app['debug']) {
+
         $userManager = $app['user.manager'];
 
         //Retrieve user information

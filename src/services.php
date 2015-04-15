@@ -72,6 +72,11 @@ $app['login.basic_login_response'] = $app->share(function() use ($app) {
 });
 
 $app['ldap.manager'] = $app->share(function() use ($app){
+
+    if ($app['debug']) { // anonymous connection in debug mode
+        return new \LaFourchette\Ldap\MockLdapManager();
+    }
+
     return new \LaFourchette\Ldap\LdapManager(
         $app['config']['ldap.host'],
         $app['config']['ldap.port'],
