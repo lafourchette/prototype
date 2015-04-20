@@ -9,7 +9,7 @@ use LaFourchette\Entity\Vm;
  *
  * @author gcavana
  */
-class VmCreator implements CreatorInterface
+class VmCreator
 {
     public function create($vmType = Vm::TYPE_V2)
     {
