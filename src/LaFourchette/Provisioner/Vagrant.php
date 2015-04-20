@@ -3,6 +3,7 @@ namespace LaFourchette\Provisioner;
 
 use LaFourchette\Entity\Integ;
 use LaFourchette\Entity\VM;
+use LaFourchette\Manager\IntegManager;
 use LaFourchette\Provisioner\Exception\UnableToStartException;
 use Symfony\Component\Process\Process;
 use LaFourchette\Logger\LoggableProcess;
