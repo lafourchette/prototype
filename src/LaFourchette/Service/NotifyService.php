@@ -11,9 +11,8 @@ class NotifyService
 
     protected $hipchat = null;
 
-    public function __construct($hipchat)
+    public function __construct()
     {
-        $this->hipchat = $hipchat;
     }
 
     public function addNotifyMessage($name, $notifyMessage)

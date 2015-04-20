@@ -29,7 +29,7 @@ $app['integ.decider'] = $app->share(function() use ($app){
 });
 
 $app['notify.service'] = $app->share(function() use ($app) {
-    $notify = new \LaFourchette\Service\NotifyService($app['hipchat.client']);
+    $notify = new \LaFourchette\Service\NotifyService(/*$app['hipchat.client']*/);
     $notify->addNotifyMessage('expired', new \LaFourchette\Notify\Expired());
     $notify->addNotifyMessage('expire_soon', new \LaFourchette\Notify\ExpireSoon($app['config']['vm.to_expire_in']));
     $notify->addNotifyMessage('ready', new \LaFourchette\Notify\Ready());
