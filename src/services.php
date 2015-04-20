@@ -30,15 +30,9 @@ $app['notify.service'] = $app->share(function() use ($app) {
     return $notify;
 });
 
-$app['vm.provisionner'] = $app->share(function() use ($app) {
-    //TODO: use a factory
-    $provisionner = new \LaFourchette\Provisioner\Vagrant($app['config']['vm.repo'], $app['config']['vm.default.branch']);
-    return $provisionner;
-});
-
 $app['vm.provisionner2'] = $app->share(function() use ($app) {
     //TODO: use a factory
-    $provisionner = new \LaFourchette\Manager\Vagrant(
+    $provisionner = new \LaFourchette\Provisioner\Vagrant(
         $app['integ.manager'],
         isset($app['config']['provisioners']) ? $app['config']['provisioners'] : array()
     );
@@ -48,7 +42,6 @@ $app['vm.provisionner2'] = $app->share(function() use ($app) {
 $app['vm.service'] = $app->share(function() use ($app) {
     $vmService = new \LaFourchette\Service\VmService();
     $vmService->setVmManager($app['vm.manager']);
-    $vmService->setProvisionner(\LaFourchette\Entity\Vm::TYPE_DEFAULT, $app['vm.provisionner']);
     $vmService->setProvisionner(\LaFourchette\Entity\Vm::TYPE_V2, $app['vm.provisionner2']);
     $vmService->setNotifyService($app['notify.service']);
 

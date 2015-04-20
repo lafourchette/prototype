@@ -5,7 +5,6 @@ namespace LaFourchette\Console;
 use LaFourchette\Entity\Integ;
 use LaFourchette\Entity\Vm;
 use LaFourchette\Manager\VmManager;
-use LaFourchette\Provisioner\Vagrant;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
