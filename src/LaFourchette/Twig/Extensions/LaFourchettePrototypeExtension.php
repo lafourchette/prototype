@@ -6,6 +6,7 @@ use LaFourchette\Entity\User;
 use LaFourchette\Entity\Vm;
 use LaFourchette\Logger\VmLogger;
 use \GeSHi;
+use LaFourchette\Manager\IntegManager;
 
 /**
  * Description of PrototypeExtension
@@ -14,11 +15,14 @@ use \GeSHi;
  */
 class LaFourchettePrototypeExtension extends \Twig_Extension
 {
-    protected $integAvailabibiltyChecker;
+    /**
+     * @var \LaFourchette\Manager\IntegManager
+     */
+    protected $integManager;
 
-    public function __construct(\LaFourchette\Checker\IntegAvailabibiltyChecker $integAvailabibiltyChecker)
+    public function __construct(IntegManager $integManager)
     {
-        $this->integAvailabibiltyChecker = $integAvailabibiltyChecker;
+        $this->integManager = $integManager;
     }
 
     /**
@@ -105,7 +109,7 @@ class LaFourchettePrototypeExtension extends \Twig_Extension
 
     public function integAvailability()
     {
-        return $this->integAvailabibiltyChecker->check();
+        return $this->integManager->hasAvailableInteg();
     }
 
     public function getName()

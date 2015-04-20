@@ -25,6 +25,17 @@ class IntegManager implements ManagerInterface
         }
     }
 
+    public function hasAvailableInteg()
+    {
+        $vmAvailable = $this->loadAllAvailable();
+
+        if (empty($vmAvailable)) {
+            return false;
+        }
+
+        return true;
+    }
+
     public function loadAllAvailable()
     {
         $query = $this->entityManager->createQuery(

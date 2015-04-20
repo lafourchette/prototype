@@ -34,7 +34,7 @@ require __DIR__ . '/../src/services.php';
 
 $app['twig'] = $app->share($app->extend('twig', function($twig, $app) {
     // add custom globals, filters, tags, ...
-    $twig->addExtension(new \LaFourchette\Twig\Extensions\LaFourchettePrototypeExtension($app['integ_availabibilty.checker']));
+    $twig->addExtension(new \LaFourchette\Twig\Extensions\LaFourchettePrototypeExtension($app['integ.manager']));
     $twig->addGlobal('asset_version', $app['config']['asset.version']);
 
     return $twig;

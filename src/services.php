@@ -16,10 +16,6 @@ $app['user_notify.manager'] = $app->share(function() use ($app){
     return new LaFourchette\Manager\UserNotifyManager($app['orm.em'],'\LaFourchette\Entity\UserNotify');
 });
 
-$app['integ_availabibilty.checker'] = $app->share(function() use ($app){
-    return new \LaFourchette\Checker\IntegAvailabibiltyChecker($app['integ.manager']);
-});
-
 $app['vm.creator'] = $app->share(function() use ($app){
    return new \LaFourchette\Creator\VmCreator($app['integ.decider']);
 });

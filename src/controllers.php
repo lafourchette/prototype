@@ -212,7 +212,7 @@ $app->post('/launch-prototype', function () use ($app) {
     $users = $app['request']->request->get('users');
 
     //Refactor this please...
-    if ($app['integ_availabibilty.checker']->check()) {
+    if ($app['integ.manager']->hasAvailableInteg()) {
         //Doctrine2 does not handle correctly
         $creator = $app['vm.creator'];
         //Get Integ Parameter
