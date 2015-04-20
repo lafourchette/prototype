@@ -1,10 +1,13 @@
 <?php
 
-namespace LaFourchette\Entity;
+namespace LaFourchette\Location;
 
-use Doctrine\ORM\Mapping as ORM;
+use LaFourchette\Entity\Integ;
 
-class Node
+/**
+ * Where an Integ is instanciated.
+ */
+class Location
 {
     /**
      * @var int

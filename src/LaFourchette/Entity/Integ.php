@@ -2,6 +2,8 @@
 
 namespace LaFourchette\Entity;
 
+use LaFourchette\Location\Location;
+
 class Integ
 {
     /**
@@ -153,7 +155,7 @@ class Integ
     }
 
     /**
-     * @return Node
+     * @return Location
      */
     public function getNode()
     {
@@ -161,9 +163,9 @@ class Integ
     }
 
     /**
-     * @param Node $node
+     * @param Location $node
      */
-    public function setNode(Node $node)
+    public function setNode(Location $node)
     {
         $this->node = $node;
         return $this;
@@ -291,7 +293,7 @@ class Integ
 
     static public function makeFromArray(array $array)
     {
-        $node = new Node();
+        $node = new Location();
         $node->setIdNode($array['node']['id_node']);
         $node->setIp($array['node']['ip']);
         $node->setName($array['node']['name']);
