@@ -4,35 +4,25 @@ namespace LaFourchette\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity
- */
 class Node
 {
-
     /**
-     * @ORM\Id
-     * @ORM\Column(type="integer", name="id_node")
-     * @ORM\GeneratedValue(strategy="AUTO")
      * @var int
      */
     protected $idNode;
 
     /**
-     * @ORM\Column(type="string")
      * @var null|string
      */
     protected $name = null;
 
     /**
-     * @ORM\Column(type="string")
      * @var null|string
      */
     protected $ip = null;
 
     /**
-     * @ORM\OneToOne(targetEntity="Integ", mappedBy="node")
-     * @var object
+     * @var Integ
      */
     protected $integ;
 
