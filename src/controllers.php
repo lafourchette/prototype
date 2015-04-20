@@ -53,13 +53,6 @@ $app->get('/users', function () use ($app) {
     ));
 });
 
-$app->get('/cc.xml', function () use ($app) {
-    $exporter = $app['vm.cc.exporter'];
-
-    return $exporter->export();
-})
-->bind('cc');
-
 $app->get('/show-prototype/{idVm}', function ($idVm) use ($app) {
     return $app['twig']->render('show.html', array(
         'vm' => $app['vm.manager']->load($idVm),
