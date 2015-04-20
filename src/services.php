@@ -17,11 +17,7 @@ $app['user_notify.manager'] = $app->share(function() use ($app){
 });
 
 $app['vm.creator'] = $app->share(function() use ($app){
-   return new \LaFourchette\Creator\VmCreator($app['integ.decider']);
-});
-
-$app['integ.decider'] = $app->share(function() use ($app){
-   return new \LaFourchette\Decider\IntegDecider($app['integ.manager']);
+   return new \LaFourchette\Creator\VmCreator();
 });
 
 $app['notify.service'] = $app->share(function() use ($app) {

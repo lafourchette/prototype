@@ -2,7 +2,6 @@
 
 namespace LaFourchette\Creator;
 
-use LaFourchette\Decider\IntegDecider;
 use LaFourchette\Entity\Vm;
 
 /**
@@ -12,14 +11,6 @@ use LaFourchette\Entity\Vm;
  */
 class VmCreator implements CreatorInterface
 {
-
-    protected $integDecider;
-
-    public function __construct(IntegDecider $integDecider)
-    {
-        $this->integDecider = $integDecider;
-    }
-
     public function create($vmType = Vm::TYPE_V2)
     {
         $user = new \LaFourchette\Entity\User();
