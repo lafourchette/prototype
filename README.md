@@ -13,6 +13,8 @@ Prototype was created to help product owner to test their production in a full s
 * LDAP auth
 * Automatic mail alert on events (start, stopped, expired)
 
+Check our [awesome contributors](https://github.com/lafourchette/prototype/graphs/contributors) !
+
 ## Installation
 After cloning the repository:
 ```bash
@@ -36,10 +38,8 @@ And serve it with a webserver, for example
 php -S localhost:8000 -t web
 ```
 
-Contributors
-------------
-- Laurent Chenay (lchenay), original idea
-- Guillaume Cavana (gcavana), main developer
-- Oliver Laurendeau (olaurendeau)
-- Laurent Robin, ux
-- David Moreau (dav-m85), additionnal developer
+## Contributing
+Who's who:
+- A **Prototype** is a Virtual Machine instance where your project to test lives.
+- A **Location** is a server or a local directory where the Prototype is running.
+- A **Provisioner** describes how to create a Prototype.
