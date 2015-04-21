@@ -61,5 +61,4 @@ class MockLdapManager extends LdapManager implements LdapManagerInterface
            'username' => self::USER_NAME,
         ));
     }
-
 }
