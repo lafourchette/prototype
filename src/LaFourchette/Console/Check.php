@@ -3,8 +3,6 @@
 namespace LaFourchette\Console;
 
 use LaFourchette\Entity\Vm;
-use LaFourchette\Provisioner\Exception\UnableToStartException;
-use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -44,14 +42,13 @@ class Check extends ConsoleAbstract
 
         $output->writeln('Start the checks of all VM');
 
-
         foreach ($vms as $vm) {
             /** @var VM $vm */
             $output->writeln('> VM ' . $vm->__toString());
             $savedStatus = $vm->getStatus();
             $currentStatus = $this->getSilexApplication()['vm.service']->getStatus($vm);
 
-            if(is_null($currentStatus)) {
+            if (is_null($currentStatus)) {
                 $output->writeln( 'cannot resolve status for vm ' . $vm->getIdVm());
                 continue;
             }
@@ -65,7 +62,7 @@ class Check extends ConsoleAbstract
                 $this->getSilexApplication()['vm.service']->start($vm);
             } elseif ($savedStatus == Vm::ARCHIVED) {
                 $output->writeln('  - Vm is archived.');
-            } else if ($savedStatus == Vm::EXPIRED) {
+            } elseif ($savedStatus == Vm::EXPIRED) {
                 $output->writeln('  - Has just expired');
                 $notify->send('expired', $vm);
                 $this->getSilexApplication()['vm.service']->archived($vm);
@@ -76,7 +73,7 @@ class Check extends ConsoleAbstract
                     $vm->setStatus($currentStatus);
                     $vmManager->save($vm);
 
-                    switch ($currentStatus){
+                    switch ($currentStatus) {
                         case Vm::RUNNING:
                             $output->writeln('  - Running');
                             $expireDt = $vm->getExpiredDt();

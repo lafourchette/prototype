@@ -32,7 +32,7 @@ interface ManagerInterface
      * Finds many objects by an array of criteria
      *
      * @param array $criteria The array of criteria
-     * @param array $order Array of order (ex : array('myField' => 'DESC'))
+     * @param array $order    Array of order (ex : array('myField' => 'DESC'))
      *
      * @return array
      */

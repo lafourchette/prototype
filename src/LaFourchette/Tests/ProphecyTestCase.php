@@ -13,7 +13,7 @@ abstract class ProphecyTestCase extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->prophet = new Prophet;
+        $this->prophet = new Prophet();
     }
 
     public function tearDown()

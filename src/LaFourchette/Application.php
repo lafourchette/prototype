@@ -29,7 +29,6 @@ use Silex\Provider\ValidatorServiceProvider;
 use Silex\Provider\ServiceControllerServiceProvider;
 use Knp\Provider\ConsoleServiceProvider;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Process\Process;
 use Silex\Application as BaseApplication;
 
 class Application extends BaseApplication
@@ -60,13 +59,13 @@ class Application extends BaseApplication
         $app['config'] = json_decode(file_get_contents(__DIR__ . '/../../config.json'), true);
         $app['debug'] = $debug = $app['config']['debug'];
 
-        if($debug){
+        if ($debug) {
             $app->register(new \Silex\Provider\MonologServiceProvider(), array(
                 'monolog.logfile' => __DIR__.'/../../logs/silex_dev.log',
             ));
         }
 
-        $app['twig'] = $app->share($app->extend('twig', function($twig, $app) {
+        $app['twig'] = $app->share($app->extend('twig', function ($twig, $app) {
             // add custom globals, filters, tags, ...
             $twig->addExtension(new \LaFourchette\Twig\Extensions\LaFourchettePrototypeExtension($app['integ.manager']));
             $twig->addGlobal('asset_version', $app['config']['asset.version']);
@@ -74,12 +73,11 @@ class Application extends BaseApplication
             return $twig;
         }));
 
-        $app->before( function() use ( $app ) {
+        $app->before( function () use ($app) {
             $flash = $app[ 'session' ]->get( 'flash' );
             $app[ 'session' ]->set( 'flash', null );
 
-            if ( !empty( $flash ) )
-            {
+            if ( !empty( $flash ) ) {
                 $app[ 'twig' ]->addGlobal( 'flash', $flash );
             }
         });
@@ -107,46 +105,48 @@ class Application extends BaseApplication
             ),
         ));
 
-        $app['vm.manager'] = $app->share(function() use ($app){
+        $app['vm.manager'] = $app->share(function () use ($app) {
             return new VmManager($app['orm.em'],'\LaFourchette\Entity\Vm');
         });
 
-        $app['integ.manager'] = $app->share(function() use ($app){
+        $app['integ.manager'] = $app->share(function () use ($app) {
             return new IntegManager($app['orm.em'], $app['config'],'\LaFourchette\Entity\Integ');
         });
 
-        $app['user.manager'] = $app->share(function() use ($app){
+        $app['user.manager'] = $app->share(function () use ($app) {
             return new UserManager($app['orm.em'],'\LaFourchette\Entity\User');
         });
 
-        $app['user_notify.manager'] = $app->share(function() use ($app){
+        $app['user_notify.manager'] = $app->share(function () use ($app) {
             return new UserNotifyManager($app['orm.em'],'\LaFourchette\Entity\UserNotify');
         });
 
-        $app['vm.creator'] = $app->share(function() use ($app){
+        $app['vm.creator'] = $app->share(function () use ($app) {
             return new VmCreator();
         });
 
-        $app['notify.service'] = $app->share(function() use ($app) {
+        $app['notify.service'] = $app->share(function () use ($app) {
             $notify = new NotifyService(/*$app['hipchat.client']*/);
             $notify->addNotifyMessage('expired', new Expired());
             $notify->addNotifyMessage('expire_soon', new ExpireSoon($app['config']['vm.to_expire_in']));
             $notify->addNotifyMessage('ready', new Ready());
             $notify->addNotifyMessage('killed', new Killed());
             $notify->addNotifyMessage('unable_to_start', new UnableToStart());
+
             return $notify;
         });
 
-        $app['vm.provisionner2'] = $app->share(function() use ($app) {
+        $app['vm.provisionner2'] = $app->share(function () use ($app) {
             //TODO: use a factory
             $provisionner = new Vagrant(
                 $app['integ.manager'],
                 isset($app['config']['provisioners']) ? $app['config']['provisioners'] : array()
             );
+
             return $provisionner;
         });
 
-        $app['vm.service'] = $app->share(function() use ($app) {
+        $app['vm.service'] = $app->share(function () use ($app) {
             $vmService = new VmService();
             $vmService->setVmManager($app['vm.manager']);
             $vmService->setProvisionner(Vm::TYPE_V2, $app['vm.provisionner2']);
@@ -155,7 +155,7 @@ class Application extends BaseApplication
             return $vmService;
         });
 
-        $app['login.basic_login_response'] = $app->share(function() use ($app) {
+        $app['login.basic_login_response'] = $app->share(function () use ($app) {
             $response = new Response();
             $response->headers->set('WWW-Authenticate', sprintf('Basic realm="%s"', 'Ldap Authentication'));
             $response->setStatusCode(401, 'Please sign in.');
@@ -163,9 +163,10 @@ class Application extends BaseApplication
             return $response;
         });
 
-        $app['ldap.manager'] = $app->share(function() use ($app){
+        $app['ldap.manager'] = $app->share(function () use ($app) {
 
             if ($app['debug']) { // anonymous connection in debug mode
+
                 return new MockLdapManager();
             }
 
@@ -178,11 +179,11 @@ class Application extends BaseApplication
             );
         });
 
-        $app['hipchat.client'] = $app->share(function() use ($app){
+        $app['hipchat.client'] = $app->share(function () use ($app) {
             return new HipChat($app['config']['hipchat']); // notification...
         });
 
         // Controller
         $app->mount('/', new MainControllerProvider());
     }
-} 
+}

@@ -3,9 +3,6 @@
 namespace LaFourchette\Console;
 
 use LaFourchette\Manager\VmManager;
-use Silex\Application;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 use LaFourchette\Service\NotifyService;
 use Knp\Command\Command;
 

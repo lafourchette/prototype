@@ -1,7 +1,6 @@
 <?php
 namespace LaFourchette\Provisioner;
 
-
 use LaFourchette\Entity\VM;
 
 interface ProvisionerInterface

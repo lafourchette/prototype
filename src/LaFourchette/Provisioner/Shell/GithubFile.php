@@ -34,10 +34,11 @@ class GithubFile
             'User-Agent: '.$this->user
         ));
         $content = curl_exec($ch);
-        if($err = curl_error($ch)){
+        if ($err = curl_error($ch)) {
             throw new \Exception('Curl error'.$err);
         }
         curl_close($ch);
+
         return $content;
     }
-} 
+}

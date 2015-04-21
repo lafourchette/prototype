@@ -43,11 +43,11 @@ class Vagrant implements ProvisionerInterface
     public function __construct(IntegManager $integManager, $configurations)
     {
         $this->integManager = $integManager;
-        foreach($configurations as $configuration){
+        foreach ($configurations as $configuration) {
             if (! isset($configuration['type'])) {
                 throw new \Exception('missing type key in provisioner configuration');
             }
-            switch($configuration['type']){
+            switch ($configuration['type']) {
                 case 'local':
                     $p = new LocalFile($configuration['path']);
                     break;
@@ -68,7 +68,7 @@ class Vagrant implements ProvisionerInterface
 
     /**
      * @param $integ
-     * @param string $realCommand
+     * @param  string     $realCommand
      * @return string
      * @throws \Exception
      */
@@ -146,8 +146,8 @@ class Vagrant implements ProvisionerInterface
     }
 
     /**
-     * @param VM $vm
-     * @param string $cmd
+     * @param  VM     $vm
+     * @param  string $cmd
      * @param bool
      * @return string
      */
@@ -158,7 +158,7 @@ class Vagrant implements ProvisionerInterface
         $logger->setVm($vm);
         $vmLogger = $logger->createLogger();
 
-        if($remote){
+        if ($remote) {
             $cmd = $this->getPrefixCommand(
                 $this->getInteg($vm->getInteg()),
                 $cmd,
@@ -180,7 +180,7 @@ class Vagrant implements ProvisionerInterface
     }
 
     /**
-     * @param  VM $vm
+     * @param  VM                               $vm
      * @throws Exception\UnableToStartException
      */
     public function start(VM $vm, $provisionEnable = true, $node = 'integ.lafourchette.local')
@@ -257,8 +257,8 @@ class Vagrant implements ProvisionerInterface
         foreach ($this->provisioners as $provisioner) {
             $installScript = preg_replace_callback(
                 '#\{?\$\{?([^\}\{]*)\}#',
-                function ($matches) use ($integ){
-                    switch($matches[1]){
+                function ($matches) use ($integ) {
+                    switch ($matches[1]) {
                         case 'ip':
                             return $integ->getIp();
                             break;

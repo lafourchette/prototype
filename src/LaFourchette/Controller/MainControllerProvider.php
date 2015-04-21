@@ -43,6 +43,7 @@ class MainControllerProvider implements ControllerProviderInterface
                         if ($isAuthenticated) {
                             $app['session']->set('isAuthenticated', $isAuthenticated);
                             $app['session']->set('user', $user);
+
                             return $app->redirect($app['url_generator']->generate('homepage'));
                         }
                     }
@@ -248,22 +249,24 @@ class MainControllerProvider implements ControllerProviderInterface
         })
             ->bind('launch-prototype');
 
-
         # Include or render for twig
         $controllers->get('/_status', function () use ($app) {
             $vms = $app['vm.manager']->loadVm();
+
             return $app['twig']->render('_status.html', array('vms' => $vms, 'default_expiration_delay' => Vm::EXPIRED_AT_DEFAULT_VALUE));
         })
             ->bind('_status');
 
-        $controllers->post('/_comment', function(Request $request) use ($app){
+        $controllers->post('/_comment', function (Request $request) use ($app) {
             $app['vm.manager']->comment($request->get('id'), $request->get('value'));
+
             return $request->get('value');
         });
 
         $controllers->get('/logout', function () use ($app) {
             $app['session']->set('isAuthenticated', false);
             $app['session']->set('user', null);
+
             return $app['login.basic_login_response'];
         })->bind('logout');
 
@@ -276,7 +279,6 @@ class MainControllerProvider implements ControllerProviderInterface
 
             return new Response($app['twig']->render($page, array('code' => $code)), $code);
         });
-
 
         // check login
         $app->on(KernelEvents::REQUEST, function (GetResponseEvent $event) use ($app) {

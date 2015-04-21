@@ -4,24 +4,19 @@ namespace LaFourchette\Ldap;
 
 use LaFourchette\Entity\User;
 
-/**
- * Class MockLdapManager
- * @package LaFourchette\Ldap
- * @author Florian B
- */
 class MockLdapManager extends LdapManager implements LdapManagerInterface
 {
 
-    const USER_NAME = 'Anonymous';
+    const USER_NAME  = 'Anonymous';
     const USER_EMAIL = 'anonymous@lafourchette.fr';
 
-    function __construct()
+    public function __construct()
     {
         $this->username = self::USER_NAME;
     }
 
     /**
-     * @return mixed
+     * {@inheritdoc}
      */
     public function connect()
     {
@@ -29,9 +24,7 @@ class MockLdapManager extends LdapManager implements LdapManagerInterface
     }
 
     /**
-     * @param type $userDn
-     * @param type $password
-     * @return type
+     * {@inheritdoc}
      */
     public function bind($userDn, $password)
     {
@@ -39,8 +32,7 @@ class MockLdapManager extends LdapManager implements LdapManagerInterface
     }
 
     /**
-     * @param type $username
-     * @return null|\LaFourchette\Entity\User
+     * {@inheritdoc}
      */
     public function getUserInfo($username)
     {
@@ -56,7 +48,7 @@ class MockLdapManager extends LdapManager implements LdapManagerInterface
     }
 
     /**
-     * @return mixed
+     * {@inheritdoc}
      */
     public function listUsers()
     {
@@ -70,6 +62,4 @@ class MockLdapManager extends LdapManager implements LdapManagerInterface
         ));
     }
 
-
 }
- 

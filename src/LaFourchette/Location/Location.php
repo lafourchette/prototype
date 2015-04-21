@@ -29,7 +29,6 @@ class Location
      */
     protected $integ;
 
-
     /**
      * @return int
      */
@@ -60,6 +59,7 @@ class Location
     public function setName($name)
     {
         $this->name = $name;
+
         return $this;
     }
 
@@ -69,6 +69,7 @@ class Location
     public function setIp($ip)
     {
         $this->ip = $ip;
+
         return $this;
     }
 

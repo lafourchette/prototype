@@ -7,7 +7,7 @@ use \LaFourchette\Entity\Vm;
 class Killed extends NotifyAbstract
 {
     /**
-     * @param Vm $vm
+     * @param  Vm     $vm
      * @return string
      */
     public function getContent(Vm $vm)
@@ -33,7 +33,7 @@ EOS;
     }
 
     /**
-     * @param Vm $vm
+     * @param  Vm     $vm
      * @return string
      */
     public function getSubject(Vm $vm)

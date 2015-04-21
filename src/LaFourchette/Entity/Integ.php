@@ -100,6 +100,7 @@ class Integ
     public function setIdInteg($id)
     {
         $this->idInteg = $id;
+
         return $this;
     }
 
@@ -117,6 +118,7 @@ class Integ
     public function setName($name)
     {
         $this->name = $name;
+
         return $this;
     }
 
@@ -134,6 +136,7 @@ class Integ
     public function setSuffix($suffix)
     {
         $this->suffix = $suffix;
+
         return $this;
     }
 
@@ -151,6 +154,7 @@ class Integ
     public function setPath($path)
     {
         $this->path = $path;
+
         return $this;
     }
 
@@ -168,6 +172,7 @@ class Integ
     public function setNode(Location $node)
     {
         $this->node = $node;
+
         return $this;
     }
 
@@ -185,6 +190,7 @@ class Integ
     public function setSshKey($sshKey)
     {
         $this->sshKey = $sshKey;
+
         return $this;
     }
 
@@ -202,6 +208,7 @@ class Integ
     public function setSshUser($sshUser)
     {
         $this->sshUser = $sshUser;
+
         return $this;
     }
 
@@ -219,6 +226,7 @@ class Integ
     public function setIp($ip)
     {
         $this->ip = $ip;
+
         return $this;
     }
 
@@ -236,6 +244,7 @@ class Integ
     public function setBridge($bridge)
     {
         $this->bridge = $bridge;
+
         return $this;
     }
 
@@ -253,6 +262,7 @@ class Integ
     public function setMac($mac)
     {
         $this->mac = $mac;
+
         return $this;
     }
 
@@ -270,9 +280,9 @@ class Integ
     public function setNetmask($netmask)
     {
         $this->netmask = $netmask;
+
         return $this;
     }
-
 
     /**
      * @return string
@@ -288,10 +298,11 @@ class Integ
     public function setGithubKey($githubKey)
     {
         $this->githubKey = $githubKey;
+
         return $this;
     }
 
-    static public function makeFromArray(array $array)
+    public static function makeFromArray(array $array)
     {
         $node = new Location();
         $node->setIdNode($array['node']['id_node']);

@@ -2,36 +2,31 @@
 
 namespace LaFourchette\Ldap;
 
-/**
- * Class LdapManagerInterface
- * @package LaFourchette\Ldap
- * @author Florian B
- */
+use LaFourchette\Entity\User;
+
 interface LdapManagerInterface
 {
-
     /**
-     * @return mixed
+     * Connect to the LDAP
      */
     public function connect();
 
     /**
-     * @param type $userDn
-     * @param type $password
-     * @return type
+     * @param  string $userDn
+     * @param  string $password
+     * @return array
      */
     public function bind($userDn, $password);
 
     /**
-     * @param type $username
-     * @return null|\LaFourchette\Entity\User
+     * @param  string $username
+     * @return User
      */
     public function getUserInfo($username);
 
     /**
-     * @return mixed
+     * @return array
      */
     public function listUsers();
 
 }
- 

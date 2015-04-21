@@ -1,7 +1,6 @@
 <?php
 
 namespace LaFourchette\Manager;
-use Doctrine\ORM\Query\ResultSetMapping;
 use LaFourchette\Entity\Integ;
 use LaFourchette\Entity\Vm;
 
@@ -42,14 +41,13 @@ class IntegManager implements ManagerInterface
             'SELECT v.integ FROM LaFourchette\Entity\Vm v WHERE v.status not in (:status) group by v.integ'
         );
         $query->setParameter(':status', Vm::$freeStatus);
-        $unavailables = array_map(function($item){
+        $unavailables = array_map(function ($item) {
             return $item['integ'];
         }, $query->getArrayResult());
 
         $available = array();
-        foreach($this->collection as $integ)
-        {
-            if(!in_array($integ->getIdInteg(), $unavailables) && $integ->getIsActived()){
+        foreach ($this->collection as $integ) {
+            if (!in_array($integ->getIdInteg(), $unavailables) && $integ->getIsActived()) {
                 array_push($available, $integ);
             }
         }
@@ -64,12 +62,13 @@ class IntegManager implements ManagerInterface
     {
         $res = null;
         /** @var Integ $integ */
-        foreach($this->collection as $integ){
-            if($integ->getIdInteg() == $id){
+        foreach ($this->collection as $integ) {
+            if ($integ->getIdInteg() == $id) {
                 $res = $integ;
                 break;
             }
         }
+
         return $res;
     }
 
