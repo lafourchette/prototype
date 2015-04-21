@@ -1,15 +1,17 @@
 #!/usr/bin/env php
 <?php
 
-require_once __DIR__.'/vendor/autoload.php';
-
 set_time_limit(0);
 
-use Symfony\Component\Console\Input\ArgvInput;
+$app = require_once __DIR__.'/src/bootstrap.php';
 
-$input = new ArgvInput();
-$env = $input->getParameterOption(array('--env', '-e'), getenv('SYMFONY_ENV') ?: 'dev');
-
-$app = require __DIR__.'/src/app.php';
-$console = require __DIR__.'/src/console.php';
-$console->run();
+$cli = $app['console'];
+$cli->add(new \LaFourchette\Console\Check());
+$cli->add(new \LaFourchette\Console\Status());
+$cli->add(new \LaFourchette\Console\Create());
+$cli->add(new \LaFourchette\Console\Delete());
+$cli->add(new \LaFourchette\Console\Reset());
+$cli->add(new \LaFourchette\Console\Stop());
+$cli->add(new \LaFourchette\Console\Start());
+$cli->add(new \LaFourchette\Console\GetVmId());
+$cli->run();

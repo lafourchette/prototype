@@ -2,9 +2,7 @@
 
 namespace LaFourchette\Console;
 
-use LaFourchette\Entity\Integ;
 use LaFourchette\Entity\Vm;
-use LaFourchette\Manager\VmManager;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -13,28 +11,19 @@ use Symfony\Component\Console\Output\OutputInterface;
 class Status extends ConsoleAbstract
 {
     /**
-     * @param \Silex\Application $app
-     * @param Application $console
-     * @return mixed|void
+     * {@inheritdoc}
      */
-    static public function register(\Silex\Application $app, Application $console)
+    protected function configure()
     {
-        $console->register('prototype:status')
+        $this->setName('prototype:status')
         ->addArgument('vm-number', null, InputArgument::REQUIRED, 'The vm number')
-        ->setDescription('Check the status of a VM')
-        ->setCode(function (InputInterface $input, OutputInterface $output) use ($app) {
-            $command = new Status();
-            $command->setApplication($app);
-            $command->run($input, $output);
-        });
+        ->setDescription('Check the status of a VM');
     }
 
     /**
-     * @param InputInterface $input
-     * @param OutputInterface $output
-     * @return mixed|void
+     * {@inheritdoc}
      */
-    public function run(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output)
     {
         $vmNumber = $input->getArgument('vm-number');
         $vmManager = $this->getVmManager();
@@ -44,7 +33,7 @@ class Status extends ConsoleAbstract
          */
         $vm = $vmManager->load($vmNumber);
 
-        switch ($this->application['vm.service']->getStatus($vm)) {
+        switch ($this->getSilexApplication()['vm.service']->getStatus($vm)) {
             case VM::MISSING:
                 $output->writeln('The VM is missing');
                 break;

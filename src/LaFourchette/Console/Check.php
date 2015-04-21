@@ -12,25 +12,21 @@ use Symfony\Component\Console\Output\OutputInterface;
 class Check extends ConsoleAbstract
 {
     /**
-     * @param \Silex\Application $app
-     * @param Application $console
+     * {@inheritdoc}
      */
-    static public function register(\Silex\Application $app, Application $console)
+    protected function configure()
     {
-        $console->register('prototype:check')
-            ->setDefinition(array(
-                // new InputOption('some-option', null, InputOption::VALUE_NONE, 'Some help'),
-            ))
-            ->addArgument('vm-number', null, InputArgument::REQUIRED, 'The vm number')
+        $this
+            ->setName('prototype:check')
             ->setDescription('Check all state of VM')
-            ->setCode(function (InputInterface $input, OutputInterface $output) use ($app) {
-                $command = new Check();
-                $command->setApplication($app);
-                $command->run($input, $output);
-            });
+            ->addArgument('vm-number', null, InputArgument::REQUIRED, 'The vm number')
+        ;
     }
 
-    public function run(InputInterface $input, OutputInterface $output)
+    /**
+     * {@inheritdoc}
+     */
+    public function execute(InputInterface $input, OutputInterface $output)
     {
         $vmNumber = $input->getArgument('vm-number');
 
@@ -53,7 +49,7 @@ class Check extends ConsoleAbstract
             /** @var VM $vm */
             $output->writeln('> VM ' . $vm->__toString());
             $savedStatus = $vm->getStatus();
-            $currentStatus = $this->application['vm.service']->getStatus($vm);
+            $currentStatus = $this->getSilexApplication()['vm.service']->getStatus($vm);
 
             if(is_null($currentStatus)) {
                 $output->writeln( 'cannot resolve status for vm ' . $vm->getIdVm());
@@ -66,13 +62,13 @@ class Check extends ConsoleAbstract
             if ($savedStatus == Vm::TO_START && $currentStatus != Vm::RUNNING) {
                 $output->writeln('  - Need to be started');
                 $output->writeln('  - Do it Now');
-                $this->application['vm.service']->start($vm);
+                $this->getSilexApplication()['vm.service']->start($vm);
             } elseif ($savedStatus == Vm::ARCHIVED) {
                 $output->writeln('  - Vm is archived.');
             } else if ($savedStatus == Vm::EXPIRED) {
                 $output->writeln('  - Has just expired');
                 $notify->send('expired', $vm);
-                $this->application['vm.service']->archived($vm);
+                $this->getSilexApplication()['vm.service']->archived($vm);
                 $vm->setStatus(Vm::ARCHIVED);
                 $vmManager->save($vm);
             } else {
@@ -84,7 +80,7 @@ class Check extends ConsoleAbstract
                         case Vm::RUNNING:
                             $output->writeln('  - Running');
                             $expireDt = $vm->getExpiredDt();
-                            $expireDt->add(new \DateInterval('PT'.$this->application['config']['vm.to_expire_in'].'H'));
+                            $expireDt->add(new \DateInterval('PT'.$this->getSilexApplication()['config']['vm.to_expire_in'].'H'));
                             if ($expireDt > new \DateTime()) {
                                 $notify->send('expire_soon', $vm);
                             }

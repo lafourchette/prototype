@@ -13,34 +13,25 @@ use Symfony\Component\Console\Output\OutputInterface;
 class Start extends ConsoleAbstract
 {
     /**
-     * @param \Silex\Application $app
-     * @param Application $console
-     * @return mixed|void
+     * {@inheritdoc}
      */
-    static public function register(\Silex\Application $app, Application $console)
+    protected function configure()
     {
-        $console->register('prototype:start')
+        $this->setName('prototype:start')
             ->addArgument('vm-number', null, InputArgument::REQUIRED, 'The vm number')
-            ->setDescription('Start a VM')
-            ->setCode(function (InputInterface $input, OutputInterface $output) use ($app) {
-                $command = new Start();
-                $command->setApplication($app);
-                $command->run($input, $output);
-            });
+            ->setDescription('Start a VM');
     }
 
     /**
-     * @param InputInterface $input
-     * @param OutputInterface $output
-     * @return mixed|void
+     * {@inheritdoc}
      */
-    public function run(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output)
     {
         $vmNumber = $input->getArgument('vm-number');
         $vmManager = $this->getVmManager();
 
         $vm = $vmManager->load($vmNumber);
 
-        $this->application['vm.service']->start($vm);
+        $this->getSilexApplication()['vm.service']->start($vm);
     }
 }
