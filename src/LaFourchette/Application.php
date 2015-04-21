@@ -121,10 +121,6 @@ class Application extends BaseApplication
             return new UserNotifyManager($app['orm.em'],'\LaFourchette\Entity\UserNotify');
         });
 
-        $app['vm.creator'] = $app->share(function () use ($app) {
-            return new VmCreator();
-        });
-
         $app['notify.service'] = $app->share(function () use ($app) {
             $notify = new NotifyService(/*$app['hipchat.client']*/);
             $notify->addNotifyMessage('expired', new Expired());

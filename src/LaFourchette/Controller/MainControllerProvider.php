@@ -213,29 +213,26 @@ class MainControllerProvider implements ControllerProviderInterface
 
             //Refactor this please...
             if ($app['integ.manager']->hasAvailableInteg()) {
-                //Doctrine2 does not handle correctly
-                $creator = $app['vm.creator'];
-                //Get Integ Parameter
-                $integ = $app['integ.manager']->load($app['request']->request->get('integ'));
-                $vm = $creator->create();
+                // Create a VM
+                $vm = new Vm();
 
                 $user = $app['user.manager']->getOrCreate($app['session']->get('user'));
                 $vm->setCreatedBy($user);
-                $vm->setInteg($integ->getIdInteg());
-                //Save the vm first
-                $app['vm.manager']->save($vm);
 
-                $userManager = $app['user.manager'];
-                $userNotifyManager = $app['user_notify.manager'];
+                $integ = $app['integ.manager']->load($app['request']->request->get('integ'));
+                $vm->setInteg($integ->getIdInteg());
+
+                // Save the vm first
+                $app['vm.manager']->save($vm);
 
                 foreach ($users as $userName) {
                     $ldapUser = $app['ldap.manager']->getUserInfo($userName);
-                    $user = $userManager->getOrCreate($ldapUser);
+                    $user = $app['user.manager']->getOrCreate($ldapUser);
 
                     $userNotify = new \LaFourchette\Entity\UserNotify();
                     $userNotify->setUser($user);
                     $userNotify->setVm($vm);
-                    $userNotifyManager->save($userNotify);
+                    $app['user_notify.manager']->save($userNotify);
                 }
             }
 

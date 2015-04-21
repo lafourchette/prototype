@@ -105,6 +105,30 @@ class Vm
      */
     protected $type;
 
+    public function __construct()
+    {
+        $expiredAt = new \DateTime();
+        $expiredAt->add(new \DateInterval(sprintf('PT%dH', self::EXPIRED_AT_DEFAULT_VALUE)));
+
+        $this->setName('VM-'.$this->generateRandomString());
+        $this->setStatus(self::TO_START);
+        $this->setCreateDt(new \DateTime());
+        $this->setUpdateDt(new \DateTime());
+        $this->setExpiredDt($expiredAt);
+        $this->setType(self::TYPE_V2);
+    }
+
+    private function generateRandomString($length = 10)
+    {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $randomString = '';
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[rand(0, strlen($characters) - 1)];
+        }
+
+        return $randomString;
+    }
+
     /**
      * @return \DateTime
      */
