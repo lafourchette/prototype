@@ -10,9 +10,17 @@ class MockLdapManager extends LdapManager implements LdapManagerInterface
     const USER_NAME  = 'Anonymous';
     const USER_EMAIL = 'anonymous@lafourchette.fr';
 
-    public function __construct()
+    protected $email;
+
+    public function __construct($user = '', $email = '')
     {
-        $this->username = self::USER_NAME;
+        $this->username = $user ? $user : self::USER_NAME;
+        $this->email = $email ? $email : self::USER_EMAIL;    
+    }
+
+    public function getEmail() 
+    {
+        return $this->email;
     }
 
     /**
@@ -41,8 +49,8 @@ class MockLdapManager extends LdapManager implements LdapManagerInterface
         }
 
         $user = new User();
-        $user->setUsername(self::USER_NAME);
-        $user->setEmail(self::USER_EMAIL);
+        $user->setUsername($this->username);
+        $user->setEmail($this->email);
 
         return $user;
     }
@@ -57,8 +65,8 @@ class MockLdapManager extends LdapManager implements LdapManagerInterface
         }
 
         return array(array(
-           'email' => self::USER_EMAIL,
-           'username' => self::USER_NAME,
+           'username' => $this->username,
+           'email' => $this->email
         ));
     }
 }

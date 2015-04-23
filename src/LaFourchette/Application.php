@@ -163,15 +163,18 @@ class Application extends BaseApplication
 
             if ($app['debug']) { // anonymous connection in debug mode
 
-                return new MockLdapManager();
+                return new MockLdapManager(
+                    $app['config']['userProvider']['mock']['user'],
+                    $app['config']['userProvider']['mock']['email']
+                );
             }
 
             return new LdapManager(
-                $app['config']['ldap.host'],
-                $app['config']['ldap.port'],
-                $app['config']['ldap.username'],
-                $app['config']['ldap.password'],
-                $app['config']['ldap.basedn']
+                $app['config']['userProvider']['ldap']['host'],
+                $app['config']['userProvider']['ldap']['port'],
+                $app['config']['userProvider']['ldap']['username'],
+                $app['config']['userProvider']['ldap']['password'],
+                $app['config']['userProvider']['ldap']['basedn']
             );
         });
 
