@@ -19,8 +19,10 @@ class IntegManager implements ManagerInterface
     {
         $this->entityManager = $em;
 
-        foreach ($configuration['integs'] as $i) {
-            array_push($this->collection, $class::makeFromArray($i));
+        if (!empty($configuration['integs'])) {
+            foreach ($configuration['integs'] as $i) {
+                array_push($this->collection, $class::makeFromArray($i));
+            }
         }
     }
 

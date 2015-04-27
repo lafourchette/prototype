@@ -146,7 +146,8 @@ class Application extends BaseApplication
             $vmService = new VmService();
             $vmService->setVmManager($app['vm.manager']);
             $vmService->setProvisionner(Vm::TYPE_V2, $app['vm.provisionner2']);
-            $vmService->setNotifyService($app['notify.service']);
+            //$vmService->setNotifyService($app['notify.service']);
+            $vmService->setDispatcher($app['notify.service']);
 
             return $vmService;
         });

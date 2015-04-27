@@ -21,7 +21,8 @@
         "dflydev/doctrine-orm-service-provider": "1.0.*",
         "easybook/geshi": "1.0.8.12",
         "hipchat/hipchat-php": ">=1.0.0",
-        "knplabs/console-service-provider": "*"
+        "knplabs/console-service-provider": "*",
+        "symfony/event-dispatcher": "2.8.*@dev"
     },
     "minimum-stability": "stable",
     "require-dev":{
