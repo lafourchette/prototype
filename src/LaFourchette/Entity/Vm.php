@@ -366,7 +366,7 @@ class Vm
      * @return string
      * @see http://php.net/manual/fr/dateinterval.format.php
      */
-    private function formatDateDiff($start, $end=null)
+    private function formatDateDiff($start, $end = null)
     {
         if (!($start instanceof \DateTime)) {
             $start = new \DateTime($start);
@@ -381,7 +381,10 @@ class Vm
         }
 
         $interval = $end->diff($start);
-        $doPlural = function ($nb,$str) {return $nb>1?$str.'s':$str;}; // adds plurals
+
+        $doPlural = function ($nb, $str) {
+            return $nb>1 ? $str.'s' : $str;
+        }; // adds plurals
 
         $format = array();
         if ($interval->y !== 0) {

@@ -1,6 +1,7 @@
 <?php
 
 namespace LaFourchette\Manager;
+
 use LaFourchette\Entity\Integ;
 use LaFourchette\Entity\Vm;
 

@@ -49,7 +49,7 @@ class Check extends ConsoleAbstract
             $currentStatus = $this->getSilexApplication()['vm.service']->getStatus($vm);
 
             if (is_null($currentStatus)) {
-                $output->writeln( 'cannot resolve status for vm ' . $vm->getIdVm());
+                $output->writeln('cannot resolve status for vm ' . $vm->getIdVm());
                 continue;
             }
 

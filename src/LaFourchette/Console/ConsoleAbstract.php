@@ -2,31 +2,23 @@
 
 namespace LaFourchette\Console;
 
-use LaFourchette\Manager\VmManager;
-use LaFourchette\Service\NotifyService;
 use Knp\Command\Command;
 
 abstract class ConsoleAbstract extends Command
 {
     /**
-     * @return VmManager
+     * @return \LaFourchette\Manager\VmManager
      */
     public function getVmManager()
     {
-        $app = $this->getSilexApplication();
-        $vmManager = $app['vm.manager'];
-
-        return $vmManager;
+        return $this->getSilexApplication()['vm.manager'];
     }
 
     /**
-     * @return NotifyService
+     * @return \LaFourchette\Service\NotifyService
      */
     public function getNotify()
     {
-        $app = $this->getSilexApplication();
-        $notifyService = $app['notify.service'];
-
-        return $notifyService;
+        return $this->getSilexApplication()['notify.service'];
     }
 }
