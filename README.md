@@ -6,6 +6,8 @@
 /_/   /_/   \____/\__/\____/\__/\__, / .___/\___/
                                /____/_/
 ```
+[![Build Status](https://travis-ci.org/lafourchette/prototype.svg)](https://travis-ci.org/lafourchette/prototype)
+
 ## Introduction
 Prototype was created to help product owner to test their production in a full stack environnement.
 
