@@ -5,13 +5,13 @@ use LaFourchette\Entity\Integ;
 use LaFourchette\Entity\VM;
 use LaFourchette\Manager\IntegManager;
 use LaFourchette\Provisioner\Exception\UnableToStartException;
-use Symfony\Component\Process\Process;
 use LaFourchette\Logger\LoggableProcess;
 use LaFourchette\Logger\VmLogger;
 use LaFourchette\Provisioner\Shell\GithubFile;
 use LaFourchette\Provisioner\Shell\LocalFile;
+use Symfony\Component\Process\Process;
 
-class Vagrant implements ProvisionerInterface
+class Vagrant extends Provisioner
 {
     const CLONE_VM_CMD = 'git clone %s . && git checkout -t origin/%s';
     const GIT_PULL_VM_CMD = 'git fetch && git checkout %s && git pull';
@@ -21,20 +21,9 @@ class Vagrant implements ProvisionerInterface
      */
     protected $repo = '';
 
-    protected $integManager;
-
     protected $defaultBranch = '';
 
     private $provisioners = array();
-
-    /**
-     * @param $id
-     * @return Integ
-     */
-    public function getInteg($id)
-    {
-        return $this->integManager->load($id);
-    }
 
     /**
      * @param IntegManager $integManager
@@ -42,7 +31,7 @@ class Vagrant implements ProvisionerInterface
      */
     public function __construct(IntegManager $integManager, $configurations)
     {
-        $this->integManager = $integManager;
+        parent::__construct($integManager);
         foreach ($configurations as $configuration) {
             if (! isset($configuration['type'])) {
                 throw new \Exception('missing type key in provisioner configuration');
@@ -116,32 +105,32 @@ class Vagrant implements ProvisionerInterface
 
         if (count($result) == 0) {
             throw new \Exception('Destination directory does not exists');
-        } else {
-            $output = $this->run($vm, 'vagrant status 2>&1');
+        }
 
-            if (strpos($output, 'is required to run') !== false) {
-                return VM::MISSING;
-            } elseif (strpos($output, ' running (') !== false) {
-                $now = new \DateTime();
-                if ($now > $vm->getExpiredDt()) {
-                    return VM::EXPIRED;
-                }
+        $output = $this->run($vm, 'vagrant status 2>&1');
 
-                return VM::RUNNING;
-            } elseif (strpos($output, ' not created (') !== false) {
-                return VM::STOPPED;
-            } elseif (strpos($output, ' poweroff (') !== false) {
-                $now = new \DateTime();
-                if ($now > $vm->getExpiredDt()) {
-                    return VM::EXPIRED;
-                }
-
-                return VM::STOPPED;
-            } elseif (strpos($output, ' saved (') !== false) {
-                return VM::SUSPEND;
-            } else {
-                throw new \Exception('This is not normal ...');
+        if (strpos($output, 'is required to run') !== false) {
+            return VM::MISSING;
+        } elseif (strpos($output, ' running (') !== false) {
+            $now = new \DateTime();
+            if ($now > $vm->getExpiredDt()) {
+                return VM::EXPIRED;
             }
+
+            return VM::RUNNING;
+        } elseif (strpos($output, ' not created (') !== false) {
+            return VM::STOPPED;
+        } elseif (strpos($output, ' poweroff (') !== false) {
+            $now = new \DateTime();
+            if ($now > $vm->getExpiredDt()) {
+                return VM::EXPIRED;
+            }
+
+            return VM::STOPPED;
+        } elseif (strpos($output, ' saved (') !== false) {
+            return VM::SUSPEND;
+        } else {
+            throw new \Exception('This is not normal ...');
         }
     }
 
@@ -227,9 +216,7 @@ class Vagrant implements ProvisionerInterface
      */
     public function initialise(VM $vm)
     {
-        $path = $this->getInteg($vm->getInteg())->getPath();
-        $this->run($vm, "mkdir -p $path", false);
-        $this->cleanUp($vm);
+        parent::initialise($vm);
 
         $version = file_get_contents('http://resources.lafourchette.lan/current/phing_lucid.VERSION');
         if (!$version) {
@@ -240,19 +227,13 @@ class Vagrant implements ProvisionerInterface
         $this->generateInstallScript($vm);
     }
 
-    private function cleanUp(VM $vm)
-    {
-        $path = $this->getInteg($vm->getInteg())->getPath();
-        $this->run($vm, "rm -rf $path/*; rm -rf $path/.*", false);
-    }
-
     /**
      * @param VM $vm
      * @see https://github.com/lafourchette/lafourchette-packer/blob/master/shared/guest_scripts/install.sh
      */
     private function generateInstallScript(VM $vm)
     {
-        $integ   = $this->getInteg($vm->getInteg());
+        $integ = $this->getInteg($vm->getInteg());
 
         foreach ($this->provisioners as $provisioner) {
             $installScript = preg_replace_callback(
@@ -347,7 +328,7 @@ EOS;
     {
         $this->run($vm, 'vagrant halt --force');
         $this->run($vm, 'vagrant destroy -f');
-        $this->cleanUp($vm);
+        parent::delete($vm);
     }
 
     /**

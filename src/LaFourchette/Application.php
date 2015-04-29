@@ -18,6 +18,7 @@ use LaFourchette\Notify\ExpireSoon;
 use LaFourchette\Notify\Killed;
 use LaFourchette\Notify\Ready;
 use LaFourchette\Notify\UnableToStart;
+use LaFourchette\Provisioner\ProvisionerFactory;
 use LaFourchette\Provisioner\Vagrant;
 use LaFourchette\Service\NotifyService;
 use LaFourchette\Service\VmService;
@@ -132,20 +133,26 @@ class Application extends BaseApplication
             return $notify;
         });
 
-        $app['vm.provisionner2'] = $app->share(function () use ($app) {
-            //TODO: use a factory
-            $provisionner = new Vagrant(
+        $app['vm.provisioner'] = $app->share(function () use ($app) {
+            return ProvisionerFactory::create(
+                ProvisionerFactory::PROVISIONER_DUMMY,
+                $app['integ.manager']
+            );
+        });
+
+        $app['vm.provisioner2'] = $app->share(function () use ($app) {
+            return ProvisionerFactory::create(
+                ProvisionerFactory::PROVISIONER_VAGRANT,
                 $app['integ.manager'],
                 isset($app['config']['provisioners']) ? $app['config']['provisioners'] : array()
             );
-
-            return $provisionner;
         });
 
         $app['vm.service'] = $app->share(function () use ($app) {
             $vmService = new VmService();
             $vmService->setVmManager($app['vm.manager']);
-            $vmService->setProvisionner(Vm::TYPE_V2, $app['vm.provisionner2']);
+            //$vmService->setProvisionner(Vm::TYPE_DEFAULT, $app['vm.provisioner']);
+            $vmService->setProvisionner(Vm::TYPE_V2, $app['vm.provisioner2']);
             $vmService->setNotifyService($app['notify.service']);
 
             return $vmService;
