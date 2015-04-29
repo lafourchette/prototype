@@ -7,6 +7,8 @@
                                /____/_/
 ```
 [![Build Status](https://travis-ci.org/lafourchette/prototype.svg)](https://travis-ci.org/lafourchette/prototype)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/lafourchette/prototype/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/lafourchette/prototype/?branch=master)
+[![Code Coverage](https://scrutinizer-ci.com/g/lafourchette/prototype/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/lafourchette/prototype/?branch=master)
 
 ## Introduction
 Prototype was created to help product owner to test their production in a full stack environnement.
