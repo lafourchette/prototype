@@ -7,7 +7,7 @@ use LaFourchette\Logger\DummyLogger;
 use LaFourchette\Logger\LoggerFactory;
 use LaFourchette\Logger\LoggableProcess;
 
-class Dummy extends ProvisionerAbstract
+class Dummy implements ProvisionerInterface
 {
 
     const TYPE_DEFAULT = 99;
