@@ -11,3 +11,4 @@ VERSION
 MAINTENANCE.lock
 config.json
 !dist/config.json
+composer.lock
