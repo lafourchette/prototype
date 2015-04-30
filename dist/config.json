@@ -5,11 +5,12 @@
     "ldap.password": "password",
     "ldap.port": "389",
     "ldap.basedn": "dc=example,dc=com",
+    "vm.repo":"git@github.com:example/some-project.git",
+    "vm.default.branch": "master",
+    "log.max_time_before_logging": "-5 min",
     "asset.version" : 4,
     "vm.expired_in_value": 24,
     "vm.to_expire_in": 4,
-    "log.max_time_before_logging": "-5 min",
-
     "integs":[
         {
             "id_integ": 1,
@@ -32,7 +33,6 @@
             }
         }
     ],
-
     "userProvider": {
         "ldap": {
             "host": "ldap.example.com",
@@ -42,22 +42,14 @@
             "basedn": "dc=example,dc=com"
         },
         "mock": {
-            "user": "emmanuel.thomas.et",
-            "email": "emmanuel.thomas.et@gmail.com"
+            "user": "zorg",
+            "email": "glub@gmail.com"
         }
     },
-
-    "provisioners": [
+    "provisioners":[
         {
             "type": "local",
-            "path": "."
-        },
-        {
-            "type":"github",
-            "repository":"",
-            "path":"",
-            "token":"",
-            "user":""
+            "path": "installer/example.sh"
         }
     ]
 }
