@@ -1,41 +1,33 @@
 <?php
 
-namespace LaFourchette\Entity;
+namespace LaFourchette\Location;
 
-use Doctrine\ORM\Mapping as ORM;
+use LaFourchette\Entity\Integ;
 
 /**
- * @ORM\Entity
+ * Where an Integ is instanciated.
  */
-class Node
+class Location
 {
-
     /**
-     * @ORM\Id
-     * @ORM\Column(type="integer", name="id_node")
-     * @ORM\GeneratedValue(strategy="AUTO")
      * @var int
      */
     protected $idNode;
 
     /**
-     * @ORM\Column(type="string")
      * @var null|string
      */
     protected $name = null;
 
     /**
-     * @ORM\Column(type="string")
      * @var null|string
      */
     protected $ip = null;
 
     /**
-     * @ORM\OneToOne(targetEntity="Integ", mappedBy="node")
-     * @var object
+     * @var Integ
      */
     protected $integ;
-
 
     /**
      * @return int
@@ -67,6 +59,7 @@ class Node
     public function setName($name)
     {
         $this->name = $name;
+
         return $this;
     }
 
@@ -76,6 +69,7 @@ class Node
     public function setIp($ip)
     {
         $this->ip = $ip;
+
         return $this;
     }
 

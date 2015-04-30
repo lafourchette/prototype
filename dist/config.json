@@ -1,3 +1,4 @@
+
 {
     "debug": true,
     "ldap.host": "ldap.example.com",
@@ -38,4 +39,5 @@
         "path": "installer/example.sh"
     }]
 }
+
 

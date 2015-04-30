@@ -7,7 +7,7 @@ use \LaFourchette\Entity\Vm;
 class Expired extends NotifyAbstract
 {
     /**
-     * @param Vm $vm
+     * @param  Vm     $vm
      * @return string
      */
     public function getSubject(Vm $vm)
@@ -19,7 +19,7 @@ class Expired extends NotifyAbstract
     }
 
     /**
-     * @param Vm $vm
+     * @param  Vm     $vm
      * @return string
      */
     public function getContent(Vm $vm)

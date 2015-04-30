@@ -38,6 +38,7 @@ class GithubFile
             throw new \Exception('Curl error'.$err);
         }
         curl_close($ch);
+
         return $content;
     }
 }

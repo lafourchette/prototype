@@ -17,7 +17,7 @@ class ExpireSoon extends NotifyAbstract
     }
 
     /**
-     * @param Vm $vm
+     * @param  Vm     $vm
      * @return string
      */
     public function getSubject(Vm $vm)
@@ -29,7 +29,7 @@ class ExpireSoon extends NotifyAbstract
     }
 
     /**
-     * @param Vm $vm
+     * @param  Vm     $vm
      * @return string
      */
     public function getContent(Vm $vm)

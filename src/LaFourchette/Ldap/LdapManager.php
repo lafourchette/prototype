@@ -5,13 +5,10 @@ namespace LaFourchette\Ldap;
 use LaFourchette\Entity\User;
 
 /**
- * Description of LdapManager
- *
- * @author gcavana
+ * Connect to LDAP and retrieve users from it.
  */
-class LdapManager
+class LdapManager implements LdapManagerInterface
 {
-
     protected $ldapRes;
     protected $host;
     protected $username;
@@ -28,6 +25,9 @@ class LdapManager
         $this->baseDn = $baseDn;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function connect()
     {
         $ress = @ldap_connect($this->host, $this->port);
@@ -38,10 +38,7 @@ class LdapManager
     }
 
     /**
-     *
-     * @param type $userDn
-     * @param type $password
-     * @return type
+     * {@inheritdoc}
      */
     public function bind($userDn, $password)
     {
@@ -53,9 +50,7 @@ class LdapManager
     }
 
     /**
-     *
-     * @param type $username
-     * @return null|\LaFourchette\Entity\User
+     * {@inheritdoc}
      */
     public function getUserInfo($username)
     {
@@ -78,6 +73,9 @@ class LdapManager
         return $user;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function listUsers()
     {
         if (null === $this->ldapRes) {

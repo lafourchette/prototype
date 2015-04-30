@@ -3,8 +3,6 @@
 namespace LaFourchette\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use LaFourchette\Entity\Vm;
-use LaFourchette\Entity\Project;
 
 /**
  * @ORM\Entity

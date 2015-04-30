@@ -3,8 +3,6 @@
 namespace LaFourchette\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\ArrayCollection;
-use LaFourchette\Entity\User;
 
 /**
  * @ORM\Entity
@@ -106,6 +104,30 @@ class Vm
      * @var int
      */
     protected $type;
+
+    public function __construct()
+    {
+        $expiredAt = new \DateTime();
+        $expiredAt->add(new \DateInterval(sprintf('PT%dH', self::EXPIRED_AT_DEFAULT_VALUE)));
+
+        $this->setName('VM-'.$this->generateRandomString());
+        $this->setStatus(self::TO_START);
+        $this->setCreateDt(new \DateTime());
+        $this->setUpdateDt(new \DateTime());
+        $this->setExpiredDt($expiredAt);
+        $this->setType(self::TYPE_V2);
+    }
+
+    private function generateRandomString($length = 10)
+    {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $randomString = '';
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[rand(0, strlen($characters) - 1)];
+        }
+
+        return $randomString;
+    }
 
     /**
      * @return \DateTime
@@ -312,6 +334,7 @@ class Vm
         if (in_array($this->getStatus(), array(self::TO_START, self::STARTED))) {
             return 'Building';
         }
+
         return 'Sleeping';
     }
 
@@ -338,8 +361,8 @@ class Vm
      * On big intervals, you get months and days.
      * Only the two biggest parts are used.
      *
-     * @param DateTime $start
-     * @param DateTime|null $end
+     * @param  DateTime      $start
+     * @param  DateTime|null $end
      * @return string
      * @see http://php.net/manual/fr/dateinterval.format.php
      */
@@ -358,7 +381,7 @@ class Vm
         }
 
         $interval = $end->diff($start);
-        $doPlural = function ($nb, $str) {return $nb>1?$str.'s':$str;}; // adds plurals
+        $doPlural = function ($nb,$str) {return $nb>1?$str.'s':$str;}; // adds plurals
 
         $format = array();
         if ($interval->y !== 0) {

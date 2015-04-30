@@ -2,7 +2,6 @@
 
 namespace LaFourchette\Manager;
 
-use Doctrine\ORM\Query\ResultSetMapping;
 use LaFourchette\Entity\Integ;
 use LaFourchette\Entity\Vm;
 
@@ -24,6 +23,17 @@ class IntegManager implements ManagerInterface
         foreach ($configuration['integs'] as $i) {
             array_push($this->collection, $class::makeFromArray($i));
         }
+    }
+
+    public function hasAvailableInteg()
+    {
+        $vmAvailable = $this->loadAllAvailable();
+
+        if (empty($vmAvailable)) {
+            return false;
+        }
+
+        return true;
     }
 
     public function loadAllAvailable()
@@ -59,6 +69,7 @@ class IntegManager implements ManagerInterface
                 break;
             }
         }
+
         return $res;
     }
 

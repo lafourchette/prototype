@@ -7,7 +7,6 @@ use LaFourchette\Manager\VmManager;
 use LaFourchette\Notify;
 use LaFourchette\Provisioner\Exception\UnableToStartException;
 use LaFourchette\Provisioner\ProvisionerInterface;
-use LaFourchette\Service\NotifyService;
 use LaFourchette\Logger\VmLogger;
 
 class VmService
@@ -85,7 +84,7 @@ class VmService
     {
         $now = new \DateTime();
         $day = $now->format('w');
-        if (($day == 0 || $day == 6) && ! $force) {
+        if ( ($day == 0 || $day == 6) && ! $force) {
             throw new \Exception('Cannot delete a VM on weekend unless you force it');
         }
 
@@ -134,6 +133,7 @@ class VmService
             $vm->setStatus(VM::RUNNING);
             $vmManager->flush($vm);
             $notify->send('ready', $vm);
+
         } catch (UnableToStartException $e) {
             $vm->setStatus(VM::STOPPED);
             $vmManager->flush($vm);
