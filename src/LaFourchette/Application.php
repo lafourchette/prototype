@@ -30,6 +30,7 @@ use Silex\Provider\ServiceControllerServiceProvider;
 use Knp\Provider\ConsoleServiceProvider;
 use Symfony\Component\HttpFoundation\Response;
 use Silex\Application as BaseApplication;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class Application extends BaseApplication
 {
@@ -122,14 +123,15 @@ class Application extends BaseApplication
         });
 
         $app['notify.service'] = $app->share(function () use ($app) {
-            $notify = new NotifyService(/*$app['hipchat.client']*/);
-            $notify->addNotifyMessage('expired', new Expired());
-            $notify->addNotifyMessage('expire_soon', new ExpireSoon($app['config']['vm.to_expire_in']));
-            $notify->addNotifyMessage('ready', new Ready());
-            $notify->addNotifyMessage('killed', new Killed());
-            $notify->addNotifyMessage('unable_to_start', new UnableToStart());
 
-            return $notify;
+            $dispatcher = new Symfony\Component\EventDispatcher\EventDispatcher();
+            $dispatcher->addListener('expired', new Expired());
+            $dispatcher->addListener('expire_soon', new ExpireSoon($app['config']['vm.to_expire_in']));
+            $dispatcher->addListener('killed', new Killed());
+            $dispatcher->addListener('ready', new Ready());
+            $dispatcher->addListener('unable_to_start', new UnableToStart());
+
+            return $dispatcher;
         });
 
         $app['vm.provisionner2'] = $app->share(function () use ($app) {
@@ -174,6 +176,14 @@ class Application extends BaseApplication
                 $app['config']['ldap.password'],
                 $app['config']['ldap.basedn']
             );
+        });
+
+        $app['notifyService'] = $app->share(function() use ($app) {
+            $dispatcher = new Symfony\Component\EventDispatcher\EventDispatcher();
+            $dispatcher->addListener('notify.success', new Ready());
+            $dispatcher->addListener('notify.unable_to_start', new UnableToStart());
+
+            return $dispatcher;
         });
 
         $app['hipchat.client'] = $app->share(function () use ($app) {

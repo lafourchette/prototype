@@ -10,6 +10,8 @@ use LaFourchette\Provisioner\ProvisionerInterface;
 use LaFourchette\Logger\VmLogger;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\Event;
+use LaFourchette\Event\NotifySuccessEvent;
+use LaFourchette\Event\NotifyUnableToStartEvent;
 
 class VmService
 {
@@ -137,17 +139,15 @@ class VmService
 
             $vm->setStatus(VM::RUNNING);
             $vmManager->flush($vm);
-            $event = new NotifyEvent($vm);
-            $dispatcher->addListener('notify.action', $event);
-            $dispatcher->dispatch('notify.action');
+            $event = new NotifySuccessEvent($vm);
+            $this->notifyService->dispatch('notify.success', $event);
 
 
         } catch (UnableToStartException $e) {
             $vm->setStatus(VM::STOPPED);
             $vmManager->flush($vm);
-            $event = new NotifyEvent($vm);
-            $dispatcher->addListener('notify.action', $event);
-            $dispatcher->dispatch('notify.action');
+            $event = new NotifyUnableToStartEvent($vm);
+            $this->notifyService->dispatch('notify.unable_to_start', $event);
 
             throw $e;
         }
