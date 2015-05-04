@@ -16,6 +16,11 @@ class VmLogger
     protected $logDir = null;
     protected $vm = null;
 
+    public function __construct(Vm $vm)
+    {
+        $this->vm = $vm;
+    }
+
     public function createLogger()
     {
         if (!$this->vm) {
@@ -29,15 +34,6 @@ class VmLogger
         $logger->pushHandler($handler);
 
         return $logger;
-    }
-
-    /**
-     * Set Vm
-     * @param \LaFourchette\Entity\Vm $vm
-     */
-    public function setVm(Vm $vm)
-    {
-        $this->vm = $vm;
     }
 
     /**

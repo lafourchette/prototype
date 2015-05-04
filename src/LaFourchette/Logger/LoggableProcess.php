@@ -12,6 +12,8 @@ class LoggableProcess extends Process
     public function setLogger(LoggerInterface $logger = null)
     {
         $this->logger = $logger;
+
+        return $this;
     }
 
     public function run($callable = null)
