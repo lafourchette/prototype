@@ -57,19 +57,12 @@ class Vagrant extends Provisioner
      * @param VM $vm
      *
      * @return mixed
-     *
+     *giphp
      * @throws \Exception
      */
     public function getStatus(VM $vm)
     {
-        $path = $this->getInteg($vm->getInteg())->getPath();
-        $output = $this->run($vm, 'ls -a ' . $path, false);
-
-        $result = explode("\n", $output);
-
-        if (count($result) == 0) {
-            throw new \Exception('Destination directory does not exists');
-        }
+        $this->checkForDestinationDirectory($vm);
 
         $output = $this->run($vm, 'vagrant status 2>&1');
 
@@ -259,43 +252,5 @@ EOS;
         $this->run($vm, 'vagrant halt --force');
         $this->run($vm, 'vagrant destroy -f');
         parent::delete($vm);
-    }
-
-    /**
-     * Send a file to the server VMs path.
-     */
-    private function sendfile(Vm $vm, $file, $content)
-    {
-        // Create a temp file with content
-        $tmpfname = tempnam(sys_get_temp_dir(), "FOO");
-        if (!$tmpfname) {
-            throw new \Exception('cannot create tempfile');
-        }
-        file_put_contents($tmpfname, $content);
-
-        $integ   = $this->getInteg($vm->getInteg());
-        $sshUser = $integ->getSshUser();
-        $server  = $integ->getNode()->getIp();
-        $path    = $integ->getPath();
-
-        if (trim($sshUser) != '' && trim($server) != '') {
-            $cmd = sprintf(
-                'scp -o "StrictHostKeyChecking no" %s %s@%s:%s',
-                $tmpfname,
-                $sshUser,
-                $server,
-                $path.'/'.$file
-            );
-        } else {
-            $cmd = sprintf(
-                'cp %s %s',
-                $tmpfname,
-                $path.'/'.$file
-            );
-        }
-
-        $this->run($vm, $cmd, false, false);
-
-        unlink($tmpfname);
     }
 }

@@ -25,7 +25,7 @@ abstract class Provisioner implements ProvisionerInterface
      *
      * @param $id integ idenfifier
      *
-     * @return \LaFourchette\Entity\Integ
+     * @return null|\LaFourchette\Entity\Integ
      */
     public function getInteg($id)
     {
@@ -42,6 +42,25 @@ abstract class Provisioner implements ProvisionerInterface
         $path = $this->getInteg($vm->getInteg())->getPath();
         $this->run($vm, "mkdir -p $path", false);
         $this->cleanUp($vm);
+    }
+
+    /**
+     * Check if the targeted Vm has a valid destination directory
+     *
+     * @param Vm $vm
+     */
+    public function checkForDestinationDirectory(Vm $vm)
+    {
+        $path = $this->getInteg($vm->getInteg())->getPath();
+        $output = $this->run($vm, 'ls -a ' . $path, false);
+
+        $result = explode("\n", $output);
+
+        if (empty($result)) {
+            throw new \Exception('Destination directory does not exists');
+        }
+
+        return;
     }
 
     /**
@@ -86,10 +105,13 @@ abstract class Provisioner implements ProvisionerInterface
         }
 
         if ('' !== trim($sshUser = $integ->getSshUser()) && '' !==  trim($server = $integ->getNode()->getIp())) {
-            $wrappedCmd = 'ssh -o "StrictHostKeyChecking no" ' . $sshUser . '@' . $server . '  "%s"';
+            return sprintf(
+                'ssh -o "StrictHostKeyChecking no" ' . $sshUser . '@' . $server . '  "%s"',
+                str_replace('"', '\"', $cmd . $realCommand)
+            );
         }
 
-        return sprintf($wrappedCmd, str_replace('"', '\"', $cmd . $realCommand));
+        return $cmd . $realCommand;
     }
 
     /**
@@ -104,10 +126,14 @@ abstract class Provisioner implements ProvisionerInterface
     {
         // @codeCoverageIgnoreStart
         if ($remote) {
-            $cmd = $this->getPrefixCommand($this->getInteg($vm->getInteg()), $cmd, $prefix);
+            $integ = $this->getInteg($vm->getInteg());
+
+            if ($integ instanceof Integ) {
+                $cmd = $this->getPrefixCommand($integ, $cmd, $prefix);
+            }
         }
 
-        echo $cmd . PHP_EOL;
+        //echo $cmd . PHP_EOL; @todo Why do we need to show the command to execute?
 
         $logger = new VmLogger($vm);
         $process = new LoggableProcess($cmd);
@@ -119,5 +145,42 @@ abstract class Provisioner implements ProvisionerInterface
 
         return $process->getOutput();
         // @codeCoverageIgnoreEnd
+    }
+
+    /**
+     * Send a file to the server VMs path.
+     */
+    protected function sendfile(Vm $vm, $file, $content)
+    {
+        // Create a temp file with content
+        $tmpfname = tempnam(sys_get_temp_dir(), "FOO");
+
+        if (!$tmpfname) {
+            throw new \Exception('cannot create tempfile');
+        }
+
+        file_put_contents($tmpfname, $content);
+
+        $integ   = $this->getInteg($vm->getInteg());
+
+        if ('' !== trim($integ->getSshUser()) && '' !== trim($integ->getNode()->getIp())) {
+            $cmd = sprintf(
+                'scp -o "StrictHostKeyChecking no" %s %s@%s:%s',
+                $tmpfname,
+                $integ->getSshUser(),
+                $integ->getNode()->getIp(),
+                $integ->getPath().'/'.$file
+            );
+        } else {
+            $cmd = sprintf(
+                'cp %s %s',
+                $tmpfname,
+                $integ->getPath().'/'.$file
+            );
+        }
+
+        $this->run($vm, $cmd, false, false);
+
+        unlink($tmpfname);
     }
 }
