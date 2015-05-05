@@ -1,6 +1,7 @@
 DOMAIN=prototype.local
 PORT=80
 ROOT=$(shell pwd)
+BOWER_C=bower_components
 
 #
 # Main targets
@@ -8,6 +9,16 @@ ROOT=$(shell pwd)
 build: composer.phar config.json db.sqlite3
 	php ./composer.phar install
 	git describe --tags > VERSION
+
+build-assets:
+	node_modules/.bin/bower install
+	cp -f $(BOWER_C)/bootstrap/dist/css/bootstrap.min.css web/css/.
+	cp -f $(BOWER_C)/bootstrap/dist/fonts/* web/fonts/.
+	cp -f $(BOWER_C)/bootstrap/dist/js/bootstrap.min.js web/js/.
+	cp -f $(BOWER_C)/chosen/chosen.jquery.min.js web/js/.
+	cp -f $(BOWER_C)/chosen/chosen.min.css web/css/.
+	cp -f $(BOWER_C)/jeditable/jquery.jeditable.js web/js/.
+	cp -f $(BOWER_C)/jquery/dist/jquery.min.js web/js/.
 
 clean:
 	rm -rf logs/*.log

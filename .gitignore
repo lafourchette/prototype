@@ -12,3 +12,5 @@ MAINTENANCE.lock
 config.json
 !dist/config.json
 composer.lock
+node_modules
+bower_components
