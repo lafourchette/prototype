@@ -43,8 +43,7 @@ class Application extends BaseApplication
         $app->register(new ValidatorServiceProvider());
         $app->register(new ServiceControllerServiceProvider());
         $app->register(new TwigServiceProvider(), array(
-            'twig.path' => array(__DIR__ . '/../../templates'),
-            'twig.options' => array('cache' => __DIR__ . '/../../cache/twig'),
+            'twig.path' => array(__DIR__ . '/../../templates')
         ));
 
         $versionFile = __DIR__ . '../VERSION';
