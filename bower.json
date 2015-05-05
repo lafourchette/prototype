@@ -13,6 +13,7 @@
   "dependencies": {
     "bootstrap": "~3.3.4",
     "jeditable": "~1.7.3",
-    "chosen": "~1.4.2"
+    "chosen": "~1.4.2",
+    "components-font-awesome": "~4.3.0"
   }
 }

@@ -17,8 +17,11 @@ build-assets:
 	cp -f $(BOWER_C)/bootstrap/dist/js/bootstrap.min.js web/js/.
 	cp -f $(BOWER_C)/chosen/chosen.jquery.min.js web/js/.
 	cp -f $(BOWER_C)/chosen/chosen.min.css web/css/.
+	cp -f $(BOWER_C)/chosen/*.png web/css/.
 	cp -f $(BOWER_C)/jeditable/jquery.jeditable.js web/js/.
 	cp -f $(BOWER_C)/jquery/dist/jquery.min.js web/js/.
+	cp -f $(BOWER_C)/components-font-awesome/css/font-awesome.min.css web/css/.
+	cp -f $(BOWER_C)/components-font-awesome/fonts/* web/fonts/.
 
 clean:
 	rm -rf logs/*.log
