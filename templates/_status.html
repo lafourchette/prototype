@@ -11,7 +11,7 @@
                         <img src="img/bars.svg" class="mini-loader">
                     </div>
                 {% else %}
-                    <div class="edit" style="width:200px" id="{{vm.idVm}}">{% if vm.comment is empty %}Comment here{% else %}{{vm.comment}}{% endif %}</div>
+                    <div class="edit m_x" style="width:200px" id="{{vm.idVm}}">{% if vm.comment is empty %}Comment here{% else %}{{vm.comment}}{% endif %}</div>
                     <div class="label flatblue pull-right m_x">Running</div>
                 {% endif %}
             </div>
@@ -40,7 +40,7 @@
                                 <a href="/force-expire-prototype/{{ vm.idVm }}" class="btn btn-danger" title="Force the expiration"><i class="fa fa-trash-o"></i></a>
                             {% endif %}
                             {% if vm.status != -1 and vm.status != 5 %}
-                                <a href="/ask-more-prototype/{{ vm.idVm }}" class="btn btn-success" title="Ask for {{ default_expiration_delay }} hours more"><i class="fa fa-clock-o"></i></a>
+                                <a href="/ask-more-prototype/{{ vm.idVm }}" class="btn btn-default" title="Ask for {{ default_expiration_delay }} hours more"><i class="fa fa-clock-o"></i></a>
                             {% endif %}
                             {% if vm.status == 1 %}
                                 <a href="/force-start/{{ vm.idVm }}" class="btn btn-default" title="Force starting"><i class="icon-off nabilla"></i></a>
@@ -49,7 +49,7 @@
                         {% if app.session.get('user').username == vm_username(vm) and vm.status != -1 %}
                             <a href="/show-prototype/{{ vm.idVm }}" class="btn btn-success" title="See vm log and details"><i class="icon-info-sign nabilla"></i></a>
                         {% endif %}
-                        <a href="#" class="btn btn-danger"><i class="fa fa-info-circle"></i></a>
+                        <a href="#" class="btn btn-default"><i class="fa fa-info-circle"></i></a>
                     </div>
                     <a data-toggle="collapse" href="#more-001" class="col-lg-6 col-md-6 lh text-right nopr">
                         <i class="fa fa-plus-square"></i>
@@ -85,7 +85,7 @@
                     <div class="label pull-right m_x">Free slot</div>
                 </div>
                 <div class="panel-body text-center">
-                    <a href="{{app.request.baseUrl}}/create-prototype" class="btn btn-success btn-lg">Mount a Virtual Machine</a>
+                    <a href="{{app.request.baseUrl}}/create-prototype" class="btn btn-success btn-lg">Come get some !</a>
                 </div>
             </div><!-- /panel -->
         {% endif %}

@@ -13,8 +13,8 @@
 -----------------------------------------------------*/
 .bold {font-weight: bold;}
 .m_y {margin: 15px 0;}
+.m_x {margin: 0 15px;}
 .m_t {margin-top: 10px;}
-.lh{line-height: 30px;}
 .nopl {padding-left: 0;}
 .nopr {padding-right: 0;}
 .small {font-size: 12px;}
@@ -41,7 +41,7 @@
 .panel-body {padding: 15px;}
 .panel.squared{border-radius: 0;}
 .rounded-top{border-radius: 4px 4px 0 0;}
-small{font-size: 14px; color: #999; font-weight: 200;text-transform: uppercase;}
+small{font-size: 14px; color: #999; font-weight: 200;text-transform: uppercase;float: left;padding-top: 3px;}
 .free-slot .panel-heading{background: rgba(88, 148, 66, .8); color: #fff; font-weight: 200;}
 .free-slot .panel-body .btn{margin-top: 20px; font-weight: 200;}
 .integ-number{text-transform: uppercase; font-weight: 200; font-size: 16px;}
@@ -50,12 +50,13 @@ small{font-size: 14px; color: #999; font-weight: 200;text-transform: uppercase;}
 
 /* Content elements
 -----------------------------------------------------*/
-html {height: 100%;}
+html {height: 100%;font-size: 62.5%;}
 body{min-height: 100%; height: 100%; background: #e7e7e7;}
 header {background: #fff; height: 50px; line-height: 50px; padding: 0 0 0 20px; border-bottom: 1px solid #d4dee4; }
 .title{ line-height: 1; font-size: 20px;padding: 16px 10px;}
 .logo{background: #589442; width: 100px; text-align: center; margin-left: -20px;}
 .label{padding: 5px 10px; font-weight: 400;}
+.edit {float: left;}
 .user-panel{margin: 0 30px; font-size: 14px;}
 .user-panel a{margin: 0 0 0 10px;}
 .profile-pic img{width: 60px; height: 60px; border-radius: 50%;}
