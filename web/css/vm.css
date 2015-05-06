@@ -9,8 +9,6 @@
                                |___/|_|          mark.II
 */
 
-@font-face {font-family: 'OpenSansLight'; src: url('../font/OpenSans-Light-webfont.eot'); src: url('../font/OpenSans-Light-webfont.eot?#iefix') format('embedded-opentype'), url('../font/OpenSans-Light-webfont.woff') format('woff'), url('../font/OpenSans-Light-webfont.ttf') format('truetype'), url('../font/OpenSans-Light-webfont.svg#OpenSansLight') format('svg'); font-weight: normal; font-style: normal;}
-
 /* Alignment, emphasis & Colors
 -----------------------------------------------------*/
 .bold {font-weight: bold;}
