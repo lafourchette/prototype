@@ -1,16 +1,16 @@
-<div class="navbar">
-    <div class="container">
-        <a href="/" class="navbar-brand col-12 logolab" title="Made by Guillaume Cavana, Laurent Chenay and the intern"></a>
-        <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        </button>
-        <ul class="nav navbar-nav navbar-right user">
-            {% if app.session.get('isAuthenticated') %}     
-                    Welcome back {{ app.session.get('user').username }}
-                    <a href="{{ path('logout') }}" class="btn btn-danger m_x">Logout</a>
-            {% endif %}
-        </ul>
+<header>
+    <div class="logo pull-left">
+        <a href="/" class="navbar-brand col-12 logolab" title="Made by Guillaume Cavana, Laurent Chenay and the intern">
+            <img src="img/fork-transparent-bg.png">
+        </a>
     </div>
-</div>
+    <span class="title">
+        Prototype
+    </span>
+    <div class="user-panel pull-right">
+        {% if app.session.get('isAuthenticated') %}
+            <span class="hidden-xs">Hello {{ app.session.get('user').username }}</span>
+            <a href="{{ path('logout') }}" class="btn btn-danger">Logout</a>
+        {% endif %}
+    </div>
+</header>
