@@ -1,77 +1,80 @@
 
         {% for vm in vms %}
         <!-- Running VM -->
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <small>Integ {{vm.integ}}</small>
-                <div class="edit m_x" style="width:200px" id="{{vm.idVm}}">{% if vm.comment is empty %}Comment here{% else %}{{vm.comment}}{% endif %}</div>
-                <div class="pull-right">
-                {{la_fourchette_prototype_vm_status(vm.status)}}
-                </div>
-            </div>
-            <div class="panel-body">
-                {% if vm.status == -1 %}
-                <div class="panel-body text-center">
-                    <p>Fetching data with love...</p>
-                    <p>Please stand by :)</p>
-                </div>
-                {% else %}
-                <div class="row">
-                    <div class="col-lg-6 col-md-6 col-xs-6 nopl">
-                        <div class="small textgrey">EXPIRES IN</div>
-                        <div class="bold">{{vm.endsIn}}</div>
+        <div class="col-lg-6 col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <small>Integ {{vm.integ}}</small>
+                    <div class="edit m_x" style="width:200px" id="{{vm.idVm}}">{% if vm.comment is empty %}Comment here{% else %}{{vm.comment}}{% endif %}</div>
+                    <div class="pull-right">
+                    {{la_fourchette_prototype_vm_status(vm.status)}}
                     </div>
-                    <div class="col-lg-6 col-md-6 col-xs-6 nopr">
-                        <div class="pull-right">
-                            <span class="textgrey">{{vm_username(vm)}}</span>
+                </div>
+                <div class="panel-body">
+                    {% if vm.status == -1 %}
+                    <div class="panel-body text-center">
+                        <p>Fetching data with love...</p>
+                        <p>Please stand by :)</p>
+                    </div>
+                    {% else %}
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-xs-6 nopl">
+                            <div class="small textgrey">EXPIRES IN</div>
+                            <div class="bold">{{vm.endsIn}}</div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-xs-6 nopr">
+                            <div class="pull-right">
+                                <span class="textgrey">{{vm_username(vm)}}</span>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="row m_t">
-                    <div class="col-lg-6 col-md-6 nopl">
-                        {% if app.session.get('user').username == vm_username(vm) %}
-                            {% if vm.status != 4 %}
-                                <a href="/force-expire-prototype/{{ vm.idVm }}" class="btn btn-danger" title="Force the expiration"><i class="fa fa-trash-o"></i></a>
+                    <div class="row m_t">
+                        <div class="col-lg-6 col-md-6 nopl">
+                            {% if app.session.get('user').username == vm_username(vm) %}
+                                {% if vm.status != 4 %}
+                                    <a href="/force-expire-prototype/{{ vm.idVm }}" class="btn btn-danger" title="Force the expiration"><i class="fa fa-trash-o"></i></a>
+                                {% endif %}
+                                {% if vm.status != -1 and vm.status != 5 and vm.status != 4 and vm.status != 6 %}
+                                    <a href="/ask-more-prototype/{{ vm.idVm }}" class="btn btn-default" title="Ask for {{ default_expiration_delay }} hours more"><i class="fa fa-clock-o"></i></a>
+                                {% endif %}
+                                {% if vm.status == 1 %}
+                                    <a href="/force-start/{{ vm.idVm }}" class="btn btn-default" title="Force starting"><i class="fa fa-power-off"></i></a>
+                                {% endif %}
                             {% endif %}
-                            {% if vm.status != -1 and vm.status != 5 and vm.status != 4 and vm.status != 6 %}
-                                <a href="/ask-more-prototype/{{ vm.idVm }}" class="btn btn-default" title="Ask for {{ default_expiration_delay }} hours more"><i class="fa fa-clock-o"></i></a>
+                            {% if app.session.get('user').username == vm_username(vm) and vm.status != -1 %}
+                                <a href="/show-prototype/{{ vm.idVm }}" class="btn btn-default" title="See vm log and details"><i class="fa fa-info-circle"></i></a>
                             {% endif %}
-                            {% if vm.status == 1 %}
-                                <a href="/force-start/{{ vm.idVm }}" class="btn btn-default" title="Force starting"><i class="fa fa-power-off"></i></a>
-                            {% endif %}
-                        {% endif %}
-                        {% if app.session.get('user').username == vm_username(vm) and vm.status != -1 %}
-                            <a href="/show-prototype/{{ vm.idVm }}" class="btn btn-default" title="See vm log and details"><i class="fa fa-info-circle"></i></a>
-                        {% endif %}
+                        </div>
+                        <a data-toggle="collapse" href="#more-001" class="col-lg-6 col-md-6 lh text-right nopr">
+                            <i class="fa fa-plus-square"></i>
+                            See more
+                        </a>
+                        <div id="more-001" class="collapse">
+                            <table class="table">
+                                <tr>
+                                    <td>ID</td>
+                                    <td>{{vm.idVm}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>{{vm}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Expiration date</td>
+                                    <td>{{vm.expiredDt|date('Y-m-d H:i:s')}}</td>
+                                </tr>
+                            </table>
+                        </div>
                     </div>
-                    <a data-toggle="collapse" href="#more-001" class="col-lg-6 col-md-6 lh text-right nopr">
-                        <i class="fa fa-plus-square"></i>
-                        See more
-                    </a>
-                    <div id="more-001" class="collapse">
-                        <table class="table">
-                            <tr>
-                                <td>ID</td>
-                                <td>{{vm.idVm}}</td>
-                            </tr>
-                            <tr>
-                                <td>Name</td>
-                                <td>{{vm}}</td>
-                            </tr>
-                            <tr>
-                                <td>Expiration date</td>
-                                <td>{{vm.expiredDt|date('Y-m-d H:i:s')}}</td>
-                            </tr>
-                        </table>
-                    </div>
+                    {% endif %}
                 </div>
-                {% endif %}
-            </div>
-        </div><!-- /panel -->
+            </div><!-- /panel -->
+        </div><!-- /col-lg-6 -->
         {% endfor %}
 
         {% if la_fourchette_prototype_integ_availability() == true %}
-            <!-- Create a VM -->
+        <!-- Create a VM -->
+        <div class="col-lg-6 col-md-6">
             <div class="panel panel-default free-slot">
                 <div class="panel-heading">
                     Integ X
@@ -81,4 +84,5 @@
                     <a href="{{app.request.baseUrl}}/create-prototype" class="btn btn-success btn-lg">Come get some !</a>
                 </div>
             </div><!-- /panel -->
+        </div><!-- /col-lg-6 -->
         {% endif %}
