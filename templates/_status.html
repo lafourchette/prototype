@@ -45,11 +45,11 @@
                                 <a href="/show-prototype/{{ vm.idVm }}" class="btn btn-default" title="See vm log and details"><i class="fa fa-info-circle"></i></a>
                             {% endif %}
                         </div>
-                        <a data-toggle="collapse" href="#more-001" class="col-lg-6 col-md-6 lh text-right nopr">
+                        <a data-toggle="collapse" href="#more-{{ vm.idVm }}" class="col-lg-6 col-md-6 lh text-right nopr">
                             <i class="fa fa-plus-square"></i>
                             See more
                         </a>
-                        <div id="more-001" class="collapse">
+                        <div id="more-{{ vm.idVm }}" class="collapse">
                             <table class="table">
                                 <tr>
                                     <td>ID</td>
