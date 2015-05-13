@@ -4,19 +4,13 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <small>Integ {{vm.integ}}</small>
-                <!-- {{la_fourchette_prototype_vm_status(vm.status)}} -->
-                {% if vm.status == 0 %}
-                    <div class="label flatpurple pull-right m_x">
-                        Building with love
-                        <img src="img/bars.svg" class="mini-loader">
-                    </div>
-                {% else %}
-                    <div class="edit m_x" style="width:200px" id="{{vm.idVm}}">{% if vm.comment is empty %}Comment here{% else %}{{vm.comment}}{% endif %}</div>
-                    <div class="label flatblue pull-right m_x">Running</div>
-                {% endif %}
+                <div class="edit m_x" style="width:200px" id="{{vm.idVm}}">{% if vm.comment is empty %}Comment here{% else %}{{vm.comment}}{% endif %}</div>
+                <div class="pull-right">
+                {{la_fourchette_prototype_vm_status(vm.status)}}
+                </div>
             </div>
             <div class="panel-body">
-                {% if vm.status == 0 %}
+                {% if vm.status == -1 %}
                 <div class="panel-body text-center">
                     <p>Fetching data with love...</p>
                     <p>Please stand by :)</p>
@@ -39,17 +33,16 @@
                             {% if vm.status != 4 %}
                                 <a href="/force-expire-prototype/{{ vm.idVm }}" class="btn btn-danger" title="Force the expiration"><i class="fa fa-trash-o"></i></a>
                             {% endif %}
-                            {% if vm.status != -1 and vm.status != 5 %}
+                            {% if vm.status != -1 and vm.status != 5 and vm.status != 4 and vm.status != 6 %}
                                 <a href="/ask-more-prototype/{{ vm.idVm }}" class="btn btn-default" title="Ask for {{ default_expiration_delay }} hours more"><i class="fa fa-clock-o"></i></a>
                             {% endif %}
                             {% if vm.status == 1 %}
-                                <a href="/force-start/{{ vm.idVm }}" class="btn btn-default" title="Force starting"><i class="icon-off nabilla"></i></a>
+                                <a href="/force-start/{{ vm.idVm }}" class="btn btn-default" title="Force starting"><i class="fa fa-power-off"></i></a>
                             {% endif %}
                         {% endif %}
                         {% if app.session.get('user').username == vm_username(vm) and vm.status != -1 %}
-                            <a href="/show-prototype/{{ vm.idVm }}" class="btn btn-success" title="See vm log and details"><i class="icon-info-sign nabilla"></i></a>
+                            <a href="/show-prototype/{{ vm.idVm }}" class="btn btn-default" title="See vm log and details"><i class="fa fa-info-circle"></i></a>
                         {% endif %}
-                        <a href="#" class="btn btn-default"><i class="fa fa-info-circle"></i></a>
                     </div>
                     <a data-toggle="collapse" href="#more-001" class="col-lg-6 col-md-6 lh text-right nopr">
                         <i class="fa fa-plus-square"></i>
