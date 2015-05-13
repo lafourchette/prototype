@@ -19,6 +19,8 @@ Prototype was created to help product owner to test their production in a full s
 
 Check our [awesome contributors](https://github.com/lafourchette/prototype/graphs/contributors) !
 
+![Screenshot](screenshot.png)
+
 ## Installation
 After cloning the repository:
 ```bash
