@@ -13,5 +13,4 @@ $cli->add(new \LaFourchette\Console\Delete());
 $cli->add(new \LaFourchette\Console\Reset());
 $cli->add(new \LaFourchette\Console\Stop());
 $cli->add(new \LaFourchette\Console\Start());
-$cli->add(new \LaFourchette\Console\GetVmId());
 $cli->run();
