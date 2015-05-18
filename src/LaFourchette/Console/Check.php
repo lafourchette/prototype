@@ -26,7 +26,7 @@ class Check extends ConsoleAbstract
     /**
      * {@inheritdoc}
      */
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function process(InputInterface $input, OutputInterface $output)
     {
         $vmNumber = $input->getOption('id');
         $vmManager = $this->getVmManager();
