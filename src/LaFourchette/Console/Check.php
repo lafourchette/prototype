@@ -67,12 +67,12 @@ class Check extends ConsoleAbstract
 
         if ($savedStatus == Vm::TO_START && $currentStatus != Vm::RUNNING) {
             $output->writeln('  - Need to be started, Do it Now');
-            $this->getSilexApplication()['vm.service']->start($vm);
+            $silexApp['vm.service']->start($vm);
         } elseif ($savedStatus == Vm::ARCHIVED) {
             $output->writeln('  - Vm is archived.');
         } elseif ($savedStatus == Vm::EXPIRED) {
             $output->writeln('  - Has just expired');
-            $this->getSilexApplication()['vm.service']->archived($vm);
+            $silexApp['vm.service']->archived($vm);
             $vm->setStatus(Vm::ARCHIVED);
             $vmManager->save($vm);
         } else {
@@ -83,7 +83,7 @@ class Check extends ConsoleAbstract
                     case Vm::RUNNING:
                         $output->writeln('  - Running');
                         $expireDt = $vm->getExpiredDt();
-                        $expireDt->add(new \DateInterval('PT'.$this->getSilexApplication()['config']['vm.to_expire_in'].'H'));
+                        $expireDt->add(new \DateInterval('PT'.$silexApp['config']['vm.to_expire_in'].'H'));
                         break;
                     case Vm::STOPPED:
                         if ($savedStatus != Vm::STOPPED && $savedStatus != Vm::EXPIRED && $savedStatus != Vm::ARCHIVED) {
