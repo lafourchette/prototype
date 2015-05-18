@@ -31,8 +31,8 @@ class Status extends ConsoleAbstract
          * @var VM $vm
          */
         $vm = $vmManager->load($vmNumber);
-
-        switch ($this->getSilexApplication()['vm.service']->getStatus($vm)) {
+        $app = $this->getSilexApplication();
+        switch ($app['vm.service']->getStatus($vm)) {
             case VM::MISSING:
                 $output->writeln('The VM is missing');
                 break;

@@ -33,6 +33,7 @@ class Create extends ConsoleAbstract
          * @var VM $vm
          */
         $vm = $vmManager->load($vmNumber);
-        $this->getSilexApplication()['vm.service']->initialise($vm);
+        $app = $this->getSilexApplication();
+        $app['vm.service']->initialise($vm);
     }
 }

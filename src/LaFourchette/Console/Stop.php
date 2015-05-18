@@ -30,7 +30,7 @@ class Stop extends ConsoleAbstract
          * @var VM $vm
          */
         $vm = $vmManager->load($vmNumber);
-
-        $this->getSilexApplication()['vm.service']->stop($vm);
+        $app = $this->getSilexApplication();
+        $app['vm.service']->stop($vm);
     }
 }

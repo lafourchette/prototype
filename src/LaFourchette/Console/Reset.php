@@ -31,7 +31,8 @@ class Reset extends ConsoleAbstract
          * @var VM $vm
          */
         $vm = $vmManager->load($vmNumber);
-        $this->getSilexApplication()['vm.service']->stop($vm);
-        $this->getSilexApplication()['vm.service']->start($vm);
+        $app = $this->getSilexApplication();
+        $app['vm.service']->stop($vm);
+        $app['vm.service']->start($vm);
     }
 }

@@ -28,7 +28,7 @@ class Start extends ConsoleAbstract
         $vmManager = $this->getVmManager();
 
         $vm = $vmManager->load($vmNumber);
-
-        $this->getSilexApplication()['vm.service']->start($vm);
+        $app = $this->getSilexApplication();
+        $app['vm.service']->start($vm);
     }
 }

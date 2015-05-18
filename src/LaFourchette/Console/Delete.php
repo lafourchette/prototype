@@ -31,7 +31,7 @@ class Delete extends ConsoleAbstract
          * @var Vm $vm
          */
         $vm = $vmManager->load($vmNumber);
-
-        $this->getSilexApplication()['vm.service']->delete($vm);
+        $app = $this->getSilexApplication();
+        $app['vm.service']->delete($vm);
     }
 }
