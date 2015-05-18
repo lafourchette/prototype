@@ -55,7 +55,8 @@ class Check extends ConsoleAbstract
         /** @var VM $vm */
         $output->writeln('> VM ' . $vm->__toString());
         $savedStatus = $vm->getStatus();
-        $currentStatus = $this->getSilexApplication()['vm.service']->getStatus($vm);
+        $silexApp = $this->getSilexApplication();
+        $currentStatus = $silexApp['vm.service']->getStatus($vm);
 
         if (is_null($currentStatus)) {
             $output->writeln( 'Cannot resolve status for vm ' . $vm->getIdVm());
