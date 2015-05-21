@@ -3,21 +3,20 @@
 namespace LaFourchette\Manager;
 use LaFourchette\Entity\Integ;
 use LaFourchette\Entity\Vm;
+use LaFourchette\Service\DataAccessService;
 
 /**
  * Description of VmManager
  *
  * @author gcavana
  */
-class IntegManager implements ManagerInterface
+class IntegManager extends AbstractManager
 {
     private $collection = array();
 
-    private $entityManager;
-
-    public function __construct(\Doctrine\ORM\EntityManager $em, $configuration, $class)
+    public function __construct(DataAccessService $dataAccessService, $configuration, $class)
     {
-        $this->entityManager = $em;
+        parent::__construct($dataAccessService);
 
         foreach ($configuration['integs'] as $i) {
             array_push($this->collection, $class::makeFromArray($i));
@@ -37,13 +36,9 @@ class IntegManager implements ManagerInterface
 
     public function loadAllAvailable()
     {
-        $query = $this->entityManager->createQuery(
-            'SELECT v.integ FROM LaFourchette\Entity\Vm v WHERE v.status not in (:status) group by v.integ'
-        );
-        $query->setParameter(':status', Vm::$freeStatus);
         $unavailables = array_map(function ($item) {
-            return $item['integ'];
-        }, $query->getArrayResult());
+            return $item;
+        }, $this->dataAccessService->getVmsWhereStatusNotIn(Vm::$freeStatus, true));
 
         $available = array();
         foreach ($this->collection as $integ) {

@@ -61,9 +61,10 @@ class MainControllerProvider implements ControllerProviderInterface
         });
 
         $controllers->get('/show-prototype/{idVm}', function ($idVm) use ($app) {
+            $vm = $app['vm.manager']->load($idVm);
             return $app['twig']->render('show.html', array(
-                'vm' => $app['vm.manager']->load($idVm),
-                'users' => $app['user_notify.manager']->loadBy(array('vm' => $idVm))
+                'vm' => $vm,
+                'users' => $vm->getUsersNotify()
             ));
         })
             ->bind('show');
@@ -222,18 +223,12 @@ class MainControllerProvider implements ControllerProviderInterface
                 $integ = $app['integ.manager']->load($app['request']->request->get('integ'));
                 $vm->setInteg($integ->getIdInteg());
 
-                // Save the vm first
-                $app['vm.manager']->save($vm);
-
                 foreach ($users as $userName) {
                     $ldapUser = $app['ldap.manager']->getUserInfo($userName);
                     $user = $app['user.manager']->getOrCreate($ldapUser);
-
-                    $userNotify = new \LaFourchette\Entity\UserNotify();
-                    $userNotify->setUser($user);
-                    $userNotify->setVm($vm);
-                    $app['user_notify.manager']->save($userNotify);
+                    $vm->addUserNotify($user);
                 }
+                $app['vm.manager']->save($vm);
             }
 
             $app[ 'session' ]->set('flash', array(

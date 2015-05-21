@@ -2,33 +2,27 @@
 
 namespace LaFourchette\Manager;
 
-use LaFourchette\Manager\Doctrine\ORM\AbstractManager;
 use LaFourchette\Entity\Vm;
 
 /**
  * Description of VmManager
  *
- * @author gcavana
+ * @author mdacosta
  */
 class VmManager extends AbstractManager
 {
-
-    public function __construct(\Doctrine\ORM\EntityManager $em, $class)
-    {
-        parent::__construct($em, $class);
-    }
-
     public function loadVm()
     {
-        $qb = $this->repository->createQueryBuilder('v');
+        return $this->dataAccessService->getVmsWhereStatusNotIn(Vm::$freeStatus);
+    }
 
-        $qb->select('v, u')
-           ->leftJoin('v.createdBy', 'u')
-           ->where($qb->expr()->notIn('v.status', ':status'))
-           ->orderBy('v.integ', 'ASC')
-           ->setParameter('status', Vm::$freeStatus);
+    public function save($vm)
+    {
+        if (null === $vm->getIdVm()) {
+            $vm->setIdVm($this->dataAccessService->getNextId('vm'));
+        }
 
-        return $qb->getQuery()->getResult();
+        parent::save($vm);
     }
 
     public function getActive()
@@ -51,12 +45,6 @@ class VmManager extends AbstractManager
 
     private function getByStatus($status)
     {
-        $qb = $this->repository->createQueryBuilder('v');
-
-        $qb->select('count(v)')
-           ->where('v.status = :status')
-           ->setParameter('status', $status);
-
-        return $qb->getQuery()->getSingleScalarResult();
+        return count($this->dataAccessService->loadBy($this, ['status' => [$status]]));
     }
 }
