@@ -55,7 +55,8 @@ class Application extends BaseApplication
             'console.project_directory' => __DIR__.'/../..'
         ));
 
-        $app['config'] = json_decode(file_get_contents(__DIR__ . '/../../config.json'), true);
+        $configContent = preg_replace('/[\s\n]/', '', preg_replace('/\/\/(.*)$/m', '', file_get_contents(__DIR__ . '/../../config.json')));
+        $app['config'] = json_decode($configContent, true);
         $app['debug'] = $debug = $app['config']['debug'];
 
         if ($debug) {
