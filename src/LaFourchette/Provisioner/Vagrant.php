@@ -300,7 +300,7 @@ class Vagrant implements ProvisionerInterface
 
 Vagrant.configure("2") do |config|
     config.vm.box = "{$version}"
-    config.vm.box_url = "http://resources.lafourchette.lan/current/phing_lucid.box"
+    config.vm.box_url = "http://par-resources.us.tripadvisor.local/current/phing_lucid.box"
     config.vm.provider :virtualbox do |vb|
         vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
         vb.customize ["modifyvm", :id, "--memory", "8064"]
