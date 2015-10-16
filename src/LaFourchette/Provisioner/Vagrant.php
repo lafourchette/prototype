@@ -302,8 +302,8 @@ Vagrant.configure("2") do |config|
     config.vm.box = "{$version}"
     config.vm.box_url = "http://par-resources.us.tripadvisor.local/current/phing_lucid.box"
     config.vm.provider :virtualbox do |vb|
-        vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
-        vb.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
+        vb.customize ["modifyvm", :id, "--natdnshostresolver1", "off"]
+        vb.customize ["modifyvm", :id, "--natdnsproxy1", "off"]
         vb.customize ["modifyvm", :id, "--memory", "8064"]
         vb.customize ["modifyvm", :id, "--cpus", "8"]
     end
