@@ -312,7 +312,15 @@ EOS;
         if ($ip && $mac && $netmask && $bridge) {
             $vagrantFile.= <<<EOS
     # Network configuration
-    config.vm.network :public_network, ip: '{$ip}', :bridge => '{$bridge}',  :mac => '{$mac}', :auto_config => true, :netmask => '{$netmask}'
+    config.vm.network :public_network, ip: '{$ip}', :bridge => '{$bridge}',  :mac => '{$mac}', :netmask => '{$netmask}'
+    # Default router
+    config.vm.provision "shell",
+    run: "always",
+    inline: "route add default gw 10.131.198.1"
+     # delete default gw on eth0
+    config.vm.provision "shell",
+    run: "always",
+    inline: "eval `route -n | awk '{ if ($8 ==\"eth0\" && $2 != \"0.0.0.0\") print \"route del default gw \" $2; }'`"
 end
 EOS;
         } else {
