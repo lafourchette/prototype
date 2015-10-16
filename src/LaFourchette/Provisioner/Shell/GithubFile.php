@@ -37,7 +37,7 @@ class GithubFile
         if ($err = curl_error($ch)) {
             throw new \Exception('Curl error'.$err);
         }else{
-            echo "curl sucessfull."
+            echo "curl sucessfull.";
         }
         curl_close($ch);
 
