@@ -23,7 +23,7 @@ class GithubFile
     public function getContent()
     {
         $url = sprintf('https://api.github.com/repos/%s/contents/%s', $this->repo, $this->path);
-        echo $url . PHP_EOL . "( headers: Authorization: token" . $this->token . "User-Agent: ".$this->user . " )";
+        echo $url . PHP_EOL . " ( headers: Authorization: token " . $this->token . ", User-Agent: ".$this->user . " )". PHP_EOL;
         $ch = curl_init();
         curl_setopt($ch,CURLOPT_URL,$url);
         curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
