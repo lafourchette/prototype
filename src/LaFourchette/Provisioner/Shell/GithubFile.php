@@ -23,7 +23,7 @@ class GithubFile
     public function getContent()
     {
         $url = sprintf('https://api.github.com/repos/%s/contents/%s', $this->repo, $this->path);
-        echo $url . PHP_EOL;
+        echo $url . PHP_EOL . "( headers: Authorization: token" . $this->token . "User-Agent: ".$this->user . " )";
         $ch = curl_init();
         curl_setopt($ch,CURLOPT_URL,$url);
         curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
@@ -36,6 +36,8 @@ class GithubFile
         $content = curl_exec($ch);
         if ($err = curl_error($ch)) {
             throw new \Exception('Curl error'.$err);
+        }else{
+            echo "curl sucessfull."
         }
         curl_close($ch);
 
