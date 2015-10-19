@@ -4,7 +4,7 @@
         <div class="col-lg-6 col-md-6">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <b>Integ {{vm.integ}} : </b> <a href="http://status.integ{{vm.integ}}.lafourchette.io/" target="_blank">Go to status page</a>
+                    <b>Integ {{vm.integ}} : </b> <a href="http://status.integ{{vm.integ}}.lafourchette.io/" target="_blank">go_to_status_page</a>
                     <div class="edit m_x" style="width:200px" id="{{vm.idVm}}">{% if vm.comment is empty %}Comment here{% else %}{{vm.comment}}{% endif %}</div>
                     <div class="pull-right">
                     {{la_fourchette_prototype_vm_status(vm.status)}}
