@@ -304,7 +304,7 @@ Vagrant.configure("2") do |config|
     config.vm.provider :virtualbox do |vb|
         vb.customize ["modifyvm", :id, "--natdnshostresolver1", "off"]
         vb.customize ["modifyvm", :id, "--natdnsproxy1", "off"]
-        vb.customize ["modifyvm", :id, "--memory", "32768"]
+        vb.customize ["modifyvm", :id, "--memory", "16384"]
         vb.customize ["modifyvm", :id, "--cpus", "8"]
     end
     config.vm.provision "shell", path: "install.sh"
