@@ -231,7 +231,7 @@ class Vagrant implements ProvisionerInterface
         $this->run($vm, "mkdir -p $path", false);
         $this->cleanUp($vm);
 
-        $version = file_get_contents('http://par-resources.us.tripadvisor.local/current/phing_lucid.VERSION');
+        $version = file_get_contents('http://resources.lafourchette.io/current/phing_lucid.VERSION');
         if (!$version) {
             throw new \Exception('Cannot find a suitable version to run');
         }
