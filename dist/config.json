@@ -10,7 +10,7 @@
     "vm.default.branch": "master",
     "log.max_time_before_logging": "-5 min",
     "asset.version" : 4,
-    "vm.expired_in_value": 24,
+    "vm.expired_in_value": 168,
     "vm.to_expire_in": 4,
     "integs":[
         {
