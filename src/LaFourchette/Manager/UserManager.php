@@ -2,35 +2,35 @@
 
 namespace LaFourchette\Manager;
 
-use LaFourchette\Manager\Doctrine\ORM\AbstractManager;
 use \LaFourchette\Entity\User;
 
 /**
  * Description of VmManager
  *
- * @author gcavana
+ * @author mdacosta
  */
 class UserManager extends AbstractManager
 {
-
-    public function __construct(\Doctrine\ORM\EntityManager $em, $class)
-    {
-        parent::__construct($em, $class);
-    }
-
     /**
-     * @param $ldapUser
+     * @param User $ldapUser
      * @return User
      */
-    public function getOrCreate($ldapUser)
+    public function getOrCreate(User $ldapUser)
     {
-        $user = $this->loadOneBy(array('username' => $ldapUser->getUsername()));
+        $user = $this->dataAccessService->loadOneBy($this, array('username' => $ldapUser->getUsername()));
 
         if (null === $user) {
-            $this->save($ldapUser);
-            $user = $this->loadOneBy(array('username' => $ldapUser->getUsername()));
+            $ldapUser->setIdUser($this->generateUserId());
+            $this->dataAccessService->save($ldapUser);
+
+            $user = $this->dataAccessService->loadOneBy($this, array('username' => $ldapUser->getUsername()));
         }
 
         return $user;
+    }
+
+    private function generateUserId()
+    {
+        return $this->dataAccessService->getNextId('user');
     }
 }

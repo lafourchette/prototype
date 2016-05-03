@@ -1,8 +1,8 @@
 <?php
 
-namespace LaFourchette\Manager\Doctrine\ORM;
+namespace LaFourchette\Manager;
 
-use LaFourchette\Manager\ManagerInterface;
+use LaFourchette\Service\DataAccessService;
 
 /**
  * Description of AbstractManager
@@ -11,13 +11,11 @@ use LaFourchette\Manager\ManagerInterface;
  */
 abstract class AbstractManager implements ManagerInterface
 {
-    protected $em;
-    protected $repository;
+    protected $dataAccessService;
 
-    public function __construct(\Doctrine\ORM\EntityManager $em, $class)
+    public function __construct(DataAccessService $dataAccessService)
     {
-        $this->em = $em;
-        $this->repository = $em->getRepository($class);
+        $this->dataAccessService = $dataAccessService;
     }
 
     /**
@@ -25,7 +23,7 @@ abstract class AbstractManager implements ManagerInterface
      */
     public function load($id)
     {
-        return $this->repository->find($id);
+        return $this->dataAccessService->load($this, $id);
     }
 
     /**
@@ -33,7 +31,7 @@ abstract class AbstractManager implements ManagerInterface
      */
     public function loadOneBy(array $criteria)
     {
-        return $this->repository->findOneBy($criteria);
+        return $this->dataAccessService->loadOneBy($this, $criteria);
     }
 
     /**
@@ -41,7 +39,7 @@ abstract class AbstractManager implements ManagerInterface
      */
     public function loadBy(array $criteria, array $order = null)
     {
-        return $this->repository->findBy($criteria, $order);
+        return $this->dataAccessService->loadBy($this, $criteria, $order);
     }
 
     /**
@@ -49,7 +47,7 @@ abstract class AbstractManager implements ManagerInterface
      */
     public function loadAll()
     {
-        return $this->repository->findAll();
+        return $this->dataAccessService->findAll($this);
     }
 
     /**
@@ -57,12 +55,11 @@ abstract class AbstractManager implements ManagerInterface
      */
     public function flush($entity)
     {
-        $this->em->flush($entity);
+        $this->dataAccessService->save($entity);
     }
 
     public function save($entity)
     {
-        $this->em->persist($entity);
-        $this->em->flush();
+        $this->dataAccessService->save($entity);
     }
 }

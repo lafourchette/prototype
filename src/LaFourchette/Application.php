@@ -7,21 +7,27 @@ use HipChat\HipChat;
 use LaFourchette\Controller\MainControllerProvider;
 use LaFourchette\Creator\VmCreator;
 use LaFourchette\Entity\Vm;
+use LaFourchette\Factory\EntityFactory;
 use LaFourchette\Ldap\LdapManager;
 use LaFourchette\Ldap\MockLdapManager;
+use LaFourchette\Loader\FileLoaderFactory;
 use LaFourchette\Manager\IntegManager;
 use LaFourchette\Manager\UserManager;
-use LaFourchette\Manager\UserNotifyManager;
 use LaFourchette\Manager\VmManager;
 use LaFourchette\Notify\Expired;
 use LaFourchette\Notify\ExpireSoon;
 use LaFourchette\Notify\Killed;
 use LaFourchette\Notify\Ready;
 use LaFourchette\Notify\UnableToStart;
+use LaFourchette\Provider\DataProvider;
 use LaFourchette\Provisioner\Vagrant;
 use LaFourchette\Service\NotifyService;
+use LaFourchette\Service\DataAccessService;
 use LaFourchette\Service\VmService;
+use LaFourchette\Writer\FileWriter;
+use LaFourchette\Writer\FileWriterFactory;
 use Silex\Provider\DoctrineServiceProvider;
+use Silex\Provider\SerializerServiceProvider;
 use Silex\Provider\SessionServiceProvider;
 use Silex\Provider\TwigServiceProvider;
 use Silex\Provider\UrlGeneratorServiceProvider;
@@ -55,7 +61,8 @@ class Application extends BaseApplication
             'console.project_directory' => __DIR__.'/../..'
         ));
 
-        $app['config'] = json_decode(file_get_contents(__DIR__ . '/../../config.json'), true);
+        $configContent = preg_replace('/[\s\n]/', '', preg_replace('/\/\/(.*)$/m', '', file_get_contents(__DIR__ . '/../../config.json')));
+        $app['config'] = json_decode($configContent, true);
         $app['debug'] = $debug = $app['config']['debug'];
 
         if ($debug) {
@@ -104,20 +111,46 @@ class Application extends BaseApplication
             ),
         ));
 
+        $app['entity.factory'] = $app->share(function () {
+                return new EntityFactory();
+            });
+
+        $app['file_loader.factory'] = $app->share(function () use ($app) {
+                return new FileLoaderFactory($app['entity.factory'], $app['serializer'], $app['config']['data_access']);
+            });
+
+        $app['file_writer.factory'] = $app->share(function () use ($app) {
+                return new FileWriterFactory($app['serializer']);
+            });
+
+        $app['data_provider'] = $app->share(function () use ($app) {
+                return new DataProvider(
+                    $app['serializer'],
+                    $app['file_loader.factory'],
+                    $app['config']['serializer_format']
+                );
+            });
+
+        $app['data_access.service'] = $app->share(function () use ($app) {
+                return new DataAccessService(
+                    $app['data_provider'],
+                    $app['file_writer.factory'],
+                    $app['config']['serializer_format']
+                );
+            });
+
+        $app->register(new SerializerServiceProvider());
+
         $app['vm.manager'] = $app->share(function () use ($app) {
-            return new VmManager($app['orm.em'],'\LaFourchette\Entity\Vm');
+                return new VmManager($app['data_access.service']);
         });
 
         $app['integ.manager'] = $app->share(function () use ($app) {
-            return new IntegManager($app['orm.em'], $app['config'],'\LaFourchette\Entity\Integ');
+            return new IntegManager($app['data_access.service'], $app['config'], '\LaFourchette\Entity\Integ');
         });
 
         $app['user.manager'] = $app->share(function () use ($app) {
-            return new UserManager($app['orm.em'],'\LaFourchette\Entity\User');
-        });
-
-        $app['user_notify.manager'] = $app->share(function () use ($app) {
-            return new UserNotifyManager($app['orm.em'],'\LaFourchette\Entity\UserNotify');
+            return new UserManager($app['data_access.service']);
         });
 
         $app['notify.service'] = $app->share(function () use ($app) {

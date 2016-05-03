@@ -2,46 +2,32 @@
 
 namespace LaFourchette\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Normalizer\DenormalizableInterface;
+use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizableInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-/**
- * @ORM\Entity
- */
-class User
+class User implements NormalizableInterface, DenormalizableInterface
 {
-
     /**
-     * @ORM\Id
-     * @ORM\Column(type="integer", name="id_user")
-     * @ORM\GeneratedValue(strategy="AUTO")
      * @var int
      */
     protected $idUser;
 
     /**
-     * @ORM\Column(type="string")
      * @var string
      */
     protected $username;
 
     /**
-     * @ORM\Column(type="string")
      * @var string
      */
     protected $email;
 
     /**
-     * @ORM\Column(type="string")
      * @var string
      */
     protected $dn;
-
-    /**
-     * @ORM\OneToMany(targetEntity="LaFourchette\Entity\UserNotify", mappedBy="user", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(name="id_user", referencedColumnName="id_user")
-     * @var UserNotify[]
-     */
-    protected $usersNotify;
 
     /**
      * @return string
@@ -113,5 +99,25 @@ class User
     public function setEmail($email)
     {
         $this->email = $email;
+    }
+
+    /** {@inheritdoc} */
+    public function denormalize(DenormalizerInterface $denormalizer, $data, $format = null, array $context = array())
+    {
+        $this->idUser = $data['idUser'];
+        $this->username = $data['username'];
+        $this->email = $data['email'];
+        $this->dn = $data['dn'];
+    }
+
+    /** {@inheritdoc} */
+    public function normalize(NormalizerInterface $normalizer, $format = null, array $context = array())
+    {
+        return [
+            'idUser' => $this->idUser,
+            'username' => $this->username,
+            'email' => $this->email,
+            'dn' => $this->dn,
+        ];
     }
 }

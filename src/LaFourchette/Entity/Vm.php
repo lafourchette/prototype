@@ -2,13 +2,12 @@
 
 namespace LaFourchette\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Normalizer\DenormalizableInterface;
+use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizableInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="Vm")
- */
-class Vm
+class Vm implements NormalizableInterface, DenormalizableInterface
 {
     const EXPIRED_AT_DEFAULT_VALUE = 24; //define in hours
 
@@ -31,21 +30,16 @@ class Vm
     public static $freeStatus = array(self::ARCHIVED);
 
     /**
-     * @ORM\Id
-     * @ORM\Column(type="integer", name="id_vm")
-     * @ORM\GeneratedValue(strategy="AUTO")
      * @var int
      */
     protected $idVm;
 
     /**
-     * @ORM\Column(type="integer", name="id_integ")
      * @var int
      */
     protected $integ;
 
     /**
-     * @ORM\Column(type="integer", name="status")
      * @var int
      */
     protected $status;
@@ -56,51 +50,41 @@ class Vm
     protected $createDt;
 
     /**
-     * @ORM\Column(type="datetime", name="update_dt")
      * @var \DateTime
      */
     protected $updateDt;
 
     /**
-     * @ORM\Column(type="datetime", name="delete_dt")
      * @var \DateTime
      */
     protected $deleteDt;
 
     /**
-     * @ORM\Column(type="string", name="name")
      * @var string
      */
     protected $name;
 
     /**
-     * @ORM\Column(type="string", name="comment")
      * @var string
      */
     protected $comment;
 
     /**
-     * @ORM\OneToOne(targetEntity="LaFourchette\Entity\User")
-     * @ORM\JoinColumn(name="created_by", referencedColumnName="id_user")
      * @var User
      */
     protected $createdBy;
 
     /**
-     * @ORM\Column(type="datetime", name="expired_dt")
      * @var \DateTime
      */
     protected $expiredDt;
 
     /**
-     * @ORM\OneToMany(targetEntity="LaFourchette\Entity\UserNotify", mappedBy="vm", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(name="id_vm", referencedColumnName="id_vm")
-     * @var UserNotify[]
+     * @var User[]
      */
     protected $usersNotify;
 
     /**
-     * @ORM\Column(type="integer", name="type")
      * @var int
      */
     protected $type;
@@ -116,6 +100,7 @@ class Vm
         $this->setUpdateDt(new \DateTime());
         $this->setExpiredDt($expiredAt);
         $this->setType(self::TYPE_V2);
+        $this->usersNotify = [];
     }
 
     private function generateRandomString($length = 10)
@@ -314,7 +299,7 @@ class Vm
     }
 
     /**
-     * @return UserNotify[]
+     * @return User[]
      */
     public function getUsersNotify()
     {
@@ -322,11 +307,13 @@ class Vm
     }
 
     /**
-     * @param UserNotify[] $usersNotify
+     * Add a user to notify
+     *
+     * @param User $user
      */
-    public function setUsersNotify(array $usersNotify)
+    public function addUserNotify(User $user)
     {
-        $this->usersNotify = $usersNotify;
+        $this->usersNotify[] = $user;
     }
 
     public function getCcActivity()
@@ -416,5 +403,70 @@ class Vm
 
         // Prepend 'since ' or whatever you like
         return $interval->format($format);
+    }
+
+    /** {@inheritdoc} */
+    public function denormalize(DenormalizerInterface $denormalizer, $data, $format = null, array $context = array())
+    {
+        if (is_array($data['usersNotify'])) {
+            foreach ($data['usersNotify'] as $userNotify) {
+                $this->usersNotify[] = $denormalizer->denormalize(
+                    $userNotify,
+                    '\LaFourchette\Entity\User',
+                    $format,
+                    $context
+                );
+            }
+        }
+
+        $createdBy = $denormalizer->denormalize($data['createdBy'], '\LaFourchette\Entity\User', $format, $context);
+        $createDt = null;
+        $updateDt = null;
+        $deleteDt = null;
+        $expiredDt = null;
+
+        foreach ($data as $dataKey => $dataValue) {
+            if (preg_match('/^(\w+Dt)$/', $dataKey, $matches) && null !== $dataValue) {
+                $$matches[1] = new \DateTime($dataValue['date'], new \DateTimeZone($dataValue['timezone']));
+            }
+        }
+
+        $this->idVm = $data['idVm'];
+        $this->integ = $data['integ'];
+        $this->status = $data['status'];
+        $this->createDt = $createDt;
+        $this->updateDt = $updateDt;
+        $this->deleteDt = $deleteDt;
+        $this->name = $data['name'];
+        $this->comment = $data['comment'];
+        $this->createdBy = $createdBy;
+        $this->expiredDt = $expiredDt;
+        $this->type = $data['type'];
+    }
+
+    /** {@inheritdoc} */
+    public function normalize(NormalizerInterface $normalizer, $format = null, array $context = array())
+    {
+        $usersNotify = [];
+        if (is_array($this->usersNotify)) {
+            foreach ($this->usersNotify as $userNotify) {
+                $usersNotify[] = $userNotify->normalize($normalizer, $format, $context);
+            }
+        }
+
+        return [
+            'idVm' => $this->idVm,
+            'integ' => $this->integ,
+            'status' => $this->status,
+            'createDt' => $this->createDt,
+            'updateDt' => $this->updateDt,
+            'deleteDt' => $this->deleteDt,
+            'name' => $this->name,
+            'comment' => $this->comment,
+            'createdBy' => $this->createdBy->normalize($normalizer, $format, $context),
+            'expiredDt' => $this->expiredDt,
+            'usersNotify' => $usersNotify,
+            'type' => $this->type,
+        ];
     }
 }

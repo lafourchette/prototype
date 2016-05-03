@@ -12,6 +12,14 @@
     "asset.version" : 4,
     "vm.expired_in_value": 24,
     "vm.to_expire_in": 4,
+    "serializer_format": "json",
+    "data_access": {
+        "path": "Resources/", // root path where data are stored
+        "files": { // data files
+            "user": "users.json",
+            "vm": "vms.json"
+        }
+    },
     "integs":[
         {
             "id_integ": 1,
